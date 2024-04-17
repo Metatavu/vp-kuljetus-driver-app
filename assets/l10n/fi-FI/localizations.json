@@ -1,0 +1,19 @@
+{
+  "selectVehicle": "Valitse ajoneuvo",
+  "loginInstructions": "Aseta digikortti piirturiin ja paina \"Kirjaudu\".",
+  "login": "Kirjaudu",
+  "errors": {
+    "listPublicTrucks": "Virhe listatessa ajoneuvoja",
+    "listRoutes": "Virhe listatessa reittejä"
+  },
+  "equipment": "Kalusto",
+  "routes": "Reitit",
+  "namelessDriver": "Nimetön kuljettaja",
+  "noAllocatedDriver": "Ei määriteltyä kuljettajaa",
+  "noRoutesForToday": "Ei reittejä tälle päivälle",
+  "backToRoutes": "Takaisin reitteihin",
+  "tasks": "Tehtävät",
+  "noTasksForRoute": "Ei tehtäviä",
+  "load": "Lastaus",
+  "unload": "Purku"
+}

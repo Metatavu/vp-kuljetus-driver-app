@@ -1,0 +1,79 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - lib/**.freezed.dart
+    - lib/**.g.dart
+    - packages/**
+    - "**.gen.dart"
+  plugins:
+    - custom-lint
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at https://dart.dev/lints.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    - always_use_package_imports
+    - cancel_subscriptions
+    - close_sinks
+    - comment_references
+    - deprecated_member_use_from_same_package
+    - invalid_case_patterns
+    - literal_only_boolean_expressions
+    - no_self_assignments
+    - prefer_void_to_null
+    - test_types_in_equals
+    - throw_in_finally
+    - avoid_classes_with_only_static_members
+    - avoid_escaping_inner_quotes
+    - avoid_setters_without_getters
+    - avoid_void_async
+    - join_return_with_assignment
+    - leading_newlines_in_multiline_strings
+    - matching_super_parameters
+    - missing_whitespace_between_adjacent_strings
+    - no_literal_bool_comparisons
+    - one_member_abstracts
+    - prefer_double_quotes
+    - prefer_expression_function_bodies
+    - prefer_final_in_for_each
+    - prefer_final_locals
+    - prefer_final_parameters
+    - prefer_foreach
+    - prefer_int_literals
+    - prefer_null_aware_method_calls
+    - require_trailing_commas
+    - sized_box_shrink_expand
+    - sort_constructors_first
+    - sort_pub_dependencies
+    - sort_unnamed_constructors_first
+    - unawaited_futures
+    - unnecessary_await_in_return
+    - unnecessary_lambdas
+    - unnecessary_null_aware_operator_on_extension_on_nullable
+    - unnecessary_parenthesis
+    - unnecessary_raw_strings
+    - use_colored_box
+    - use_decorated_box
+    - use_enums
+    - use_is_even_rather_than_modulo
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options

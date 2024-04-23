@@ -1,5 +1,9 @@
 {
   "selectVehicle": "Valitse ajoneuvo",
+  "checkingUpdates": "Tarkistetaan päivityksiä...",
+  "updateAvailable": "Sovellukseen on saatavilla päivitys. Ole hyvä ja asenna päivitys painamalla alla olevaa painiketta.",
+  "installUpdate": "Asenna päivitys",
+  "installingUpdate": "Asennetaan päivitystä...",
   "loginInstructions": "Aseta digikortti piirturiin ja paina \"Kirjaudu\".",
   "login": "Kirjaudu",
   "errors": {

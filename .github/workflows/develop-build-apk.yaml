@@ -75,6 +75,7 @@ jobs:
           export KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}
           export KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
           export KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}
+          export UPDATES_URL=${{ secrets.UPDATES_URL }}
 
           echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
           echo storePassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties

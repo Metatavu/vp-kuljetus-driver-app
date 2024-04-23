@@ -67,6 +67,12 @@ jobs:
         with:
           flutter-version: "3.16.7"
           channel: "stable"
+        env: 
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
+          KEYCLOAK_REALM: ${{ secrets.KEYCLOAK_REALM }}
+          KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
+          KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}          
       - run: |
           echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
           echo storePassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties

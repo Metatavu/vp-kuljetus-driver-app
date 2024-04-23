@@ -67,6 +67,8 @@ dev_dependencies:
   openapi_generator: ^5.0.0
   riverpod_generator: ^2.3.11
   riverpod_lint: ^2.3.9
+  flutter_app_installer: ^1.0.0
+  package_info_plus: ^8.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -96,3 +98,5 @@ dart_define:
       description: Keycloak client ID
     - name: KEYCLOAK_CLIENT_SECRET
       description: Keycloak client secret
+    - name: UPDATES_URL
+      description: URL for app updates

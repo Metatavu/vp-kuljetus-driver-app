@@ -74,7 +74,7 @@ jobs:
           KEYCLOAK_CLIENT_ID: ${{ secrets.KEYCLOAK_CLIENT_ID }}
           KEYCLOAK_CLIENT_SECRET: ${{ secrets.KEYCLOAK_CLIENT_SECRET }}          
       - run: |
-          echo API_BASE_URL: $API_BASE_URL
+          echo API_BASE_URL: $API_BASE_URL vs ${{ secrets.API_BASE_URL }}
           echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
           echo storePassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties
           echo keyPassword=${{ secrets.SIGN_KEY_PASSWORD }} >> android/key.properties

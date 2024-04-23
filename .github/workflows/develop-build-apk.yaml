@@ -5,7 +5,7 @@ on:
       - develop
 jobs:
   bumpVersion:
-    runs-on: linux_x64_8_cpu_32_gb
+    runs-on: ubuntu-latest
     environment: develop
     outputs:
       new_tag: ${{ steps.get_version.outputs.new_tag }}
@@ -62,10 +62,6 @@ jobs:
           submodules: true
           fetch-depth: 0
           ref: ${{ needs.bumpVersion.outputs.commit_sha }}
-      - name: Setup Environment Variables
-        run: |
-          
-          npx infisical run --path=.
       - name: Build APK
         uses: subosito/flutter-action@v2
         with:

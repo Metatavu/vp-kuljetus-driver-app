@@ -1,0 +1,94 @@
+name: Release (develop)
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  bumpVersion:
+    runs-on: ubuntu-latest
+    environment: develop
+    outputs:
+      new_tag: ${{ steps.get_version.outputs.new_tag }}
+      commit_sha: ${{ steps.get_commit_sha.outputs.commit_sha }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Calculate new version
+        id: get_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          dry_run: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ""
+      - name: Update version in pubspec.yaml
+        run: |
+          sed -i 's/version: .*/version: ${{ steps.get_version.outputs.new_tag }}/g' pubspec.yaml
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add pubspec.yaml
+          git diff --quiet && git diff --staged --quiet || git commit -m "Updated version in pubspec.yaml"
+      - name: Push version changes to develop
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+      - name: Resolve commit SHA
+        id: get_commit_sha
+        run: echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
+      - name: Tag version
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          custom_tag: ${{ steps.get_version.outputs.new_tag }}
+          commit_sha: ${{ steps.get_commit_sha.outputs.commit_sha }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ""
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.get_version.outputs.new_tag }}
+          name: Release ${{ steps.get_version.outputs.new_tag }}
+          body: ${{ steps.get_version.outputs.changelog }}
+
+  buildAndroid:
+    runs-on: ubuntu-latest
+    environment: develop
+    needs: bumpVersion
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+          ref: ${{ needs.bumpVersion.outputs.commit_sha }}
+      - name: Setup Environment Variables
+        run: |
+          
+          npx infisical run --path=.
+      - name: Build APK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.0"
+          channel: "stable"
+      - run: |
+          echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 -o /tmp/app.keystore
+          echo storePassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties
+          echo keyPassword=${{ secrets.SIGN_KEY_PASSWORD }} >> android/key.properties
+          echo keyAlias=app >> android/key.properties
+          echo storeFile=/tmp/app.keystore >> android/key.properties
+          flutter pub run dart_define generate
+          flutter pub get
+          flutter pub run build_runner build --delete-conflicting-outputs
+          flutter build apk
+          mkdir -p update/android/${{ needs.bumpVersion.outputs.new_tag }}
+          mv build/app/outputs/apk/release/output-metadata.json update/android/output-metadata.json
+          mv build/app/outputs/apk/release/*.apk update/android/${{ needs.bumpVersion.outputs.new_tag }}/
+      - name: Upload APK
+        uses: shallwefootball/s3-upload-action@master
+        with:
+          aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_bucket: ${{ secrets.UPDATES_BUCKET }}
+          source_dir: update
+          destination_dir: "staging/"

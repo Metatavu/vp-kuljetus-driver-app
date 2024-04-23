@@ -5,7 +5,7 @@ on:
       - develop
 jobs:
   bumpVersion:
-    runs-on: ubuntu-latest
+    runs-on: linux_x64_8_cpu_32_gb
     environment: develop
     outputs:
       new_tag: ${{ steps.get_version.outputs.new_tag }}
@@ -69,7 +69,7 @@ jobs:
       - name: Build APK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.0"
+          flutter-version: "3.16.7"
           channel: "stable"
       - run: |
           echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 -o /tmp/app.keystore

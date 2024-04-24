@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - master
+  repository_dispatch:
+    types:
+      - release-app
+
 jobs:
   bumpVersion:
     runs-on: ubuntu-latest
@@ -16,6 +20,7 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
+          ref: 'master'
       - name: Calculate new version
         id: get_version
         uses: mathieudutour/github-tag-action@v6.1

@@ -67,7 +67,7 @@ jobs:
       - name: Build APK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.7"
+          flutter-version: "3.19.6"
           channel: "stable"
       - run: |
           export API_BASE_URL=${{ secrets.API_BASE_URL }}

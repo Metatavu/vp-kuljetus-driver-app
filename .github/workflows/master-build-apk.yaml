@@ -4,7 +4,7 @@ on:
     branches:
       - master
   schedule:
-  - cron: '37 * * * *'
+  - cron: '37,45 * * * *'
 
 jobs:
   bumpVersion:
@@ -34,23 +34,21 @@ jobs:
           CHANGES=$(git log master..origin/develop --oneline)
           if [[ -z "$CHANGES" ]]; then
             echo "No changes to merge."
-            echo "has_changes=no" >> $GITHUB_ENV
             echo "has_changes=no" >> $GITHUB_OUTPUT
           else
             git merge origin/develop
-            echo "has_changes=yes" >> $GITHUB_ENV
             echo "has_changes=yes" >> $GITHUB_OUTPUT
           fi
       - name: Calculate new version
         id: get_version
-        if: env.has_changes == 'yes'
+        if: steps.merge.outputs.has_changes == 'yes'
         uses: mathieudutour/github-tag-action@v6.1
         with:
           dry_run: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: ""
       - name: Update version in pubspec.yaml
-        if: env.has_changes == 'yes'
+        if: steps.merge.outputs.has_changes == 'yes'
         run: |
           sed -i 's/version: .*/version: ${{ steps.get_version.outputs.new_tag }}/g' pubspec.yaml
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -58,23 +56,23 @@ jobs:
           git add pubspec.yaml
           git diff --quiet && git diff --staged --quiet || git commit -m "Updated version in pubspec.yaml"
       - name: Push version changes to develop
-        if: env.has_changes == 'yes'
+        if: steps.merge.outputs.has_changes == 'yes'
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: develop
       - name: Push version changes to master
-        if: env.has_changes == 'yes'
+        if: steps.merge.outputs.has_changes == 'yes'
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
       - name: Resolve commit SHA
-        if: env.has_changes == 'yes'
+        if: steps.merge.outputs.has_changes == 'yes'
         id: get_commit_sha
         run: echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
       - name: Tag version
-        if: env.has_changes == 'yes'
+        if: steps.merge.outputs.has_changes == 'yes'
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
         with:
@@ -83,7 +81,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: ""
       - name: Create a GitHub release
-        if: env.has_changes == 'yes'
+        if: steps.merge.outputs.has_changes == 'yes'
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.get_version.outputs.new_tag }}
@@ -95,7 +93,7 @@ jobs:
     environment: master
     concurrency: master
     needs: bumpVersion
-    if: needs.bumpVersion.outputs.has_changes
+    if: needs.bumpVersion.outputs.has_changes == 'yes'
     steps:
       - uses: actions/checkout@v3
         with:

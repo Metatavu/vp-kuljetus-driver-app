@@ -64,6 +64,10 @@ jobs:
           submodules: true
           fetch-depth: 0
           ref: ${{ needs.bumpVersion.outputs.commit_sha }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Build APK
         uses: subosito/flutter-action@v2
         with:

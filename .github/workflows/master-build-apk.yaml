@@ -104,4 +104,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_bucket: ${{ secrets.UPDATES_BUCKET }}
           source_dir: update
-          destination_dir: "staging/"
+          destination_dir: "production/"

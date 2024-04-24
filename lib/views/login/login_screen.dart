@@ -81,7 +81,10 @@ class LoginScreen extends HookConsumerWidget {
       }
     }
 
-    checkUpdates();
+    useEffect(() {
+      checkUpdates();
+      return null;
+    }, [],);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

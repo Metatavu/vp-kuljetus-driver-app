@@ -81,13 +81,15 @@ jobs:
           export KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}
           export UPDATES_URL=${{ secrets.UPDATES_URL }}
 
-          java -version
           echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
           echo storePassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties
           echo keyPassword=${{ secrets.SIGN_KEY_PASSWORD }} >> android/key.properties
           echo keyAlias=app >> android/key.properties
           echo storeFile=/tmp/app.keystore >> android/key.properties
           flutter pub run dart_define generate
+
+          cat env.json|grep API_BASE_URL
+
           flutter pub get
           flutter pub run build_runner build --delete-conflicting-outputs
           flutter build apk

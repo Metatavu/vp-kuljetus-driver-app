@@ -42,9 +42,9 @@ Update variable definitions in `pubspec.yaml`. Detailed instructions in [here](h
 
 ## Creating Sign Keystore for Android
 
-Replace [STOREPASS] and [KEYPASS] with generated passwords
+Replace [STOREPASS] with generated password
 
-    keytool -genkey -v -keystore app.keystore -storepass [STOREPASS] -alias app -keypass [KEYPASS] -keyalg RSA -keysize 4096 -validity 10000
+    keytool -genkey -v -keystore app.keystore -storepass [STOREPASS] -alias app -keypass [STOREPASS] -keyalg RSA -keysize 4096 -validity 10000
 
 Encode keystore as base64 (so it can be stored as GitHub environment secret)
 

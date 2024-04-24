@@ -82,7 +82,7 @@ jobs:
           export UPDATES_URL=${{ secrets.UPDATES_URL }}
           echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
           echo storePassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties
-          echo keyPassword=${{ secrets.SIGN_KEY_PASSWORD }} >> android/key.properties
+          echo keyPassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties
           echo keyAlias=app >> android/key.properties
           echo storeFile=/tmp/app.keystore >> android/key.properties
           flutter pub run dart_define generate

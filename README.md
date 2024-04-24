@@ -48,4 +48,4 @@ Replace [STOREPASS] with generated password
 
 Encode keystore as base64 (so it can be stored as GitHub environment secret)
 
-   base64 -i app.keystore -o app.keystore.b64
+    base64 -i app.keystore -o app.keystore.b64

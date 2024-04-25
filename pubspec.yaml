@@ -100,3 +100,5 @@ dart_define:
       description: Keycloak client secret
     - name: UPDATES_URL
       description: URL for app updates
+    - name: UPDATES_SKIPPABLE
+      description: Whether updates can be skipped

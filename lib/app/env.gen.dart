@@ -19,6 +19,9 @@ class Env {
 
   /// URL for app updates
   static const updatesUrl = String.fromEnvironment('UPDATES_URL');
+
+  /// Whether updates can be skipped
+  static const updatesSkippable = bool.fromEnvironment('UPDATES_SKIPPABLE');
 }
 
     

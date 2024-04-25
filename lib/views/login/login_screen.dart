@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
+import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/trucks/trucks_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
@@ -63,6 +64,11 @@ class LoginScreen extends HookConsumerWidget {
       }
     }
 
+    /// Skips the update
+    void skipUpdate() {
+      updateAvailable.value = false;
+    }
+
     Future<void> initLogin(final PublicTruck selectedTruck) async {
       try {
         await authNotifier.login(selectedTruck.id!);
@@ -81,10 +87,13 @@ class LoginScreen extends HookConsumerWidget {
       }
     }
 
-    useEffect(() {
-      checkUpdates();
-      return null;
-    }, [],);
+    useEffect(
+      () {
+        checkUpdates();
+        return null;
+      },
+      [],
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -109,14 +118,44 @@ class LoginScreen extends HookConsumerWidget {
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             const SizedBox(height: 32),
-                            ElevatedButton(
-                              onPressed: !installingUpdate.value
-                                  ? installUpdate
-                                  : null,
-                              child: Text(l10n.t(installingUpdate.value
-                                  ? "installingUpdate"
-                                  : "installUpdate",),),
-                            ),
+                            Env.updatesSkippable
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: !installingUpdate.value
+                                            ? installUpdate
+                                            : null,
+                                        child: Text(
+                                          l10n.t(
+                                            installingUpdate.value
+                                                ? "installingUpdate"
+                                                : "installUpdate",
+                                          ),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: !installingUpdate.value
+                                          ? skipUpdate
+                                          : null,
+                                        child: Text(
+                                          l10n.t("skipUpdate"),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : ElevatedButton(
+                                    onPressed: !installingUpdate.value
+                                        ? installUpdate
+                                        : null,
+                                    child: Text(
+                                      l10n.t(
+                                        installingUpdate.value
+                                            ? "installingUpdate"
+                                            : "installUpdate",
+                                      ),
+                                    ),
+                                  ),
                           ],
                         )
                       : Column(

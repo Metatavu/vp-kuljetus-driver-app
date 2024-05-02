@@ -6,26 +6,26 @@ import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
 import "package:vp_kuljetus_driver_app/utils/provider_cache.dart";
 
-part "sites_providers.g.dart";
+part "freight_units_providers.g.dart";
 
 @riverpod
-Future<Site> findSite(
-  final FindSiteRef ref, {
-  required final String siteId,
+Future<List<FreightUnit>> listFreightUnits(
+  final ListFreightUnitsRef ref, {
+  required final String freightId,
 }) async {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
 
   try {
-    final response = await tmsApi.getSitesApi().findSite(
+    final response = await tmsApi.getFreightUnitsApi().listFreightUnits(
           cancelToken: cancelToken,
-          siteId: siteId,
+          freightId: freightId,
         );
 
     ref.cacheFor(const Duration(minutes: 5));
-    return response.data!;
+    return response.data!.asList();
   } on DioException catch (error) {
-    log("Failed to find site: $error");
+    log("Failed to list freight units: $error");
     log(error.requestOptions.toString());
     rethrow;
   }

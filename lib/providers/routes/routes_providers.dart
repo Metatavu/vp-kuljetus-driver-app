@@ -41,7 +41,7 @@ Future<List<Route>> listRoutes(
 }
 
 @riverpod
-Future<Route?> findRoute(
+Future<Route> findRoute(
   final FindRouteRef ref, {
   required final String routeId,
 }) async {
@@ -60,6 +60,6 @@ Future<Route?> findRoute(
   } on DioException catch (error) {
     log("Failed to find route: $error");
     log(error.requestOptions.toString());
-    return null;
+    rethrow;
   }
 }

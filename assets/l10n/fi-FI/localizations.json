@@ -4,7 +4,8 @@
   "login": "Kirjaudu",
   "errors": {
     "listPublicTrucks": "Virhe listatessa ajoneuvoja",
-    "listRoutes": "Virhe listatessa reittejä"
+    "listRoutes": "Virhe listatessa reittejä",
+    "findTask": "Virhe haettaessa tehtävää"
   },
   "equipment": "Kalusto",
   "routes": "Reitit",
@@ -15,5 +16,13 @@
   "tasks": "Tehtävät",
   "noTasksForRoute": "Ei tehtäviä",
   "load": "Lastaus",
-  "unload": "Purku"
+  "unload": "Purku",
+  "backToTaskList": "Takaisin tehtävälistaan",
+  "start": "Aloita",
+  "end": "Lopeta",
+  "waybill": "Rahtikirja",
+  "sender": "Lähettäjä",
+  "recipient": "Vastaanottaja",
+  "pointOfDeparture": "Lähtöpaikka",
+  "destination": "Määräpaikka"
 }

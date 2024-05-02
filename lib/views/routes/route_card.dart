@@ -17,7 +17,7 @@ class RouteCard extends ConsumerWidget {
     final l10n = L10n.of(context);
 
     final driver = route.driverId != null
-        ? ref.watch(FindDriverProvider(driverId: route.driverId!))
+        ? ref.watch(findDriverProvider(driverId: route.driverId!))
         : null;
 
     return InkWell(

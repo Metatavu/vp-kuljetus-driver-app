@@ -43,10 +43,10 @@ Future<List<Task>> listTasks(
 }
 
 @riverpod
-Future<Task?> findTask(
-  final FindTaskRef ref, {
-  required final String taskId,
-}) async {
+Future<Task> findTask(
+  final FindTaskRef ref,
+  final String taskId,
+) async {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
 
@@ -62,17 +62,16 @@ Future<Task?> findTask(
   } on DioException catch (error) {
     log("Failed to find task: $error");
     log(error.requestOptions.toString());
-    return null;
+    rethrow;
   }
 }
 
 @riverpod
 class UpdateTask extends _$UpdateTask {
   @override
-  Future<Task?> build(final String taskId) async =>
-      ref.watch(FindTaskProvider(taskId: taskId)).value;
+  build() async => "";
 
-  Future<Task?> mutate(final Task task) async {
+  Future<Task> mutate(final Task task) async {
     try {
       final response = await tmsApi.getTasksApi().updateTask(
             taskId: task.id!,

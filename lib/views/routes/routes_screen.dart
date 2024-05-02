@@ -18,7 +18,7 @@ class RoutesScreen extends HookConsumerWidget {
     if (truckId == null) throw Exception("No truck selected");
 
     final routes = ref.watch(
-      ListRoutesProvider(
+      listRoutesProvider(
         truckId: truckId,
         departureAfter: startOfToday(),
         departureBefore: endOfToday(),

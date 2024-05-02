@@ -6,6 +6,7 @@ ThemeData getTheme(final BuildContext context) {
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(0xFF00414F),
       secondary: const Color(0xFF547476),
+      error: const Color(0xFFEE3912),
     ),
     useMaterial3: true,
   );
@@ -42,6 +43,18 @@ ThemeData getTheme(final BuildContext context) {
         ),
         backgroundColor: const MaterialStatePropertyAll(Colors.white),
         surfaceTintColor: const MaterialStatePropertyAll(Colors.transparent),
+        textStyle: MaterialStatePropertyAll(
+          themeWithFonts.textTheme.titleMedium,
+        ),
+      ),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        padding: const MaterialStatePropertyAll(
+          EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        ),
+        shape: const MaterialStatePropertyAll(StadiumBorder()),
+        surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
         textStyle: MaterialStatePropertyAll(
           themeWithFonts.textTheme.titleMedium,
         ),

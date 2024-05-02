@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sites_providers.dart';
+part of 'freights_providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$findSiteHash() => r'f632822969d7a2794a9b4e4b391044e433c19b43';
+String _$findFreightHash() => r'6d26dafd7ff2d0348ea764e5d09f131c7ecf0bf4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,30 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [findSite].
-@ProviderFor(findSite)
-const findSiteProvider = FindSiteFamily();
+/// See also [findFreight].
+@ProviderFor(findFreight)
+const findFreightProvider = FindFreightFamily();
 
-/// See also [findSite].
-class FindSiteFamily extends Family<AsyncValue<Site>> {
-  /// See also [findSite].
-  const FindSiteFamily();
+/// See also [findFreight].
+class FindFreightFamily extends Family<AsyncValue<Freight>> {
+  /// See also [findFreight].
+  const FindFreightFamily();
 
-  /// See also [findSite].
-  FindSiteProvider call({
-    required String siteId,
+  /// See also [findFreight].
+  FindFreightProvider call({
+    required String freightId,
   }) {
-    return FindSiteProvider(
-      siteId: siteId,
+    return FindFreightProvider(
+      freightId: freightId,
     );
   }
 
   @override
-  FindSiteProvider getProviderOverride(
-    covariant FindSiteProvider provider,
+  FindFreightProvider getProviderOverride(
+    covariant FindFreightProvider provider,
   ) {
     return call(
-      siteId: provider.siteId,
+      freightId: provider.freightId,
     );
   }
 
@@ -68,90 +68,91 @@ class FindSiteFamily extends Family<AsyncValue<Site>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'findSiteProvider';
+  String? get name => r'findFreightProvider';
 }
 
-/// See also [findSite].
-class FindSiteProvider extends AutoDisposeFutureProvider<Site> {
-  /// See also [findSite].
-  FindSiteProvider({
-    required String siteId,
+/// See also [findFreight].
+class FindFreightProvider extends AutoDisposeFutureProvider<Freight> {
+  /// See also [findFreight].
+  FindFreightProvider({
+    required String freightId,
   }) : this._internal(
-          (ref) => findSite(
-            ref as FindSiteRef,
-            siteId: siteId,
+          (ref) => findFreight(
+            ref as FindFreightRef,
+            freightId: freightId,
           ),
-          from: findSiteProvider,
-          name: r'findSiteProvider',
+          from: findFreightProvider,
+          name: r'findFreightProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$findSiteHash,
-          dependencies: FindSiteFamily._dependencies,
-          allTransitiveDependencies: FindSiteFamily._allTransitiveDependencies,
-          siteId: siteId,
+                  : _$findFreightHash,
+          dependencies: FindFreightFamily._dependencies,
+          allTransitiveDependencies:
+              FindFreightFamily._allTransitiveDependencies,
+          freightId: freightId,
         );
 
-  FindSiteProvider._internal(
+  FindFreightProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.siteId,
+    required this.freightId,
   }) : super.internal();
 
-  final String siteId;
+  final String freightId;
 
   @override
   Override overrideWith(
-    FutureOr<Site> Function(FindSiteRef provider) create,
+    FutureOr<Freight> Function(FindFreightRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: FindSiteProvider._internal(
-        (ref) => create(ref as FindSiteRef),
+      override: FindFreightProvider._internal(
+        (ref) => create(ref as FindFreightRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        siteId: siteId,
+        freightId: freightId,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<Site> createElement() {
-    return _FindSiteProviderElement(this);
+  AutoDisposeFutureProviderElement<Freight> createElement() {
+    return _FindFreightProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FindSiteProvider && other.siteId == siteId;
+    return other is FindFreightProvider && other.freightId == freightId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, siteId.hashCode);
+    hash = _SystemHash.combine(hash, freightId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin FindSiteRef on AutoDisposeFutureProviderRef<Site> {
-  /// The parameter `siteId` of this provider.
-  String get siteId;
+mixin FindFreightRef on AutoDisposeFutureProviderRef<Freight> {
+  /// The parameter `freightId` of this provider.
+  String get freightId;
 }
 
-class _FindSiteProviderElement extends AutoDisposeFutureProviderElement<Site>
-    with FindSiteRef {
-  _FindSiteProviderElement(super.provider);
+class _FindFreightProviderElement
+    extends AutoDisposeFutureProviderElement<Freight> with FindFreightRef {
+  _FindFreightProviderElement(super.provider);
 
   @override
-  String get siteId => (origin as FindSiteProvider).siteId;
+  String get freightId => (origin as FindFreightProvider).freightId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

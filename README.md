@@ -39,3 +39,13 @@ Proceed with the following steps to get started:
 #### Modifying environment variables
 
 Update variable definitions in `pubspec.yaml`. Detailed instructions in [here](https://github.com/Mankeli-Software/dart_define?tab=readme-ov-file#quick-start-);
+
+## Creating Sign Keystore for Android
+
+Replace [STOREPASS] with generated password
+
+    keytool -genkey -v -keystore app.keystore -storepass [STOREPASS] -alias app -keypass [STOREPASS] -keyalg RSA -keysize 4096 -validity 10000
+
+Encode keystore as base64 (so it can be stored as GitHub environment secret)
+
+    base64 -i app.keystore -o app.keystore.b64

@@ -16,6 +16,12 @@ class Env {
 
   /// Keycloak client secret
   static const keycloakClientSecret = String.fromEnvironment('KEYCLOAK_CLIENT_SECRET');
+
+  /// URL for app updates
+  static const updatesUrl = String.fromEnvironment('UPDATES_URL');
+
+  /// Whether updates can be skipped
+  static const updatesSkippable = bool.fromEnvironment('UPDATES_SKIPPABLE');
 }
 
     

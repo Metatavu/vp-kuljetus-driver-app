@@ -7,7 +7,7 @@ part of 'route_task_screen_providers.dart';
 // **************************************************************************
 
 String _$fetchRouteTaskScreenDataHash() =>
-    r'f20964ab409cd5ef3c3fffea80e41b706d83e4b9';
+    r'64769b91c82917193ee507ef2ebdb2a1e9392edb';
 
 /// Copied from Dart SDK
 class _SystemHash {

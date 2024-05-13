@@ -7,3 +7,9 @@ String getTaskGroupKey(final Task task) =>
   final parts = taskGroupKey.split(":");
   return (parts[0], parts[1], TaskType.valueOf(parts[2]), int.parse(parts[3]));
 }
+
+getTaskTypeLocaleKey(final TaskType taskType) => switch (taskType) {
+      TaskType.LOAD => "load",
+      TaskType.UNLOAD => "unload",
+      _ => throw Exception("Unknown task type: $taskType")
+    };

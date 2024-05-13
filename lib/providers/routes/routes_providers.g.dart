@@ -237,14 +237,14 @@ class _ListRoutesProviderElement
   int? get max => (origin as ListRoutesProvider).max;
 }
 
-String _$findRouteHash() => r'6fda19fe90615cbad3cc27981780c96a3977642b';
+String _$findRouteHash() => r'3a36712b3d24b3951442fc5e48ad5d51f14e65cd';
 
 /// See also [findRoute].
 @ProviderFor(findRoute)
 const findRouteProvider = FindRouteFamily();
 
 /// See also [findRoute].
-class FindRouteFamily extends Family<AsyncValue<Route?>> {
+class FindRouteFamily extends Family<AsyncValue<Route>> {
   /// See also [findRoute].
   const FindRouteFamily();
 
@@ -282,7 +282,7 @@ class FindRouteFamily extends Family<AsyncValue<Route?>> {
 }
 
 /// See also [findRoute].
-class FindRouteProvider extends AutoDisposeFutureProvider<Route?> {
+class FindRouteProvider extends AutoDisposeFutureProvider<Route> {
   /// See also [findRoute].
   FindRouteProvider({
     required String routeId,
@@ -316,7 +316,7 @@ class FindRouteProvider extends AutoDisposeFutureProvider<Route?> {
 
   @override
   Override overrideWith(
-    FutureOr<Route?> Function(FindRouteRef provider) create,
+    FutureOr<Route> Function(FindRouteRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -333,7 +333,7 @@ class FindRouteProvider extends AutoDisposeFutureProvider<Route?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<Route?> createElement() {
+  AutoDisposeFutureProviderElement<Route> createElement() {
     return _FindRouteProviderElement(this);
   }
 
@@ -351,12 +351,12 @@ class FindRouteProvider extends AutoDisposeFutureProvider<Route?> {
   }
 }
 
-mixin FindRouteRef on AutoDisposeFutureProviderRef<Route?> {
+mixin FindRouteRef on AutoDisposeFutureProviderRef<Route> {
   /// The parameter `routeId` of this provider.
   String get routeId;
 }
 
-class _FindRouteProviderElement extends AutoDisposeFutureProviderElement<Route?>
+class _FindRouteProviderElement extends AutoDisposeFutureProviderElement<Route>
     with FindRouteRef {
   _FindRouteProviderElement(super.provider);
 

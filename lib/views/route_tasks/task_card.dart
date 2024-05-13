@@ -1,10 +1,11 @@
 import "package:flutter/material.dart" hide Route;
+import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:tms_api/tms_api.dart" hide Error;
-import "package:url_launcher/url_launcher.dart";
 import "package:vp_kuljetus_driver_app/providers/sites/sites_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
+import "package:vp_kuljetus_driver_app/utils/site.dart";
 
 class TaskCard extends ConsumerWidget {
   const TaskCard({super.key, required this.tasks});
@@ -15,30 +16,14 @@ class TaskCard extends ConsumerWidget {
   Widget build(final context, final ref) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+    final currentPath = GoRouterState.of(context).matchedLocation;
 
     if (tasks.isEmpty) throw Exception("No tasks provided for TaskCard");
 
     final task = tasks.first;
 
     final customerSite =
-        ref.watch(FindSiteProvider(siteId: task.customerSiteId));
-
-    getSiteAddressText(final Site site) =>
-        "${site.address}, ${site.postalCode} ${site.locality}";
-
-    Future<void> openMapToSiteAddress(final Site site) async {
-      final mapUrl = Uri(
-        scheme: "https",
-        host: "www.google.com",
-        path: "/maps/search/",
-        queryParameters: {
-          "api": "1",
-          "query": getSiteAddressText(site),
-        },
-      );
-
-      if (await canLaunchUrl(mapUrl)) await launchUrl(mapUrl);
-    }
+        ref.watch(findSiteProvider(siteId: task.customerSiteId));
 
     return Card(
       elevation: 2,
@@ -65,7 +50,7 @@ class TaskCard extends ConsumerWidget {
               enabled: customerSite.isLoading || customerSite.isRefreshing,
               child: Text(
                 customerSite.maybeWhen(
-                  data: (final value) => value != null ? value.name : "",
+                  data: (final value) => value.name,
                   orElse: () => "",
                 ),
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -77,45 +62,53 @@ class TaskCard extends ConsumerWidget {
               Icons.chevron_right,
               size: 32,
             ),
+            onTap: () {
+              final taskIds = tasks.map((final task) => task.id!);
+
+              final uri = Uri(
+                path: "$currentPath/task-details",
+                queryParameters: {"taskIds": taskIds},
+              );
+
+              context.go(uri.toString());
+            },
           ),
           const Divider(indent: 16, endIndent: 16),
           Skeletonizer(
             enabled: customerSite.isLoading || customerSite.isRefreshing,
             child: customerSite.maybeWhen(
               orElse: () => const SizedBox(height: 48),
-              data: (final data) => data != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              data: (final data) => Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (data.additionalInfo != null) ...[
+                      Text(data.additionalInfo!),
+                      const SizedBox(height: 8),
+                    ],
+                    GestureDetector(
+                      onTap: () => openMapToSiteAddress(data),
+                      child: Row(
                         children: [
-                          if (data.additionalInfo != null) ...[
-                            Text(data.additionalInfo!),
-                            const SizedBox(height: 8),
-                          ],
-                          GestureDetector(
-                            onTap: () => openMapToSiteAddress(data),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: theme.colorScheme.primary,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  getSiteAddressText(data),
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.primary,
-                                  ),
-                                ),
-                              ],
+                          Icon(
+                            Icons.location_pin,
+                            color: theme.colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            getSiteAddressText(data),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.primary,
                             ),
                           ),
                         ],
                       ),
-                    )
-                  : const SizedBox(),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

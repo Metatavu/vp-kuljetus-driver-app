@@ -90,7 +90,7 @@ GoRouter router(final RouterRef ref) {
                     routes: [
                       GoRoute(
                         name: "taskDetails",
-                        path: ":taskId",
+                        path: "task-details",
                         pageBuilder: (final context, final state) =>
                             const NoTransitionPage(child: TaskDetailsScreen()),
                       ),

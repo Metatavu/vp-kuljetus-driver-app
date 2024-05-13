@@ -4,8 +4,7 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:tms_api/tms_api.dart";
-import "package:vp_kuljetus_driver_app/providers/routes/routes_providers.dart";
-import "package:vp_kuljetus_driver_app/providers/tasks/tasks_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/views/route_task_screen/route_task_screen_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/utils/task.dart";
 import "package:vp_kuljetus_driver_app/views/route_tasks/task_card.dart";
@@ -19,16 +18,10 @@ class RouteTasksScreen extends ConsumerWidget {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
     final routerState = GoRouterState.of(context);
+    final routeId = routerState.pathParameters["routeId"];
+    if (routeId == null) throw ArgumentError("routeId is required");
 
-    final route = ref.watch(
-      FindRouteProvider(
-        routeId: routerState.pathParameters["routeId"]!,
-      ),
-    );
-
-    final AsyncValue<List<Task>> routeTasks = route.hasValue
-        ? ref.watch(ListTasksProvider(routeId: route.value!.id!))
-        : const AsyncLoading<List<Task>>();
+    final data = ref.watch(fetchRouteTaskScreenDataProvider(routeId));
 
     Widget renderTasks(final List<Task> tasks) {
       if (tasks.isEmpty) {
@@ -68,9 +61,9 @@ class RouteTasksScreen extends ConsumerWidget {
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 Skeletonizer(
-                  enabled: route.isLoading || route.isRefreshing,
+                  enabled: data.isLoading || data.isRefreshing,
                   child: Text(
-                    route.value?.name ?? "",
+                    data.value?.route.name ?? "",
                     style: theme.textTheme.titleSmall
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
@@ -82,8 +75,8 @@ class RouteTasksScreen extends ConsumerWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(top: 16),
-            child: routeTasks.when(
-              data: renderTasks,
+            child: data.when(
+              data: (final data) => renderTasks(data.tasks),
               loading: () => Skeletonizer(
                 child: ListView.separated(
                   padding: const EdgeInsets.all(8),

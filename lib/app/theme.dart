@@ -20,6 +20,18 @@ ThemeData getTheme(final BuildContext context) {
       backgroundColor: baseTheme.primaryColor,
       foregroundColor: Colors.white,
     ),
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+    cardTheme: CardTheme(
+      color: Colors.white,
+      surfaceTintColor: Colors.transparent,
+      elevation: 4,
+      shadowColor: Colors.black54,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         padding: const MaterialStatePropertyAll(
@@ -57,6 +69,15 @@ ThemeData getTheme(final BuildContext context) {
         surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
         textStyle: MaterialStatePropertyAll(
           themeWithFonts.textTheme.titleMedium,
+        ),
+      ),
+    ),
+    textButtonTheme: const TextButtonThemeData(
+      style: ButtonStyle(
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
         ),
       ),
     ),

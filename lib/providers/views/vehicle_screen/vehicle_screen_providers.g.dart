@@ -1,28 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'trucks_providers.dart';
+part of 'vehicle_screen_providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listPublicTrucksHash() => r'053c1df08754d2aa41511ea0a676a08f339fe5c7';
-
-/// See also [listPublicTrucks].
-@ProviderFor(listPublicTrucks)
-final listPublicTrucksProvider =
-    AutoDisposeFutureProvider<List<PublicTruck>>.internal(
-  listPublicTrucks,
-  name: r'listPublicTrucksProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$listPublicTrucksHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef ListPublicTrucksRef = AutoDisposeFutureProviderRef<List<PublicTruck>>;
-String _$findTruckHash() => r'110eaa1fe4efa5d3c1d1524d56c13f6668fd130b';
+String _$fetchVehicleScreenDataHash() =>
+    r'89164c3efd24ac3a3147f0a41aca834b8778770d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -45,27 +30,28 @@ class _SystemHash {
   }
 }
 
-/// See also [findTruck].
-@ProviderFor(findTruck)
-const findTruckProvider = FindTruckFamily();
+/// See also [fetchVehicleScreenData].
+@ProviderFor(fetchVehicleScreenData)
+const fetchVehicleScreenDataProvider = FetchVehicleScreenDataFamily();
 
-/// See also [findTruck].
-class FindTruckFamily extends Family<AsyncValue<Truck>> {
-  /// See also [findTruck].
-  const FindTruckFamily();
+/// See also [fetchVehicleScreenData].
+class FetchVehicleScreenDataFamily
+    extends Family<AsyncValue<VehicleScreenData>> {
+  /// See also [fetchVehicleScreenData].
+  const FetchVehicleScreenDataFamily();
 
-  /// See also [findTruck].
-  FindTruckProvider call(
+  /// See also [fetchVehicleScreenData].
+  FetchVehicleScreenDataProvider call(
     String truckId,
   ) {
-    return FindTruckProvider(
+    return FetchVehicleScreenDataProvider(
       truckId,
     );
   }
 
   @override
-  FindTruckProvider getProviderOverride(
-    covariant FindTruckProvider provider,
+  FetchVehicleScreenDataProvider getProviderOverride(
+    covariant FetchVehicleScreenDataProvider provider,
   ) {
     return call(
       provider.truckId,
@@ -84,31 +70,33 @@ class FindTruckFamily extends Family<AsyncValue<Truck>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'findTruckProvider';
+  String? get name => r'fetchVehicleScreenDataProvider';
 }
 
-/// See also [findTruck].
-class FindTruckProvider extends AutoDisposeFutureProvider<Truck> {
-  /// See also [findTruck].
-  FindTruckProvider(
+/// See also [fetchVehicleScreenData].
+class FetchVehicleScreenDataProvider
+    extends AutoDisposeFutureProvider<VehicleScreenData> {
+  /// See also [fetchVehicleScreenData].
+  FetchVehicleScreenDataProvider(
     String truckId,
   ) : this._internal(
-          (ref) => findTruck(
-            ref as FindTruckRef,
+          (ref) => fetchVehicleScreenData(
+            ref as FetchVehicleScreenDataRef,
             truckId,
           ),
-          from: findTruckProvider,
-          name: r'findTruckProvider',
+          from: fetchVehicleScreenDataProvider,
+          name: r'fetchVehicleScreenDataProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$findTruckHash,
-          dependencies: FindTruckFamily._dependencies,
-          allTransitiveDependencies: FindTruckFamily._allTransitiveDependencies,
+                  : _$fetchVehicleScreenDataHash,
+          dependencies: FetchVehicleScreenDataFamily._dependencies,
+          allTransitiveDependencies:
+              FetchVehicleScreenDataFamily._allTransitiveDependencies,
           truckId: truckId,
         );
 
-  FindTruckProvider._internal(
+  FetchVehicleScreenDataProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -122,12 +110,13 @@ class FindTruckProvider extends AutoDisposeFutureProvider<Truck> {
 
   @override
   Override overrideWith(
-    FutureOr<Truck> Function(FindTruckRef provider) create,
+    FutureOr<VehicleScreenData> Function(FetchVehicleScreenDataRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: FindTruckProvider._internal(
-        (ref) => create(ref as FindTruckRef),
+      override: FetchVehicleScreenDataProvider._internal(
+        (ref) => create(ref as FetchVehicleScreenDataRef),
         from: from,
         name: null,
         dependencies: null,
@@ -139,13 +128,13 @@ class FindTruckProvider extends AutoDisposeFutureProvider<Truck> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<Truck> createElement() {
-    return _FindTruckProviderElement(this);
+  AutoDisposeFutureProviderElement<VehicleScreenData> createElement() {
+    return _FetchVehicleScreenDataProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FindTruckProvider && other.truckId == truckId;
+    return other is FetchVehicleScreenDataProvider && other.truckId == truckId;
   }
 
   @override
@@ -157,17 +146,19 @@ class FindTruckProvider extends AutoDisposeFutureProvider<Truck> {
   }
 }
 
-mixin FindTruckRef on AutoDisposeFutureProviderRef<Truck> {
+mixin FetchVehicleScreenDataRef
+    on AutoDisposeFutureProviderRef<VehicleScreenData> {
   /// The parameter `truckId` of this provider.
   String get truckId;
 }
 
-class _FindTruckProviderElement extends AutoDisposeFutureProviderElement<Truck>
-    with FindTruckRef {
-  _FindTruckProviderElement(super.provider);
+class _FetchVehicleScreenDataProviderElement
+    extends AutoDisposeFutureProviderElement<VehicleScreenData>
+    with FetchVehicleScreenDataRef {
+  _FetchVehicleScreenDataProviderElement(super.provider);
 
   @override
-  String get truckId => (origin as FindTruckProvider).truckId;
+  String get truckId => (origin as FetchVehicleScreenDataProvider).truckId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

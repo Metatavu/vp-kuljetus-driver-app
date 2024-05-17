@@ -6,40 +6,48 @@ import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
 import "package:vp_kuljetus_driver_app/utils/provider_cache.dart";
 
-part "trucks_providers.g.dart";
+part "towables_providers.g.dart";
 
 @riverpod
-Future<List<PublicTruck>> listPublicTrucks(
-  final ListPublicTrucksRef ref,
-) async {
+Future<List<Towable>> listTowables(
+  final ListTowablesRef ref, {
+  final String? plateNumber,
+  final bool? archived,
+  final int? first,
+  final int? max,
+}) async {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
 
   try {
-    final response = await tmsApi
-        .getPublicTrucksApi()
-        .listPublicTrucks(cancelToken: cancelToken);
+    final response = await tmsApi.getTowablesApi().listTowables(
+          cancelToken: cancelToken,
+          plateNumber: plateNumber,
+          archived: archived,
+          first: first,
+          max: max,
+        );
 
     return response.data!.asList();
   } on DioException catch (error) {
-    log("Failed to list public trucks: $error");
+    log("Failed to list towables: $error");
     log(error.requestOptions.toString());
     return [];
   }
 }
 
 @riverpod
-Future<Truck> findTruck(
-  final FindTruckRef ref,
-  final String truckId,
+Future<Towable> findTowable(
+  final FindTowableRef ref,
+  final String towableId,
 ) async {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
 
   try {
-    final response = await tmsApi.getTrucksApi().findTruck(
+    final response = await tmsApi.getTowablesApi().findTowable(
           cancelToken: cancelToken,
-          truckId: truckId,
+          towableId: towableId,
         );
 
     ref.cacheFor(const Duration(minutes: 5));

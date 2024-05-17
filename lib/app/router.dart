@@ -74,7 +74,7 @@ GoRouter router(final RouterRef ref) {
                 name: "vehicle",
                 path: "/vehicle",
                 pageBuilder: (final context, final state) =>
-                    const NoTransitionPage(child: VehiclePage()),
+                    const NoTransitionPage(child: VehicleScreen()),
               ),
               GoRoute(
                 name: "routes",

@@ -74,6 +74,7 @@ Class | Method | HTTP request | Description
 [*PublicTrucksApi*](doc/PublicTrucksApi.md) | [**listPublicTrucks**](doc/PublicTrucksApi.md#listpublictrucks) | **GET** /vehicle-management/v1/publicTrucks | List PublicTrucks.
 [*RoutesApi*](doc/RoutesApi.md) | [**findRoute**](doc/RoutesApi.md#findroute) | **GET** /work-planning/v1/routes/{routeId} | Find a route.
 [*RoutesApi*](doc/RoutesApi.md) | [**listRoutes**](doc/RoutesApi.md#listroutes) | **GET** /work-planning/v1/routes | List Routes.
+[*RoutesApi*](doc/RoutesApi.md) | [**updateRoute**](doc/RoutesApi.md#updateroute) | **PUT** /work-planning/v1/routes/{routeId} | Updates routes
 [*SitesApi*](doc/SitesApi.md) | [**findSite**](doc/SitesApi.md#findsite) | **GET** /delivery-info/v1/sites/{siteId} | Find a site.
 [*SitesApi*](doc/SitesApi.md) | [**listSites**](doc/SitesApi.md#listsites) | **GET** /delivery-info/v1/sites | List Sites.
 [*TasksApi*](doc/TasksApi.md) | [**findTask**](doc/TasksApi.md#findtask) | **GET** /delivery-info/v1/tasks/{taskId} | Find a task.

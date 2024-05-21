@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        enabled: true
+        options:
+          format: false
+        generate_for:
+          - lib/models/**/*.dart
+      riverpod_generator:
+        enabled: true
+        generate_for:
+          - lib/providers/**/*.dart
+          - lib/app/router.dart
+      openapi_generator|openapi_generator_annotations:
+        enabled: true
+        generate_for:
+          - packages/tms_api/**/*.dart

@@ -39,9 +39,6 @@ class PublicTruckSelect extends StatelessWidget {
     return Stack(
       children: [
         DropdownMenu(
-          enableSearch: true,
-          enableFilter: true,
-          requestFocusOnTap: true,
           dropdownMenuEntries:
               publicTrucks.map(getPublicTruckDropdownEntry).toList(),
           initialSelection: initialValue?.vin,

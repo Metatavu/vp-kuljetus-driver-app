@@ -359,7 +359,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_app_installer:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_app_installer
       sha256: b71f7c3f6c5712b6f9bdcde798bbb8a0c4047cab47c4364f7252de8c95d67358
@@ -926,7 +926,7 @@ packages:
     source: hosted
     version: "2.1.0"
   package_info_plus:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: package_info_plus
       sha256: b93d8b4d624b4ea19b0a5a208b2d6eff06004bc3ce74c06040b120eeadd00ce0
@@ -950,7 +950,7 @@ packages:
     source: hosted
     version: "1.9.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: c9e7d3a4cd1410877472158bee69963a4579f78b68c65a2b7d40d1a7a88bb161
@@ -1322,7 +1322,7 @@ packages:
     source: path
     version: "1.0.0"
   typed_data:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: typed_data
       sha256: facc8d6582f16042dd49f2463ff1bd6e2c9ef9f3d5da3d9b087e244a7b564b3c

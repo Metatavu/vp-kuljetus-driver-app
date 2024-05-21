@@ -32,9 +32,19 @@ class LoginScreen extends HookConsumerWidget {
       () {
         final lastSelectedTruckId =
             store.getString(lastSelectedTruckIdStoreKey);
+
         selectedPublicTruck.value = publicTrucks.value?.firstWhereOrNull(
           (final truck) => truck.id == lastSelectedTruckId,
         );
+
+        if (lastSelectedTruckId == null &&
+            publicTrucks.valueOrNull?.firstOrNull?.id != null) {
+          store.setString(
+            lastSelectedTruckIdStoreKey,
+            publicTrucks.requireValue.first.id!,
+          );
+        }
+
         return null;
       },
       [publicTrucks.hasValue],
@@ -120,7 +130,8 @@ class LoginScreen extends HookConsumerWidget {
                             const SizedBox(height: 32),
                             Env.updatesSkippable
                                 ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       ElevatedButton(
                                         onPressed: !installingUpdate.value
@@ -136,8 +147,8 @@ class LoginScreen extends HookConsumerWidget {
                                       ),
                                       ElevatedButton(
                                         onPressed: !installingUpdate.value
-                                          ? skipUpdate
-                                          : null,
+                                            ? skipUpdate
+                                            : null,
                                         child: Text(
                                           l10n.t("skipUpdate"),
                                         ),

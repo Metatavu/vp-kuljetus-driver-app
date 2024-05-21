@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
-import "package:vp_kuljetus_driver_app/utils/task.dart";
+import "package:vp_kuljetus_driver_app/utils/l10n.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/action_button.dart";
 
 class TaskTitleArea extends StatelessWidget {

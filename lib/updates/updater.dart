@@ -12,12 +12,11 @@ import "package:vp_kuljetus_driver_app/updates/models/output_metadata.dart";
 
 /// App updater
 class Updater {
-
   String? currentVersion;
   String? serverVersion;
 
   /// Checks if update is available
-  /// 
+  ///
   /// Returns true if update is available, false otherwise
   Future<bool> isUpdateAvailable() async {
     final String currentVersion = await _getCurrentVersion();
@@ -42,7 +41,9 @@ class Updater {
 
       await _updateAndroidApp(version);
     } else {
-      log("Attempted to invoke Updater::updateApp unsupported platform.",);
+      log(
+        "Attempted to invoke Updater::updateApp unsupported platform.",
+      );
     }
   }
 
@@ -72,16 +73,18 @@ class Updater {
     } catch (exception) {
       log("Couldn't get version from server: $exception");
     }
-    
+
     return serverVersion;
   }
 
   /// Gets latest Android version from the server
   Future<String?> _getAndroidServerVersion() async {
-    final Int8Buffer fileContent = await _doRequest("/android/output-metadata.json");
+    final Int8Buffer fileContent =
+        await _doRequest("/android/output-metadata.json");
     final OutputMetadata outputMetadata =
         OutputMetadata.fromJson(jsonDecode(utf8.decode(fileContent)));
-    final String? foundVersion = outputMetadata.elements.firstOrNull?.versionName;
+    final String? foundVersion =
+        outputMetadata.elements.firstOrNull?.versionName;
 
     return foundVersion;
   }
@@ -89,8 +92,10 @@ class Updater {
   /// Updates the Android app to [version]
   Future<void> _updateAndroidApp(final String version) async {
     log("Downloading new version...");
-    final Int8Buffer fileContent = await _doRequest("/android/$version/app-release.apk");
-    final String? storageDir = (await getExternalStorageDirectory())?.absolute.path;
+    final Int8Buffer fileContent =
+        await _doRequest("/android/$version/app-release.apk");
+    final String? storageDir =
+        (await getExternalStorageDirectory())?.absolute.path;
     final File apkFile = File("$storageDir/fi.metatavu.noheva_visitor_ui.apk");
 
     log("Creating new .apk file...");
@@ -128,10 +133,11 @@ class Updater {
   Future<Int8Buffer> _readResponseToBytes(final HttpClientResponse response) {
     final completer = Completer<Int8Buffer>();
     final byteBuffer = Int8Buffer();
-    response.listen(byteBuffer.addAll,
-        onDone: () => completer.complete(byteBuffer),);
+    response.listen(
+      byteBuffer.addAll,
+      onDone: () => completer.complete(byteBuffer),
+    );
 
     return completer.future;
   }
-
 }

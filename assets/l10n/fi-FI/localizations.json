@@ -10,7 +10,8 @@
   "errors": {
     "listPublicTrucks": "Virhe listatessa ajoneuvoja",
     "listRoutes": "Virhe listatessa reittejä",
-    "findTask": "Virhe haettaessa tehtävää"
+    "findTask": "Virhe haettaessa tehtävää",
+    "updateRoute": "Virhe päivitettäessä reittiä"
   },
   "equipment": "Kalusto",
   "routes": "Reitit",
@@ -29,5 +30,9 @@
   "sender": "Lähettäjä",
   "recipient": "Vastaanottaja",
   "pointOfDeparture": "Lähtöpaikka",
-  "destination": "Määräpaikka"
+  "destination": "Määräpaikka",
+  "youAreNotTheDriverOfThisRoute": "Et ole reitille asetettu kuljettaja",
+  "doYouWantToAssignYourselfToThisRoute": "Haluatko asettaa itsesi kuljettajaksi tälle reitille?",
+  "set": "Aseta",
+  "cancel": "Peruuta"
 }

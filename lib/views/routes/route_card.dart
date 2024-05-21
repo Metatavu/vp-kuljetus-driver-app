@@ -3,7 +3,9 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:tms_api/tms_api.dart";
+import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/drivers/drivers_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/routes/routes_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
 class RouteCard extends ConsumerWidget {
@@ -13,15 +15,59 @@ class RouteCard extends ConsumerWidget {
 
   @override
   Widget build(final context, final ref) {
+    final userInfo = ref.watch(userInfoProvider);
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
+    final updateRouteNotifier = ref.watch(updateRouteProvider.notifier);
 
     final driver = route.driverId != null
         ? ref.watch(findDriverProvider(driverId: route.driverId!))
         : null;
 
+    onSelectRoute() async {
+      if (userInfo?.sub != route.driverId) {
+        final confirmed = await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (final context) => AlertDialog(
+                title: Text(l10n.t("youAreNotTheDriverOfThisRoute")),
+                content: Text(l10n.t("doYouWantToAssignYourselfToThisRoute")),
+                actionsAlignment: MainAxisAlignment.spaceBetween,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text(l10n.t("cancel")),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: Text(l10n.t("set")),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+
+        if (!confirmed) return;
+
+        try {
+          await updateRouteNotifier
+              .mutate(route.rebuild((final b) => b.driverId = userInfo?.sub));
+        } catch (error) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(l10n.t("errors.updateRoute"))),
+            );
+          }
+
+          return;
+        }
+      }
+
+      if (context.mounted) context.go("/routes/${route.id}/tasks");
+    }
+
     return InkWell(
-      onTap: () => context.go("/routes/${route.id}/tasks"),
+      onTap: onSelectRoute,
       child: Card(
         elevation: 2,
         color: Colors.white,
@@ -51,7 +97,7 @@ class RouteCard extends ConsumerWidget {
                     orElse: () => Text(l10n.t("noAllocatedDriver")),
                   ),
                 )
-              : null,
+              : Text(l10n.t("noAllocatedDriver")),
           trailing: const Icon(Icons.chevron_right, size: 32),
         ),
       ),

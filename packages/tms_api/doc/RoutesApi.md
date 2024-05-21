@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**findRoute**](RoutesApi.md#findroute) | **GET** /work-planning/v1/routes/{routeId} | Find a route.
 [**listRoutes**](RoutesApi.md#listroutes) | **GET** /work-planning/v1/routes | List Routes.
+[**updateRoute**](RoutesApi.md#updateroute) | **PUT** /work-planning/v1/routes/{routeId} | Updates routes
 
 
 # **findRoute**
@@ -105,6 +106,51 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **updateRoute**
+> Route updateRoute(routeId, route)
+
+Updates routes
+
+Updates single route
+
+### Example
+```dart
+import 'package:tms_api/api.dart';
+
+final api = TmsApi().getRoutesApi();
+final String routeId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | route id
+final Route route = ; // Route | Payload
+
+try {
+    final response = api.updateRoute(routeId, route);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling RoutesApi->updateRoute: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **routeId** | **String**| route id | 
+ **route** | [**Route**](Route.md)| Payload | 
+
+### Return type
+
+[**Route**](Route.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

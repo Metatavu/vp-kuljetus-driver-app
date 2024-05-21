@@ -63,3 +63,26 @@ Future<Route> findRoute(
     rethrow;
   }
 }
+
+@riverpod
+class UpdateRoute extends _$UpdateRoute {
+  @override
+  build() async => "";
+
+  Future<Route> mutate(final Route route) async {
+    try {
+      final response = await tmsApi.getRoutesApi().updateRoute(
+            routeId: route.id!,
+            route: route,
+          );
+
+      ref.invalidate(listRoutesProvider);
+      ref.invalidate(findRouteProvider(routeId: route.id!));
+      return response.data!;
+    } on DioException catch (error) {
+      log("Failed to update route: $error");
+      log(error.requestOptions.toString());
+      rethrow;
+    }
+  }
+}

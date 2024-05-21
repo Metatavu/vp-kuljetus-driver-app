@@ -363,5 +363,21 @@ class _FindRouteProviderElement extends AutoDisposeFutureProviderElement<Route>
   @override
   String get routeId => (origin as FindRouteProvider).routeId;
 }
+
+String _$updateRouteHash() => r'09db40c9ca8325dec85ac1d9b8f15acc02877106';
+
+/// See also [UpdateRoute].
+@ProviderFor(UpdateRoute)
+final updateRouteProvider =
+    AutoDisposeNotifierProvider<UpdateRoute, Object?>.internal(
+  UpdateRoute.new,
+  name: r'updateRouteProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$updateRouteHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$UpdateRoute = AutoDisposeNotifier<Object?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

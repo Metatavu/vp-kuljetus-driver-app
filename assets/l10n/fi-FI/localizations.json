@@ -11,7 +11,8 @@
   "errors": {
     "listPublicTrucks": "Virhe listatessa ajoneuvoja",
     "listRoutes": "Virhe listatessa reittejä",
-    "findTask": "Virhe haettaessa tehtävää"
+    "findTask": "Virhe haettaessa tehtävää",
+    "updateRoute": "Virhe päivitettäessä reittiä"
   },
   "equipment": "Kalusto",
   "routes": "Reitit",
@@ -38,5 +39,9 @@
   "addTowable": "Lisää kalusto",
   "remove": "Poista",
   "swap": "Vaihda",
-  "swapTowableTo": "Vaihda {{name}} / {{plateNumber}} tilalle"
+  "swapTowableTo": "Vaihda {{name}} / {{plateNumber}} tilalle",
+  "youAreNotTheDriverOfThisRoute": "Et ole reitille asetettu kuljettaja",
+  "doYouWantToAssignYourselfToThisRoute": "Haluatko asettaa itsesi kuljettajaksi tälle reitille?",
+  "set": "Aseta",
+  "cancel": "Peruuta"
 }

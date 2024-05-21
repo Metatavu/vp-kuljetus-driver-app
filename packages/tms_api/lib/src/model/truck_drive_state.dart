@@ -14,9 +14,9 @@ part 'truck_drive_state.g.dart';
 /// Properties:
 /// * [timestamp] - Timestamp for truck drive state
 /// * [state]
-/// * [driverCardId] - Driver card ID. This is used to identify the driver when creating a new drive state.
 /// * [id] - Truck drive state ID
 /// * [driverId] - Driver ID.
+/// * [driverCardId] - Driver card ID. This is used to identify the driver when creating a new drive state.
 @BuiltValue()
 abstract class TruckDriveState
     implements Built<TruckDriveState, TruckDriveStateBuilder> {
@@ -28,10 +28,6 @@ abstract class TruckDriveState
   TruckDriveStateEnum get state;
   // enum stateEnum {  REST,  DRIVER_AVAILABLE,  WORK,  DRIVE,  ERROR,  NOT_AVAILABLE,  };
 
-  /// Driver card ID. This is used to identify the driver when creating a new drive state.
-  @BuiltValueField(wireName: r'driverCardId')
-  String get driverCardId;
-
   /// Truck drive state ID
   @BuiltValueField(wireName: r'id')
   String? get id;
@@ -39,6 +35,10 @@ abstract class TruckDriveState
   /// Driver ID.
   @BuiltValueField(wireName: r'driverId')
   String? get driverId;
+
+  /// Driver card ID. This is used to identify the driver when creating a new drive state.
+  @BuiltValueField(wireName: r'driverCardId')
+  String? get driverCardId;
 
   TruckDriveState._();
 
@@ -76,11 +76,6 @@ class _$TruckDriveStateSerializer
       object.state,
       specifiedType: const FullType(TruckDriveStateEnum),
     );
-    yield r'driverCardId';
-    yield serializers.serialize(
-      object.driverCardId,
-      specifiedType: const FullType(String),
-    );
     if (object.id != null) {
       yield r'id';
       yield serializers.serialize(
@@ -92,6 +87,13 @@ class _$TruckDriveStateSerializer
       yield r'driverId';
       yield serializers.serialize(
         object.driverId,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.driverCardId != null) {
+      yield r'driverCardId';
+      yield serializers.serialize(
+        object.driverCardId,
         specifiedType: const FullType(String),
       );
     }
@@ -134,13 +136,6 @@ class _$TruckDriveStateSerializer
           ) as TruckDriveStateEnum;
           result.state = valueDes;
           break;
-        case r'driverCardId':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.driverCardId = valueDes;
-          break;
         case r'id':
           final valueDes = serializers.deserialize(
             value,
@@ -154,6 +149,13 @@ class _$TruckDriveStateSerializer
             specifiedType: const FullType(String),
           ) as String;
           result.driverId = valueDes;
+          break;
+        case r'driverCardId':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.driverCardId = valueDes;
           break;
         default:
           unhandled.add(key);

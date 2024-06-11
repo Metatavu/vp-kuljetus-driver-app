@@ -6,8 +6,7 @@ part of 'vehicle_screen_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchVehicleScreenDataHash() =>
-    r'89164c3efd24ac3a3147f0a41aca834b8778770d';
+String _$vehicleScreenDataHash() => r'26cfd2e133bbbb226e31898df11bb53238886c22';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,28 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchVehicleScreenData].
-@ProviderFor(fetchVehicleScreenData)
-const fetchVehicleScreenDataProvider = FetchVehicleScreenDataFamily();
+/// See also [vehicleScreenData].
+@ProviderFor(vehicleScreenData)
+const vehicleScreenDataProvider = VehicleScreenDataFamily();
 
-/// See also [fetchVehicleScreenData].
-class FetchVehicleScreenDataFamily
-    extends Family<AsyncValue<VehicleScreenData>> {
-  /// See also [fetchVehicleScreenData].
-  const FetchVehicleScreenDataFamily();
+/// See also [vehicleScreenData].
+class VehicleScreenDataFamily extends Family<AsyncValue<VehicleScreenModel>> {
+  /// See also [vehicleScreenData].
+  const VehicleScreenDataFamily();
 
-  /// See also [fetchVehicleScreenData].
-  FetchVehicleScreenDataProvider call(
+  /// See also [vehicleScreenData].
+  VehicleScreenDataProvider call(
     String truckId,
   ) {
-    return FetchVehicleScreenDataProvider(
+    return VehicleScreenDataProvider(
       truckId,
     );
   }
 
   @override
-  FetchVehicleScreenDataProvider getProviderOverride(
-    covariant FetchVehicleScreenDataProvider provider,
+  VehicleScreenDataProvider getProviderOverride(
+    covariant VehicleScreenDataProvider provider,
   ) {
     return call(
       provider.truckId,
@@ -70,33 +68,33 @@ class FetchVehicleScreenDataFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'fetchVehicleScreenDataProvider';
+  String? get name => r'vehicleScreenDataProvider';
 }
 
-/// See also [fetchVehicleScreenData].
-class FetchVehicleScreenDataProvider
-    extends AutoDisposeFutureProvider<VehicleScreenData> {
-  /// See also [fetchVehicleScreenData].
-  FetchVehicleScreenDataProvider(
+/// See also [vehicleScreenData].
+class VehicleScreenDataProvider
+    extends AutoDisposeFutureProvider<VehicleScreenModel> {
+  /// See also [vehicleScreenData].
+  VehicleScreenDataProvider(
     String truckId,
   ) : this._internal(
-          (ref) => fetchVehicleScreenData(
-            ref as FetchVehicleScreenDataRef,
+          (ref) => vehicleScreenData(
+            ref as VehicleScreenDataRef,
             truckId,
           ),
-          from: fetchVehicleScreenDataProvider,
-          name: r'fetchVehicleScreenDataProvider',
+          from: vehicleScreenDataProvider,
+          name: r'vehicleScreenDataProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$fetchVehicleScreenDataHash,
-          dependencies: FetchVehicleScreenDataFamily._dependencies,
+                  : _$vehicleScreenDataHash,
+          dependencies: VehicleScreenDataFamily._dependencies,
           allTransitiveDependencies:
-              FetchVehicleScreenDataFamily._allTransitiveDependencies,
+              VehicleScreenDataFamily._allTransitiveDependencies,
           truckId: truckId,
         );
 
-  FetchVehicleScreenDataProvider._internal(
+  VehicleScreenDataProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -110,13 +108,12 @@ class FetchVehicleScreenDataProvider
 
   @override
   Override overrideWith(
-    FutureOr<VehicleScreenData> Function(FetchVehicleScreenDataRef provider)
-        create,
+    FutureOr<VehicleScreenModel> Function(VehicleScreenDataRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: FetchVehicleScreenDataProvider._internal(
-        (ref) => create(ref as FetchVehicleScreenDataRef),
+      override: VehicleScreenDataProvider._internal(
+        (ref) => create(ref as VehicleScreenDataRef),
         from: from,
         name: null,
         dependencies: null,
@@ -128,13 +125,13 @@ class FetchVehicleScreenDataProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<VehicleScreenData> createElement() {
-    return _FetchVehicleScreenDataProviderElement(this);
+  AutoDisposeFutureProviderElement<VehicleScreenModel> createElement() {
+    return _VehicleScreenDataProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchVehicleScreenDataProvider && other.truckId == truckId;
+    return other is VehicleScreenDataProvider && other.truckId == truckId;
   }
 
   @override
@@ -146,19 +143,18 @@ class FetchVehicleScreenDataProvider
   }
 }
 
-mixin FetchVehicleScreenDataRef
-    on AutoDisposeFutureProviderRef<VehicleScreenData> {
+mixin VehicleScreenDataRef on AutoDisposeFutureProviderRef<VehicleScreenModel> {
   /// The parameter `truckId` of this provider.
   String get truckId;
 }
 
-class _FetchVehicleScreenDataProviderElement
-    extends AutoDisposeFutureProviderElement<VehicleScreenData>
-    with FetchVehicleScreenDataRef {
-  _FetchVehicleScreenDataProviderElement(super.provider);
+class _VehicleScreenDataProviderElement
+    extends AutoDisposeFutureProviderElement<VehicleScreenModel>
+    with VehicleScreenDataRef {
+  _VehicleScreenDataProviderElement(super.provider);
 
   @override
-  String get truckId => (origin as FetchVehicleScreenDataProvider).truckId;
+  String get truckId => (origin as VehicleScreenDataProvider).truckId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

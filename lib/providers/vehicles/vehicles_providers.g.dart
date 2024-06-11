@@ -6,7 +6,7 @@ part of 'vehicles_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listVehiclesHash() => r'98ef0365d766930c2e6309e9748f95c2f9a536ff';
+String _$listVehiclesHash() => r'141cae931b9e50e34a44efece1416157f93ba4ce';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -205,7 +205,7 @@ class _ListVehiclesProviderElement
   int? get max => (origin as ListVehiclesProvider).max;
 }
 
-String _$createVehicleHash() => r'5226d35e002ac8db5776a07b7713db0aba53a19c';
+String _$createVehicleHash() => r'5267b4054168a1c640553eeecf353a02fd33d872';
 
 /// See also [CreateVehicle].
 @ProviderFor(CreateVehicle)

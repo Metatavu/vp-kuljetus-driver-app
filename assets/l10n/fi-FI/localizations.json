@@ -27,6 +27,7 @@
   "backToTaskList": "Takaisin tehtävälistaan",
   "start": "Aloita",
   "end": "Lopeta",
+  "done": "Tehty",
   "waybill": "Rahtikirja",
   "sender": "Lähettäjä",
   "recipient": "Vastaanottaja",
@@ -43,5 +44,12 @@
   "youAreNotTheDriverOfThisRoute": "Et ole reitille asetettu kuljettaja",
   "doYouWantToAssignYourselfToThisRoute": "Haluatko asettaa itsesi kuljettajaksi tälle reitille?",
   "set": "Aseta",
-  "cancel": "Peruuta"
+  "cancel": "Peruuta",
+  "startTask": "Aloita tehtävä",
+  "endTask": "Lopeta tehtävä",
+  "doYouWantToStartTask": "Haluatko aloittaa tehtävän?",
+  "youCannotModifyTaskWayBillsAnymoreAfterConfirmation": "Et voi enää muokata tehtävän rahtikirjoja kuittaamisen jälkeen.",
+  "checkOutAsDone": "Kuittaa tehdyksi",
+  "taskIsInProgress": "Tehtävä on kesken",
+  "doYouWantToReturnToTaskList": "Haluatko palata takaisin tehtävälistaan ja kuitata nykyisen tehtävän tehdyksi?"
 }

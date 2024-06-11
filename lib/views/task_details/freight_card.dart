@@ -7,16 +7,21 @@ import "package:vp_kuljetus_driver_app/views/task_details/freight_card_site.dart
 import "package:vp_kuljetus_driver_app/views/task_details/freight_units_table.dart";
 
 class FreightCard extends ConsumerWidget {
-  const FreightCard({super.key, required this.freightId});
+  const FreightCard({
+    super.key,
+    required this.freightId,
+    required this.readOnly,
+  });
 
   final String freightId;
+  final bool readOnly;
 
   @override
   Widget build(final BuildContext context, final ref) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
 
-    final freightCardData = ref.watch(fetchFreightCardDataProvider(freightId));
+    final freightCardData = ref.watch(freightCardDataProvider(freightId));
     final data = freightCardData.valueOrNull;
 
     return Card(
@@ -52,7 +57,10 @@ class FreightCard extends ConsumerWidget {
                 ],
               ),
             ),
-            FreightUnitsTable(freightUnits: data?.freightUnits ?? []),
+            FreightUnitsTable(
+              freightUnits: data?.freightUnits ?? [],
+              readOnly: readOnly,
+            ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(

@@ -7,8 +7,8 @@ import "package:vp_kuljetus_driver_app/providers/tasks/tasks_providers.dart";
 part "route_task_screen_providers.g.dart";
 
 @riverpod
-Future<RouteTasksScreenData> fetchRouteTaskScreenData(
-  final FetchRouteTaskScreenDataRef ref,
+Future<RouteTasksScreenModel> routeTaskScreenData(
+  final RouteTaskScreenDataRef ref,
   final String routeId,
 ) async {
   final data = await Future.wait([
@@ -16,7 +16,7 @@ Future<RouteTasksScreenData> fetchRouteTaskScreenData(
     ref.watch(listTasksProvider(routeId: routeId).future),
   ]);
 
-  return RouteTasksScreenData(
+  return RouteTasksScreenModel(
     route: data[0] as Route,
     tasks: data[1] as List<Task>,
   );

@@ -378,20 +378,146 @@ class _FindTaskProviderElement extends AutoDisposeFutureProviderElement<Task>
   String get taskId => (origin as FindTaskProvider).taskId;
 }
 
-String _$updateTaskHash() => r'224332738aac4d20934f5a886682c36964cc2463';
+String _$updateTaskHash() => r'c71d4a97aa7b02feda7649a67fc1acc22c6dad09';
+
+abstract class _$UpdateTask extends BuildlessAutoDisposeNotifier<Object?> {
+  late final String taskId;
+
+  Object? build(
+    String taskId,
+  );
+}
 
 /// See also [UpdateTask].
 @ProviderFor(UpdateTask)
-final updateTaskProvider =
-    AutoDisposeNotifierProvider<UpdateTask, Object?>.internal(
-  UpdateTask.new,
-  name: r'updateTaskProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$updateTaskHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const updateTaskProvider = UpdateTaskFamily();
 
-typedef _$UpdateTask = AutoDisposeNotifier<Object?>;
+/// See also [UpdateTask].
+class UpdateTaskFamily extends Family<Object?> {
+  /// See also [UpdateTask].
+  const UpdateTaskFamily();
+
+  /// See also [UpdateTask].
+  UpdateTaskProvider call(
+    String taskId,
+  ) {
+    return UpdateTaskProvider(
+      taskId,
+    );
+  }
+
+  @override
+  UpdateTaskProvider getProviderOverride(
+    covariant UpdateTaskProvider provider,
+  ) {
+    return call(
+      provider.taskId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateTaskProvider';
+}
+
+/// See also [UpdateTask].
+class UpdateTaskProvider
+    extends AutoDisposeNotifierProviderImpl<UpdateTask, Object?> {
+  /// See also [UpdateTask].
+  UpdateTaskProvider(
+    String taskId,
+  ) : this._internal(
+          () => UpdateTask()..taskId = taskId,
+          from: updateTaskProvider,
+          name: r'updateTaskProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateTaskHash,
+          dependencies: UpdateTaskFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateTaskFamily._allTransitiveDependencies,
+          taskId: taskId,
+        );
+
+  UpdateTaskProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.taskId,
+  }) : super.internal();
+
+  final String taskId;
+
+  @override
+  Object? runNotifierBuild(
+    covariant UpdateTask notifier,
+  ) {
+    return notifier.build(
+      taskId,
+    );
+  }
+
+  @override
+  Override overrideWith(UpdateTask Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateTaskProvider._internal(
+        () => create()..taskId = taskId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        taskId: taskId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<UpdateTask, Object?> createElement() {
+    return _UpdateTaskProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateTaskProvider && other.taskId == taskId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, taskId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateTaskRef on AutoDisposeNotifierProviderRef<Object?> {
+  /// The parameter `taskId` of this provider.
+  String get taskId;
+}
+
+class _UpdateTaskProviderElement
+    extends AutoDisposeNotifierProviderElement<UpdateTask, Object?>
+    with UpdateTaskRef {
+  _UpdateTaskProviderElement(super.provider);
+
+  @override
+  String get taskId => (origin as UpdateTaskProvider).taskId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

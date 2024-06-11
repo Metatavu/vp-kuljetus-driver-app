@@ -6,8 +6,7 @@ part of 'freight_card_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchFreightCardDataHash() =>
-    r'af3128099d28a07aee1c729e3d9d5a21926b89f5';
+String _$freightCardDataHash() => r'a3704241eca284938595a9bb41975e5e26862a82';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,27 +29,27 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchFreightCardData].
-@ProviderFor(fetchFreightCardData)
-const fetchFreightCardDataProvider = FetchFreightCardDataFamily();
+/// See also [freightCardData].
+@ProviderFor(freightCardData)
+const freightCardDataProvider = FreightCardDataFamily();
 
-/// See also [fetchFreightCardData].
-class FetchFreightCardDataFamily extends Family<AsyncValue<FreightCardData>> {
-  /// See also [fetchFreightCardData].
-  const FetchFreightCardDataFamily();
+/// See also [freightCardData].
+class FreightCardDataFamily extends Family<AsyncValue<FreightCardModel>> {
+  /// See also [freightCardData].
+  const FreightCardDataFamily();
 
-  /// See also [fetchFreightCardData].
-  FetchFreightCardDataProvider call(
+  /// See also [freightCardData].
+  FreightCardDataProvider call(
     String freightId,
   ) {
-    return FetchFreightCardDataProvider(
+    return FreightCardDataProvider(
       freightId,
     );
   }
 
   @override
-  FetchFreightCardDataProvider getProviderOverride(
-    covariant FetchFreightCardDataProvider provider,
+  FreightCardDataProvider getProviderOverride(
+    covariant FreightCardDataProvider provider,
   ) {
     return call(
       provider.freightId,
@@ -69,33 +68,33 @@ class FetchFreightCardDataFamily extends Family<AsyncValue<FreightCardData>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'fetchFreightCardDataProvider';
+  String? get name => r'freightCardDataProvider';
 }
 
-/// See also [fetchFreightCardData].
-class FetchFreightCardDataProvider
-    extends AutoDisposeFutureProvider<FreightCardData> {
-  /// See also [fetchFreightCardData].
-  FetchFreightCardDataProvider(
+/// See also [freightCardData].
+class FreightCardDataProvider
+    extends AutoDisposeFutureProvider<FreightCardModel> {
+  /// See also [freightCardData].
+  FreightCardDataProvider(
     String freightId,
   ) : this._internal(
-          (ref) => fetchFreightCardData(
-            ref as FetchFreightCardDataRef,
+          (ref) => freightCardData(
+            ref as FreightCardDataRef,
             freightId,
           ),
-          from: fetchFreightCardDataProvider,
-          name: r'fetchFreightCardDataProvider',
+          from: freightCardDataProvider,
+          name: r'freightCardDataProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$fetchFreightCardDataHash,
-          dependencies: FetchFreightCardDataFamily._dependencies,
+                  : _$freightCardDataHash,
+          dependencies: FreightCardDataFamily._dependencies,
           allTransitiveDependencies:
-              FetchFreightCardDataFamily._allTransitiveDependencies,
+              FreightCardDataFamily._allTransitiveDependencies,
           freightId: freightId,
         );
 
-  FetchFreightCardDataProvider._internal(
+  FreightCardDataProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,12 +108,12 @@ class FetchFreightCardDataProvider
 
   @override
   Override overrideWith(
-    FutureOr<FreightCardData> Function(FetchFreightCardDataRef provider) create,
+    FutureOr<FreightCardModel> Function(FreightCardDataRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: FetchFreightCardDataProvider._internal(
-        (ref) => create(ref as FetchFreightCardDataRef),
+      override: FreightCardDataProvider._internal(
+        (ref) => create(ref as FreightCardDataRef),
         from: from,
         name: null,
         dependencies: null,
@@ -126,14 +125,13 @@ class FetchFreightCardDataProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<FreightCardData> createElement() {
-    return _FetchFreightCardDataProviderElement(this);
+  AutoDisposeFutureProviderElement<FreightCardModel> createElement() {
+    return _FreightCardDataProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchFreightCardDataProvider &&
-        other.freightId == freightId;
+    return other is FreightCardDataProvider && other.freightId == freightId;
   }
 
   @override
@@ -145,18 +143,18 @@ class FetchFreightCardDataProvider
   }
 }
 
-mixin FetchFreightCardDataRef on AutoDisposeFutureProviderRef<FreightCardData> {
+mixin FreightCardDataRef on AutoDisposeFutureProviderRef<FreightCardModel> {
   /// The parameter `freightId` of this provider.
   String get freightId;
 }
 
-class _FetchFreightCardDataProviderElement
-    extends AutoDisposeFutureProviderElement<FreightCardData>
-    with FetchFreightCardDataRef {
-  _FetchFreightCardDataProviderElement(super.provider);
+class _FreightCardDataProviderElement
+    extends AutoDisposeFutureProviderElement<FreightCardModel>
+    with FreightCardDataRef {
+  _FreightCardDataProviderElement(super.provider);
 
   @override
-  String get freightId => (origin as FetchFreightCardDataProvider).freightId;
+  String get freightId => (origin as FreightCardDataProvider).freightId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

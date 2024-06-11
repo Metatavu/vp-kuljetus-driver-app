@@ -21,9 +21,7 @@ class VehicleScreen extends ConsumerWidget {
     final authNotifier = ref.watch(authNotifierProvider.notifier);
 
     final vehicleScreenData = ref.watch(
-      fetchVehicleScreenDataProvider(
-        store.getString(lastSelectedTruckIdStoreKey)!,
-      ),
+      vehicleScreenDataProvider(store.getString(lastSelectedTruckIdStoreKey)!),
     );
 
     final createVehicle = ref.watch(createVehicleProvider.notifier);

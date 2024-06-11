@@ -8,8 +8,8 @@ import "package:vp_kuljetus_driver_app/providers/vehicles/vehicles_providers.dar
 part "vehicle_screen_providers.g.dart";
 
 @riverpod
-Future<VehicleScreenData> fetchVehicleScreenData(
-  final FetchVehicleScreenDataRef ref,
+Future<VehicleScreenModel> vehicleScreenData(
+  final VehicleScreenDataRef ref,
   final String truckId,
 ) async {
   final data = await Future.wait([
@@ -20,7 +20,7 @@ Future<VehicleScreenData> fetchVehicleScreenData(
     ref.watch(listTowablesProvider().future),
   ]);
 
-  return VehicleScreenData(
+  return VehicleScreenModel(
     truck: data[0] as Truck,
     vehicle: data[1] as Vehicle,
     towables: data[2] as List<Towable>,

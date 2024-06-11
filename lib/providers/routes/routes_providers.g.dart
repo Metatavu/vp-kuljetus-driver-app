@@ -6,7 +6,7 @@ part of 'routes_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listRoutesHash() => r'c6bad9ab26624ec0d453e28d9dfb1ba5738406e7';
+String _$listRoutesHash() => r'77874c4a399a9bcb81ddc02e2e8881cda86403c7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -364,20 +364,146 @@ class _FindRouteProviderElement extends AutoDisposeFutureProviderElement<Route>
   String get routeId => (origin as FindRouteProvider).routeId;
 }
 
-String _$updateRouteHash() => r'09db40c9ca8325dec85ac1d9b8f15acc02877106';
+String _$updateRouteHash() => r'd547e1bdd3993d213ba3c24ef51bc225c3430b37';
+
+abstract class _$UpdateRoute extends BuildlessAutoDisposeNotifier<Object?> {
+  late final String routeId;
+
+  Object? build(
+    String routeId,
+  );
+}
 
 /// See also [UpdateRoute].
 @ProviderFor(UpdateRoute)
-final updateRouteProvider =
-    AutoDisposeNotifierProvider<UpdateRoute, Object?>.internal(
-  UpdateRoute.new,
-  name: r'updateRouteProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$updateRouteHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const updateRouteProvider = UpdateRouteFamily();
 
-typedef _$UpdateRoute = AutoDisposeNotifier<Object?>;
+/// See also [UpdateRoute].
+class UpdateRouteFamily extends Family<Object?> {
+  /// See also [UpdateRoute].
+  const UpdateRouteFamily();
+
+  /// See also [UpdateRoute].
+  UpdateRouteProvider call(
+    String routeId,
+  ) {
+    return UpdateRouteProvider(
+      routeId,
+    );
+  }
+
+  @override
+  UpdateRouteProvider getProviderOverride(
+    covariant UpdateRouteProvider provider,
+  ) {
+    return call(
+      provider.routeId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateRouteProvider';
+}
+
+/// See also [UpdateRoute].
+class UpdateRouteProvider
+    extends AutoDisposeNotifierProviderImpl<UpdateRoute, Object?> {
+  /// See also [UpdateRoute].
+  UpdateRouteProvider(
+    String routeId,
+  ) : this._internal(
+          () => UpdateRoute()..routeId = routeId,
+          from: updateRouteProvider,
+          name: r'updateRouteProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateRouteHash,
+          dependencies: UpdateRouteFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateRouteFamily._allTransitiveDependencies,
+          routeId: routeId,
+        );
+
+  UpdateRouteProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.routeId,
+  }) : super.internal();
+
+  final String routeId;
+
+  @override
+  Object? runNotifierBuild(
+    covariant UpdateRoute notifier,
+  ) {
+    return notifier.build(
+      routeId,
+    );
+  }
+
+  @override
+  Override overrideWith(UpdateRoute Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateRouteProvider._internal(
+        () => create()..routeId = routeId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        routeId: routeId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<UpdateRoute, Object?> createElement() {
+    return _UpdateRouteProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateRouteProvider && other.routeId == routeId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, routeId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateRouteRef on AutoDisposeNotifierProviderRef<Object?> {
+  /// The parameter `routeId` of this provider.
+  String get routeId;
+}
+
+class _UpdateRouteProviderElement
+    extends AutoDisposeNotifierProviderElement<UpdateRoute, Object?>
+    with UpdateRouteRef {
+  _UpdateRouteProviderElement(super.provider);
+
+  @override
+  String get routeId => (origin as UpdateRouteProvider).routeId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

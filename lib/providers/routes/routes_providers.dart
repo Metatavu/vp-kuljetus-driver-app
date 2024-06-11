@@ -1,5 +1,6 @@
 import "dart:developer";
 
+import "package:collection/collection.dart";
 import "package:dio/dio.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart" hide Date;
@@ -32,7 +33,10 @@ Future<List<Route>> listRoutes(
           max: max,
         );
 
-    return response.data!.asList();
+    return response.data!.asList().sortedByCompare(
+          (final route) => route.departureTime,
+          (final a, final b) => b.compareTo(a),
+        );
   } on DioException catch (error) {
     log("Failed to list routes: $error");
     log(error.requestOptions.toString());
@@ -67,12 +71,12 @@ Future<Route> findRoute(
 @riverpod
 class UpdateRoute extends _$UpdateRoute {
   @override
-  build() async => "";
+  build(final String routeId) async => routeId;
 
   Future<Route> mutate(final Route route) async {
     try {
       final response = await tmsApi.getRoutesApi().updateRoute(
-            routeId: route.id!,
+            routeId: routeId,
             route: route,
           );
 

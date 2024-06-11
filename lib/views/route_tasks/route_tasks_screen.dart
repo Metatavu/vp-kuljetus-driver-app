@@ -21,14 +21,18 @@ class RouteTasksScreen extends ConsumerWidget {
     final routeId = routerState.pathParameters["routeId"];
     if (routeId == null) throw ArgumentError("routeId is required");
 
-    final data = ref.watch(fetchRouteTaskScreenDataProvider(routeId));
+    final data = ref.watch(routeTaskScreenDataProvider(routeId));
 
     Widget renderTasks(final List<Task> tasks) {
       if (tasks.isEmpty) {
         return Center(child: Text(l10n.t("noTasksForRoute")));
       }
 
-      final groupedTasks = tasks.groupListsBy(getTaskGroupKey).values.toList();
+      final groupedTasks =
+          tasks.groupListsBy(getTaskGroupKey).values.toList().sortedByCompare(
+                (final groupTasks) => groupTasks.first.orderNumber ?? 0,
+                (final a, final b) => a - b,
+              );
 
       return ListView.separated(
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),

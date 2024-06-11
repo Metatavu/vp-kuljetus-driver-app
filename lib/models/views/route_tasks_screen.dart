@@ -1,7 +1,7 @@
 import "package:tms_api/tms_api.dart";
 
-class RouteTasksScreenData {
-  const RouteTasksScreenData({
+class RouteTasksScreenModel {
+  const RouteTasksScreenModel({
     required this.route,
     required this.tasks,
   });

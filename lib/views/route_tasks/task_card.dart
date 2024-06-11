@@ -25,93 +25,96 @@ class TaskCard extends ConsumerWidget {
     final customerSite =
         ref.watch(findSiteProvider(siteId: task.customerSiteId));
 
-    return Card(
-      elevation: 2,
-      color: Colors.white,
-      surfaceTintColor: Colors.transparent,
-      shape: ContinuousRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          ListTile(
-            contentPadding: const EdgeInsets.only(
-              left: 16,
-              top: 8,
-              right: 8,
-              bottom: 0,
-            ),
-            title: Text(l10n.t(task.type.name.toLowerCase())),
-            titleTextStyle: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
-            ),
-            subtitle: Skeletonizer(
-              enabled: customerSite.isLoading || customerSite.isRefreshing,
-              child: Text(
-                customerSite.maybeWhen(
-                  data: (final value) => value.name,
-                  orElse: () => "",
-                ),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.primary,
+    return Opacity(
+      opacity: task.status == TaskStatus.DONE ? 0.33 : 1,
+      child: Card(
+        elevation: task.status == TaskStatus.DONE ? 2 : 8,
+        color: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        shape: ContinuousRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.only(
+                left: 16,
+                top: 8,
+                right: 8,
+                bottom: 0,
+              ),
+              title: Text(l10n.t(task.type.name.toLowerCase())),
+              titleTextStyle: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.primary,
+              ),
+              subtitle: Skeletonizer(
+                enabled: customerSite.isLoading || customerSite.isRefreshing,
+                child: Text(
+                  customerSite.maybeWhen(
+                    data: (final value) => value.name,
+                    orElse: () => "",
+                  ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
               ),
-            ),
-            trailing: const Icon(
-              Icons.chevron_right,
-              size: 32,
-            ),
-            onTap: () {
-              final taskIds = tasks.map((final task) => task.id!);
+              trailing: const Icon(
+                Icons.chevron_right,
+                size: 32,
+              ),
+              onTap: () {
+                final taskIds = tasks.map((final task) => task.id!);
 
-              final uri = Uri(
-                path: "$currentPath/task-details",
-                queryParameters: {"taskIds": taskIds},
-              );
+                final uri = Uri(
+                  path: "$currentPath/task-details",
+                  queryParameters: {"taskIds": taskIds},
+                );
 
-              context.go(uri.toString());
-            },
-          ),
-          const Divider(indent: 16, endIndent: 16),
-          Skeletonizer(
-            enabled: customerSite.isLoading || customerSite.isRefreshing,
-            child: customerSite.maybeWhen(
-              orElse: () => const SizedBox(height: 48),
-              data: (final data) => Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (data.additionalInfo != null) ...[
-                      Text(data.additionalInfo!),
-                      const SizedBox(height: 8),
-                    ],
-                    GestureDetector(
-                      onTap: () => openMapToSiteAddress(data),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_pin,
-                            color: theme.colorScheme.primary,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            getSiteAddressText(data),
-                            style: theme.textTheme.bodySmall?.copyWith(
+                context.go(uri.toString());
+              },
+            ),
+            const Divider(indent: 16, endIndent: 16),
+            Skeletonizer(
+              enabled: customerSite.isLoading || customerSite.isRefreshing,
+              child: customerSite.maybeWhen(
+                orElse: () => const SizedBox(height: 48),
+                data: (final data) => Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (data.additionalInfo != null) ...[
+                        Text(data.additionalInfo!),
+                        const SizedBox(height: 8),
+                      ],
+                      GestureDetector(
+                        onTap: () => openMapToSiteAddress(data),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.location_pin,
                               color: theme.colorScheme.primary,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Text(
+                              getSiteAddressText(data),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.primary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

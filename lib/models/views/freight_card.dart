@@ -1,7 +1,7 @@
 import "package:tms_api/tms_api.dart";
 
-class FreightCardData {
-  const FreightCardData({
+class FreightCardModel {
+  const FreightCardModel({
     required this.freight,
     required this.senderSite,
     required this.recipientSite,

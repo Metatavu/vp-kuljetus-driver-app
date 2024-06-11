@@ -96,7 +96,8 @@ class Updater {
         await _doRequest("/android/$version/app-release.apk");
     final String? storageDir =
         (await getExternalStorageDirectory())?.absolute.path;
-    final File apkFile = File("$storageDir/fi.metatavu.noheva_visitor_ui.apk");
+    final File apkFile =
+        File("$storageDir/fi.metatavu.vp_kuljetus_driver_app.apk");
 
     log("Creating new .apk file...");
 

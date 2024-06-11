@@ -1,8 +1,8 @@
 import "package:flutter/foundation.dart";
 import "package:tms_api/tms_api.dart";
 
-class TaskDetailsScreenData {
-  const TaskDetailsScreenData({
+class TaskDetailsScreenModel {
+  const TaskDetailsScreenModel({
     required this.tasks,
     required this.customerSite,
   });

@@ -69,16 +69,18 @@ Future<Task> findTask(
 @riverpod
 class UpdateTask extends _$UpdateTask {
   @override
-  build() async => "";
+  build(final String taskId) async => taskId;
 
   Future<Task> mutate(final Task task) async {
     try {
       final response = await tmsApi.getTasksApi().updateTask(
-            taskId: task.id!,
+            taskId: taskId,
             task: task,
           );
 
-      ref.invalidate(findTaskProvider);
+      ref.invalidate(listTasksProvider);
+      ref.invalidate(findTaskProvider(task.id!));
+      ref.invalidateSelf();
       return response.data!;
     } on DioException catch (error) {
       log("Failed to update task: $error");

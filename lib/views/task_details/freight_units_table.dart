@@ -6,9 +6,11 @@ class FreightUnitsTable extends ConsumerWidget {
   const FreightUnitsTable({
     super.key,
     required this.freightUnits,
+    required this.readOnly,
   });
 
   final List<FreightUnit> freightUnits;
+  final bool readOnly;
 
   DataCell renderDataCell(
     final String text, {
@@ -36,14 +38,15 @@ class FreightUnitsTable extends ConsumerWidget {
           DataCell(
             Container(
               constraints: const BoxConstraints.expand(),
-              color: Colors.white,
+              color: readOnly ? null : Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(freightUnit.quantity.toString()),
-                  const Icon(Icons.edit, size: 20, color: Colors.black54),
+                  if (!readOnly)
+                    const Icon(Icons.edit, size: 20, color: Colors.black54),
                 ],
               ),
             ),

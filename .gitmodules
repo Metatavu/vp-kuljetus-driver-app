@@ -1,0 +1,3 @@
+[submodule "specs"]
+	path = specs
+	url = git@github.com:Metatavu/vp-kuljetus-transport-management-specs.git

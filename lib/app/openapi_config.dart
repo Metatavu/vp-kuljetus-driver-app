@@ -3,7 +3,7 @@ import "package:openapi_generator_annotations/openapi_generator_annotations.dart
 
 @Openapi(
   inputSpec: InputSpec(
-    path: "../vp-kuljetus-transport-management-specs/specs/app.yaml",
+    path: "../specs/specs/app.yaml",
   ),
   generatorName: Generator.dio,
   outputDirectory: "./packages/tms_api",

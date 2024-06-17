@@ -24,3 +24,10 @@ getDriveStateLocaleKey(final TruckDriveStateEnum driveState) =>
     TruckDriveStateEnum.NOT_AVAILABLE => "notAvailable",
     _ => throw Exception("Unknown drive state: $driveState"),
   };
+
+getDriveStateWorkTypeKey(final TaskType? taskType, final bool isLatest) =>
+  isLatest ? switch (taskType) {
+    TaskType.LOAD => "stopType.loading",
+    TaskType.UNLOAD => "stopType.unloading",
+    _ => "stopType.other",
+  } : "stopType.other";

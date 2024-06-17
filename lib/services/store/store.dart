@@ -2,7 +2,7 @@ import "package:shared_preferences/shared_preferences.dart";
 
 const lastSelectedTruckIdStoreKey = "last_selected_truck_id";
 const ongoingTaskDataStoreKey = "ongoing_task_id";
-const sessionStartedTimestamp = "session_started_timestamp";
+const sessionStartedTimestampStoreKey = "session_started_timestamp";
 
 late final SharedPreferences store;
 

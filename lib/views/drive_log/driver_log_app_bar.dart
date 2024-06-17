@@ -16,7 +16,7 @@ class DriverLogAppBar extends HookConsumerWidget {
     final defaultPanelHeight = statusBarHeight + 54;
 
     final selectedTruckId = store.getString(lastSelectedTruckIdStoreKey);
-    final sessionStartedAt = store.getInt(sessionStartedTimestamp);
+    final sessionStartedAt = store.getInt(sessionStartedTimestampStoreKey);
     final driverId = ref.watch(userInfoProvider)?.sub;
 
     if (driverId == null || selectedTruckId == null || sessionStartedAt == null) {

@@ -1,11 +1,14 @@
 import "dart:async";
 
+import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
+import "package:vp_kuljetus_driver_app/providers/tasks/tasks_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
-import "package:vp_kuljetus_driver_app/utils/l10n.dart";
+import "package:vp_kuljetus_driver_app/services/store/store.dart";
+import "package:vp_kuljetus_driver_app/utils/drive_state.dart";
 
 class DriveLogRow extends HookConsumerWidget {
 
@@ -53,6 +56,12 @@ class DriveLogRow extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
+    final onGoingTaskIds = store.getStringList(ongoingTaskDataStoreKey)?.slice(1);
+    AsyncValue<Task>? onGoingTask;
+
+    if (onGoingTaskIds?.firstOrNull != null) {
+      onGoingTask = ref.watch(findTaskProvider(onGoingTaskIds!.first));
+    }
     final currentStateDuration = useState(Duration(seconds: DateTime.now().millisecondsSinceEpoch ~/ 1000 - driveState.timestamp));
     final stateStartedAt = DateTime.fromMillisecondsSinceEpoch(driveState.timestamp * 1000);
 
@@ -69,10 +78,7 @@ class DriveLogRow extends HookConsumerWidget {
       contentPadding: isExpanded ? null :  const EdgeInsets.fromLTRB(24, 20, 24, 0),
       leading: isLatest ? null : Text(formatStartTime(stateStartedAt), style: getTextStyle(false, context),),
       title: Text(
-        l10n.t(getDriveStateLocaleKey(driveState.state), variables: driveState.state == TruckDriveStateEnum.WORK ? {
-            "stopType": l10n.t("stopType.other"),
-          } : {},
-        ),
+        getDriveStateTitle(l10n, driveState, isLatest, onGoingTask?.value),
         style: getTextStyle(true, context),
       ),
       trailing: Text(

@@ -83,7 +83,7 @@ class LoginScreen extends HookConsumerWidget {
       try {
         await authNotifier.login(selectedTruck.id!);
         final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-        await store.setInt(sessionStartedTimestamp, sessionStartedAt.toInt());
+        await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt.toInt());
       } catch (error) {
         log(
           "Failed to login to truck ${selectedTruck.name} (ID ${selectedTruck.id}, VIN ${selectedTruck.vin})",

@@ -19,63 +19,70 @@ class DriverLogAppBar extends HookConsumerWidget {
     final sessionStartedAt = store.getInt(sessionStartedTimestamp);
     final driverId = ref.watch(userInfoProvider)?.sub;
 
-    if (driverId == null || selectedTruckId == null) {
+    if (driverId == null || selectedTruckId == null || sessionStartedAt == null) {
       return const SizedBox.shrink();
     }
 
     final driveStates = ref.watch(
       listDriveStatesProvider(
         truckId: selectedTruckId,
+        driverId: driverId,
+        // after: DateTime.fromMillisecondsSinceEpoch(sessionStartedAt).toUtc(),
       ),
     );
 
     if (driveStates.isLoading && !driveStates.isReloading) {
-      return SizedBox(height: defaultPanelHeight, child: const Center(child: CircularProgressIndicator()));
+      return Container(decoration: BoxDecoration(color: Theme.of(context).primaryColor), height: defaultPanelHeight, child: const Center(child: CircularProgressIndicator()));
     }
 
     if (driveStates.hasError) {
-      return SizedBox(height: defaultPanelHeight, child: const Center(child: Text("Failed to load drive states")));
+      return Container(decoration: BoxDecoration(color: Theme.of(context).primaryColor), height: defaultPanelHeight, child: const Center(child: Text("Failed to load drive states")));
     }
 
     final data = driveStates.requireValue;
 
     if (data.isEmpty) {
-      return SizedBox(height: defaultPanelHeight, child: const Center(child: Text("")));
+      return Container(decoration: BoxDecoration(color: Theme.of(context).primaryColor), height: defaultPanelHeight, child: const Center(child: Text("")));
     }
 
+    Future<dynamic> showTopModal(final BuildContext context) =>
+      showTopModalSheet(
+        backgroundColor: Colors.white,
+        context,
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 2,
+          child: ListView(
+            reverse: true,
+            children: ListTile.divideTiles(
+              context: context,
+              tiles: data.mapIndexed(
+              (final index, final driveState) =>
+                DriveLogRow(
+                  driveState: driveState,
+                  nextDriveState: data.elementAtOrNull(index == 0 ? 0 : index - 1 ),
+                  isLatest: index == 0,
+                  isExpanded: true,
+
+                ),
+              ).toList(),
+            ).toList(),
+          ),
+        ),
+      );
+
     return Container(
-      decoration: const BoxDecoration(color: Color.fromRGBO(24, 64, 77, 1)),
+      decoration: BoxDecoration(color: Theme.of(context).primaryColor),
       width: MediaQuery.of(context).size.width,
       height: defaultPanelHeight,
       child: GestureDetector(
-        onVerticalDragUpdate: (final details) async {
-          if (details.delta.dy > 8) {
-            await showTopModalSheet(
-              backgroundColor: const Color.fromRGBO(24, 64, 77, 1),
-              context,
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2,
-                child: ListView(
-                  reverse: true,
-                  children: data.mapIndexed(
-                    (final index, final driveState) =>
-                      DriveLogRow(
-                        driveState: driveState,
-                        nextDriveState: data.elementAtOrNull(index + 1),
-                        isLatest: index == 0,
-
-                      ),
-                  ).toList(),
-                ),
-              ),
-            );
-          }
-        },
+        onVerticalDragUpdate: (final details) => showTopModal(context),
+        onTap: () => showTopModal(context),
         child: DriveLogRow(
-          driveState: data[0],
+          driveState: data.first,
           nextDriveState: data.elementAtOrNull(1),
           isLatest: true,
+          isExpanded: false,
         ),
       ),
     );

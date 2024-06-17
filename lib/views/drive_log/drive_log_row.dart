@@ -14,11 +14,13 @@ class DriveLogRow extends HookConsumerWidget {
     required this.driveState,
     required this.nextDriveState,
     required this.isLatest,
+    required this.isExpanded,
   });
 
   final TruckDriveState driveState;
   final TruckDriveState? nextDriveState;
   final bool isLatest;
+  final bool isExpanded;
 
   String formatDuration(final Duration duration) {
     final hours = duration.inHours.toString().padLeft(2, "0");
@@ -28,17 +30,31 @@ class DriveLogRow extends HookConsumerWidget {
     return "$hours:$minutes:$seconds";
   }
 
+  String formatStartTime(final DateTime startTime) {
+    final hours = startTime.hour.toString().padLeft(2, "0");
+    final minutes = startTime.minute.toString().padLeft(2, "0");
+
+    return "$hours:$minutes";
+  }
+
   Duration getNonLatestDriveStateDuration() {
     if (nextDriveState == null) {
       return Duration.zero;
     }
 
-    return Duration(seconds: driveState.timestamp - nextDriveState!.timestamp);
+    return Duration(seconds: nextDriveState!.timestamp -  driveState.timestamp);
   }
+
+  TextStyle getTextStyle(final bool title, final BuildContext context) => TextStyle(
+    color: isLatest ? isExpanded ? Theme.of(context).primaryColor : Colors.white : Colors.black,
+    fontWeight: isLatest ? FontWeight.w700 : FontWeight.w400,
+    fontSize: title ? 16: 14,
+  );
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final currentStateDuration = useState(Duration(seconds: DateTime.now().millisecondsSinceEpoch ~/ 1000 - driveState.timestamp));
+    final stateStartedAt = DateTime.fromMillisecondsSinceEpoch(driveState.timestamp * 1000);
 
     useEffect(() {
     final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
@@ -49,22 +65,19 @@ class DriveLogRow extends HookConsumerWidget {
 
     final l10n = L10n.of(context);
     return ListTile(
-      contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      tileColor: driveState.state == TruckDriveStateEnum.DRIVE ? const Color(0xFFE8F5E9) : Colors.white,
+      contentPadding: isExpanded ? null :  const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      leading: isLatest ? null : Text(formatStartTime(stateStartedAt), style: getTextStyle(false, context),),
       title: Text(
-          l10n.t(getDriveStateLocaleKey(driveState.state)),
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
-          ),
+        l10n.t(getDriveStateLocaleKey(driveState.state), variables: driveState.state == TruckDriveStateEnum.WORK ? {
+            "stopType": l10n.t("stopType.other"),
+          } : {},
         ),
+        style: getTextStyle(true, context),
+      ),
       trailing: Text(
         formatDuration(isLatest ? currentStateDuration.value : getNonLatestDriveStateDuration()),
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-        ),
+        style: getTextStyle(false, context),
       ),
     );
   }

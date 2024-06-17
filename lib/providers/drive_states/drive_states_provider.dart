@@ -12,8 +12,8 @@ part "drive_states_provider.g.dart";
 Future<List<TruckDriveState>> listDriveStates(
   final ListDriveStatesRef ref, {
     required final String truckId,
-    required final String driverId,
-    required final DateTime after,
+    final String? driverId,
+    final DateTime? after,
   }
 ) async {
   final cancelToken = CancelToken();

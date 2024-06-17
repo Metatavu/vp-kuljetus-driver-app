@@ -47,8 +47,13 @@
   "cancel": "Peruuta",
   "rest": "Lepo",
   "driving": "Ajo",
-  "work": "Muu työ",
+  "work": "Pysähdys, {{stopType}}",
   "available": "Kuljettaja saatavilla",
   "notAvailable": "Kuljettaja ei saatavilla",
-  "driveStateError": "Virhe"
+  "driveStateError": "Virhe",
+  "stopType": {
+    "loading": "Lastaus",
+    "unloading": "Purku",
+    "other": "Muu työ"
+  }
 }

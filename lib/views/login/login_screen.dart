@@ -82,7 +82,7 @@ class LoginScreen extends HookConsumerWidget {
     Future<void> initLogin(final PublicTruck selectedTruck) async {
       try {
         await authNotifier.login(selectedTruck.id!);
-        final sessionStartedAt = DateTime.now().millisecond / 1000;
+        final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
         await store.setInt(sessionStartedTimestamp, sessionStartedAt.toInt());
       } catch (error) {
         log(

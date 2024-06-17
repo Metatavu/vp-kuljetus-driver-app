@@ -12,7 +12,8 @@
     "listPublicTrucks": "Virhe listatessa ajoneuvoja",
     "listRoutes": "Virhe listatessa reittejä",
     "findTask": "Virhe haettaessa tehtävää",
-    "updateRoute": "Virhe päivitettäessä reittiä"
+    "updateRoute": "Virhe päivitettäessä reittiä",
+    "listDriveStates": "Virhe listatessa ajotiloja"
   },
   "equipment": "Kalusto",
   "routes": "Reitit",
@@ -43,5 +44,11 @@
   "youAreNotTheDriverOfThisRoute": "Et ole reitille asetettu kuljettaja",
   "doYouWantToAssignYourselfToThisRoute": "Haluatko asettaa itsesi kuljettajaksi tälle reitille?",
   "set": "Aseta",
-  "cancel": "Peruuta"
+  "cancel": "Peruuta",
+  "rest": "Lepo",
+  "driving": "Ajo",
+  "work": "Muu työ",
+  "available": "Kuljettaja saatavilla",
+  "notAvailable": "Kuljettaja ei saatavilla",
+  "driveStateError": "Virhe"
 }

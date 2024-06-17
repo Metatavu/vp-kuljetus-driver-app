@@ -13,3 +13,14 @@ getTowableTypeLocaleKey(final TowableTypeEnum towableType) =>
       TowableTypeEnum.DOLLY => "dolly",
       _ => throw Exception("Unknown towable type: $towableType")
     };
+
+getDriveStateLocaleKey(final TruckDriveStateEnum driveState) =>
+  switch (driveState) {
+    TruckDriveStateEnum.REST => "rest",
+    TruckDriveStateEnum.DRIVER_AVAILABLE => "available",
+    TruckDriveStateEnum.WORK => "work",
+    TruckDriveStateEnum.DRIVE => "driving",
+    TruckDriveStateEnum.ERROR => "driveStateError",
+    TruckDriveStateEnum.NOT_AVAILABLE => "notAvailable",
+    _ => throw Exception("Unknown drive state: $driveState"),
+  };

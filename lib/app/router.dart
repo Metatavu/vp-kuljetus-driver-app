@@ -1,7 +1,9 @@
+import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
 import "package:vp_kuljetus_driver_app/views/login/login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/main_tabs/main_tabs_view.dart";
@@ -10,6 +12,7 @@ import "package:vp_kuljetus_driver_app/views/routes/routes_screen.dart";
 import "package:vp_kuljetus_driver_app/views/splash/splash_screen.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/task_details_screen.dart";
 import "package:vp_kuljetus_driver_app/views/vehicle/vehicle_screen.dart";
+import "package:vp_kuljetus_driver_app/widgets/hardware_back_handler.dart";
 
 part "router.g.dart";
 
@@ -82,6 +85,7 @@ GoRouter router(final RouterRef ref) {
               GoRoute(
                 name: "vehicle",
                 path: "/vehicle",
+                redirect: handleRedirectIfOngoingTasks,
                 pageBuilder: (final context, final state) =>
                     const NoTransitionPage(child: VehicleScreen()),
               ),
@@ -95,7 +99,12 @@ GoRouter router(final RouterRef ref) {
                     name: "routeTasks",
                     path: ":routeId/tasks",
                     pageBuilder: (final context, final state) =>
-                        const NoTransitionPage(child: RouteTasksScreen()),
+                        const NoTransitionPage(
+                      child: HardwareBackHandler(
+                        gotoPath: "/routes",
+                        child: RouteTasksScreen(),
+                      ),
+                    ),
                     routes: [
                       GoRoute(
                         name: "taskDetails",
@@ -140,4 +149,20 @@ String? handleRedirect(
   if (isLoggingIn) return auth ? "/vehicle" : null;
 
   return auth ? null : "/login";
+}
+
+String? handleRedirectIfOngoingTasks(
+  final BuildContext context,
+  final GoRouterState state,
+) {
+  final ongoingTaskData = store.getStringList(ongoingTaskDataStoreKey);
+  if (ongoingTaskData == null) return null;
+
+  final routeId = ongoingTaskData[0];
+  final taskIds = ongoingTaskData.slice(1);
+
+  return Uri(
+    path: "/routes/$routeId/tasks/task-details",
+    queryParameters: {"taskIds": taskIds},
+  ).toString();
 }

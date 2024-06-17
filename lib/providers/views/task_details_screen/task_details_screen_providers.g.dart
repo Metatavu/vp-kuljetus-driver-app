@@ -6,8 +6,8 @@ part of 'task_details_screen_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchTaskDetailsScreenDataHash() =>
-    r'69c15fca80b6e21ef546b12a58c47e2feea0320e';
+String _$taskDetailsScreenDataHash() =>
+    r'a79c23ea90e1029d69e2a7f124f1c472c9051347';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,28 +30,37 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchTaskDetailsScreenData].
-@ProviderFor(fetchTaskDetailsScreenData)
-const fetchTaskDetailsScreenDataProvider = FetchTaskDetailsScreenDataFamily();
+abstract class _$TaskDetailsScreenData
+    extends BuildlessAutoDisposeAsyncNotifier<TaskDetailsScreenModel> {
+  late final TaskIdList taskIdList;
 
-/// See also [fetchTaskDetailsScreenData].
-class FetchTaskDetailsScreenDataFamily
-    extends Family<AsyncValue<TaskDetailsScreenData>> {
-  /// See also [fetchTaskDetailsScreenData].
-  const FetchTaskDetailsScreenDataFamily();
+  FutureOr<TaskDetailsScreenModel> build(
+    TaskIdList taskIdList,
+  );
+}
 
-  /// See also [fetchTaskDetailsScreenData].
-  FetchTaskDetailsScreenDataProvider call(
+/// See also [TaskDetailsScreenData].
+@ProviderFor(TaskDetailsScreenData)
+const taskDetailsScreenDataProvider = TaskDetailsScreenDataFamily();
+
+/// See also [TaskDetailsScreenData].
+class TaskDetailsScreenDataFamily
+    extends Family<AsyncValue<TaskDetailsScreenModel>> {
+  /// See also [TaskDetailsScreenData].
+  const TaskDetailsScreenDataFamily();
+
+  /// See also [TaskDetailsScreenData].
+  TaskDetailsScreenDataProvider call(
     TaskIdList taskIdList,
   ) {
-    return FetchTaskDetailsScreenDataProvider(
+    return TaskDetailsScreenDataProvider(
       taskIdList,
     );
   }
 
   @override
-  FetchTaskDetailsScreenDataProvider getProviderOverride(
-    covariant FetchTaskDetailsScreenDataProvider provider,
+  TaskDetailsScreenDataProvider getProviderOverride(
+    covariant TaskDetailsScreenDataProvider provider,
   ) {
     return call(
       provider.taskIdList,
@@ -70,33 +79,31 @@ class FetchTaskDetailsScreenDataFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'fetchTaskDetailsScreenDataProvider';
+  String? get name => r'taskDetailsScreenDataProvider';
 }
 
-/// See also [fetchTaskDetailsScreenData].
-class FetchTaskDetailsScreenDataProvider
-    extends AutoDisposeFutureProvider<TaskDetailsScreenData> {
-  /// See also [fetchTaskDetailsScreenData].
-  FetchTaskDetailsScreenDataProvider(
+/// See also [TaskDetailsScreenData].
+class TaskDetailsScreenDataProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<TaskDetailsScreenData,
+        TaskDetailsScreenModel> {
+  /// See also [TaskDetailsScreenData].
+  TaskDetailsScreenDataProvider(
     TaskIdList taskIdList,
   ) : this._internal(
-          (ref) => fetchTaskDetailsScreenData(
-            ref as FetchTaskDetailsScreenDataRef,
-            taskIdList,
-          ),
-          from: fetchTaskDetailsScreenDataProvider,
-          name: r'fetchTaskDetailsScreenDataProvider',
+          () => TaskDetailsScreenData()..taskIdList = taskIdList,
+          from: taskDetailsScreenDataProvider,
+          name: r'taskDetailsScreenDataProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$fetchTaskDetailsScreenDataHash,
-          dependencies: FetchTaskDetailsScreenDataFamily._dependencies,
+                  : _$taskDetailsScreenDataHash,
+          dependencies: TaskDetailsScreenDataFamily._dependencies,
           allTransitiveDependencies:
-              FetchTaskDetailsScreenDataFamily._allTransitiveDependencies,
+              TaskDetailsScreenDataFamily._allTransitiveDependencies,
           taskIdList: taskIdList,
         );
 
-  FetchTaskDetailsScreenDataProvider._internal(
+  TaskDetailsScreenDataProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,15 +116,20 @@ class FetchTaskDetailsScreenDataProvider
   final TaskIdList taskIdList;
 
   @override
-  Override overrideWith(
-    FutureOr<TaskDetailsScreenData> Function(
-            FetchTaskDetailsScreenDataRef provider)
-        create,
+  FutureOr<TaskDetailsScreenModel> runNotifierBuild(
+    covariant TaskDetailsScreenData notifier,
   ) {
+    return notifier.build(
+      taskIdList,
+    );
+  }
+
+  @override
+  Override overrideWith(TaskDetailsScreenData Function() create) {
     return ProviderOverride(
       origin: this,
-      override: FetchTaskDetailsScreenDataProvider._internal(
-        (ref) => create(ref as FetchTaskDetailsScreenDataRef),
+      override: TaskDetailsScreenDataProvider._internal(
+        () => create()..taskIdList = taskIdList,
         from: from,
         name: null,
         dependencies: null,
@@ -129,13 +141,14 @@ class FetchTaskDetailsScreenDataProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<TaskDetailsScreenData> createElement() {
-    return _FetchTaskDetailsScreenDataProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<TaskDetailsScreenData,
+      TaskDetailsScreenModel> createElement() {
+    return _TaskDetailsScreenDataProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchTaskDetailsScreenDataProvider &&
+    return other is TaskDetailsScreenDataProvider &&
         other.taskIdList == taskIdList;
   }
 
@@ -148,20 +161,20 @@ class FetchTaskDetailsScreenDataProvider
   }
 }
 
-mixin FetchTaskDetailsScreenDataRef
-    on AutoDisposeFutureProviderRef<TaskDetailsScreenData> {
+mixin TaskDetailsScreenDataRef
+    on AutoDisposeAsyncNotifierProviderRef<TaskDetailsScreenModel> {
   /// The parameter `taskIdList` of this provider.
   TaskIdList get taskIdList;
 }
 
-class _FetchTaskDetailsScreenDataProviderElement
-    extends AutoDisposeFutureProviderElement<TaskDetailsScreenData>
-    with FetchTaskDetailsScreenDataRef {
-  _FetchTaskDetailsScreenDataProviderElement(super.provider);
+class _TaskDetailsScreenDataProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<TaskDetailsScreenData,
+        TaskDetailsScreenModel> with TaskDetailsScreenDataRef {
+  _TaskDetailsScreenDataProviderElement(super.provider);
 
   @override
   TaskIdList get taskIdList =>
-      (origin as FetchTaskDetailsScreenDataProvider).taskIdList;
+      (origin as TaskDetailsScreenDataProvider).taskIdList;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -8,8 +8,8 @@ import "package:vp_kuljetus_driver_app/providers/sites/sites_providers.dart";
 part "freight_card_providers.g.dart";
 
 @riverpod
-Future<FreightCardData> fetchFreightCardData(
-  final FetchFreightCardDataRef ref,
+Future<FreightCardModel> freightCardData(
+  final FreightCardDataRef ref,
   final String freightId,
 ) async {
   final freight =
@@ -25,7 +25,7 @@ Future<FreightCardData> fetchFreightCardData(
   final freightUnits =
       await ref.watch(listFreightUnitsProvider(freightId: freightId).future);
 
-  return FreightCardData(
+  return FreightCardModel(
     freight: freight,
     senderSite: sites[0],
     recipientSite: sites[1],

@@ -1,7 +1,7 @@
 import "package:tms_api/tms_api.dart";
 
-class VehicleScreenData {
-  const VehicleScreenData({
+class VehicleScreenModel {
+  const VehicleScreenModel({
     required this.vehicle,
     required this.truck,
     required this.towables,

@@ -18,7 +18,8 @@ class RouteCard extends ConsumerWidget {
     final userInfo = ref.watch(userInfoProvider);
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
-    final updateRouteNotifier = ref.watch(updateRouteProvider.notifier);
+    final updateRouteNotifier =
+        ref.watch(updateRouteProvider(route.id!).notifier);
 
     final driver = route.driverId != null
         ? ref.watch(findDriverProvider(driverId: route.driverId!))

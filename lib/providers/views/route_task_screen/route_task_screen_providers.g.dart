@@ -6,8 +6,8 @@ part of 'route_task_screen_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchRouteTaskScreenDataHash() =>
-    r'64769b91c82917193ee507ef2ebdb2a1e9392edb';
+String _$routeTaskScreenDataHash() =>
+    r'7aaa1748fd87fd728b8ac1a2b4605e02d5fe8667';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,28 +30,28 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchRouteTaskScreenData].
-@ProviderFor(fetchRouteTaskScreenData)
-const fetchRouteTaskScreenDataProvider = FetchRouteTaskScreenDataFamily();
+/// See also [routeTaskScreenData].
+@ProviderFor(routeTaskScreenData)
+const routeTaskScreenDataProvider = RouteTaskScreenDataFamily();
 
-/// See also [fetchRouteTaskScreenData].
-class FetchRouteTaskScreenDataFamily
-    extends Family<AsyncValue<RouteTasksScreenData>> {
-  /// See also [fetchRouteTaskScreenData].
-  const FetchRouteTaskScreenDataFamily();
+/// See also [routeTaskScreenData].
+class RouteTaskScreenDataFamily
+    extends Family<AsyncValue<RouteTasksScreenModel>> {
+  /// See also [routeTaskScreenData].
+  const RouteTaskScreenDataFamily();
 
-  /// See also [fetchRouteTaskScreenData].
-  FetchRouteTaskScreenDataProvider call(
+  /// See also [routeTaskScreenData].
+  RouteTaskScreenDataProvider call(
     String routeId,
   ) {
-    return FetchRouteTaskScreenDataProvider(
+    return RouteTaskScreenDataProvider(
       routeId,
     );
   }
 
   @override
-  FetchRouteTaskScreenDataProvider getProviderOverride(
-    covariant FetchRouteTaskScreenDataProvider provider,
+  RouteTaskScreenDataProvider getProviderOverride(
+    covariant RouteTaskScreenDataProvider provider,
   ) {
     return call(
       provider.routeId,
@@ -70,33 +70,33 @@ class FetchRouteTaskScreenDataFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'fetchRouteTaskScreenDataProvider';
+  String? get name => r'routeTaskScreenDataProvider';
 }
 
-/// See also [fetchRouteTaskScreenData].
-class FetchRouteTaskScreenDataProvider
-    extends AutoDisposeFutureProvider<RouteTasksScreenData> {
-  /// See also [fetchRouteTaskScreenData].
-  FetchRouteTaskScreenDataProvider(
+/// See also [routeTaskScreenData].
+class RouteTaskScreenDataProvider
+    extends AutoDisposeFutureProvider<RouteTasksScreenModel> {
+  /// See also [routeTaskScreenData].
+  RouteTaskScreenDataProvider(
     String routeId,
   ) : this._internal(
-          (ref) => fetchRouteTaskScreenData(
-            ref as FetchRouteTaskScreenDataRef,
+          (ref) => routeTaskScreenData(
+            ref as RouteTaskScreenDataRef,
             routeId,
           ),
-          from: fetchRouteTaskScreenDataProvider,
-          name: r'fetchRouteTaskScreenDataProvider',
+          from: routeTaskScreenDataProvider,
+          name: r'routeTaskScreenDataProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$fetchRouteTaskScreenDataHash,
-          dependencies: FetchRouteTaskScreenDataFamily._dependencies,
+                  : _$routeTaskScreenDataHash,
+          dependencies: RouteTaskScreenDataFamily._dependencies,
           allTransitiveDependencies:
-              FetchRouteTaskScreenDataFamily._allTransitiveDependencies,
+              RouteTaskScreenDataFamily._allTransitiveDependencies,
           routeId: routeId,
         );
 
-  FetchRouteTaskScreenDataProvider._internal(
+  RouteTaskScreenDataProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -110,14 +110,13 @@ class FetchRouteTaskScreenDataProvider
 
   @override
   Override overrideWith(
-    FutureOr<RouteTasksScreenData> Function(
-            FetchRouteTaskScreenDataRef provider)
+    FutureOr<RouteTasksScreenModel> Function(RouteTaskScreenDataRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: FetchRouteTaskScreenDataProvider._internal(
-        (ref) => create(ref as FetchRouteTaskScreenDataRef),
+      override: RouteTaskScreenDataProvider._internal(
+        (ref) => create(ref as RouteTaskScreenDataRef),
         from: from,
         name: null,
         dependencies: null,
@@ -129,14 +128,13 @@ class FetchRouteTaskScreenDataProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<RouteTasksScreenData> createElement() {
-    return _FetchRouteTaskScreenDataProviderElement(this);
+  AutoDisposeFutureProviderElement<RouteTasksScreenModel> createElement() {
+    return _RouteTaskScreenDataProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchRouteTaskScreenDataProvider &&
-        other.routeId == routeId;
+    return other is RouteTaskScreenDataProvider && other.routeId == routeId;
   }
 
   @override
@@ -148,19 +146,19 @@ class FetchRouteTaskScreenDataProvider
   }
 }
 
-mixin FetchRouteTaskScreenDataRef
-    on AutoDisposeFutureProviderRef<RouteTasksScreenData> {
+mixin RouteTaskScreenDataRef
+    on AutoDisposeFutureProviderRef<RouteTasksScreenModel> {
   /// The parameter `routeId` of this provider.
   String get routeId;
 }
 
-class _FetchRouteTaskScreenDataProviderElement
-    extends AutoDisposeFutureProviderElement<RouteTasksScreenData>
-    with FetchRouteTaskScreenDataRef {
-  _FetchRouteTaskScreenDataProviderElement(super.provider);
+class _RouteTaskScreenDataProviderElement
+    extends AutoDisposeFutureProviderElement<RouteTasksScreenModel>
+    with RouteTaskScreenDataRef {
+  _RouteTaskScreenDataProviderElement(super.provider);
 
   @override
-  String get routeId => (origin as FetchRouteTaskScreenDataProvider).routeId;
+  String get routeId => (origin as RouteTaskScreenDataProvider).routeId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

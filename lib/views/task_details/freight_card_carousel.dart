@@ -5,9 +5,14 @@ import "package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/freight_card.dart";
 
 class FreightCardCarousel extends HookWidget {
-  const FreightCardCarousel({super.key, required this.freightIds});
+  const FreightCardCarousel({
+    super.key,
+    required this.freightIds,
+    required this.readOnly,
+  });
 
   final List<String> freightIds;
+  final bool readOnly;
 
   @override
   Widget build(final context) {
@@ -57,7 +62,10 @@ class FreightCardCarousel extends HookWidget {
                     child: SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.all(8),
-                        child: FreightCard(freightId: freightId),
+                        child: FreightCard(
+                          freightId: freightId,
+                          readOnly: readOnly,
+                        ),
                       ),
                     ),
                   ),

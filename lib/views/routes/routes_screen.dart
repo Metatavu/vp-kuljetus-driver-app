@@ -1,7 +1,5 @@
 import "package:flutter/material.dart" hide Route;
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:skeletonizer/skeletonizer.dart";
-import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/providers/routes/routes_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
@@ -26,22 +24,7 @@ class RoutesScreen extends HookConsumerWidget {
     );
 
     if (routes.isLoading || routes.isRefreshing) {
-      final placeholderRoute = Route(
-        (final builder) => builder
-          ..name = BoneMock.name
-          ..departureTime = DateTime.now(),
-      );
-
-      return Skeletonizer(
-        child: ListView.separated(
-          padding: const EdgeInsets.all(8),
-          itemCount: 1,
-          separatorBuilder: (final context, final index) =>
-              const SizedBox(height: 8),
-          itemBuilder: (final context, final index) =>
-              RouteCard(route: placeholderRoute),
-        ),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (routes.hasError) {

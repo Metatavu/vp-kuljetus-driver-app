@@ -26,8 +26,8 @@ getDriveStateLocaleKey(final TruckDriveStateEnum driveState) =>
   };
 
 getDriveStateWorkTypeKey(final TaskType? taskType, final bool isLatest) =>
-  isLatest ? switch (taskType) {
+  switch (taskType) {
     TaskType.LOAD => "stopType.loading",
     TaskType.UNLOAD => "stopType.unloading",
     _ => "stopType.other",
-  } : "stopType.other";
+  };

@@ -8,6 +8,7 @@ import "package:vp_kuljetus_driver_app/models/views/task_details_screen.dart";
 import "package:vp_kuljetus_driver_app/providers/views/task_details_screen/task_details_screen_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
+import "package:vp_kuljetus_driver_app/utils/task.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/action_button.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/freight_card_carousel.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/site_details.dart";
@@ -51,17 +52,27 @@ class TaskDetailsScreen extends HookConsumerWidget {
       [task],
     );
 
-    onStartTasks() => ref
+    onStartTasks() {
+      ref
         .read(
           taskDetailsScreenDataProvider(TaskIdList(list: taskIds)).notifier,
         )
         .updateTasksStatus(TaskStatus.IN_PROGRESS);
+        if (task != null) {
+          setTaskGroupStartedAt(DateTime.now(), getTaskGroupKey(task), task.type);
+        }
+      }
 
-    onEndTasks() => ref
+    onEndTasks() {
+      ref
         .read(
           taskDetailsScreenDataProvider(TaskIdList(list: taskIds)).notifier,
         )
         .updateTasksStatus(TaskStatus.DONE);
+        if (task != null) {
+          setTaskGroupEndedAt(DateTime.now(), getTaskGroupKey(task), task.type);
+        }
+    }
 
     onBackPressed() async {
       if (task == null || task.status != TaskStatus.IN_PROGRESS) {
@@ -110,7 +121,7 @@ class TaskDetailsScreen extends HookConsumerWidget {
           false;
 
       if (confirmMarkTasksAsDone) {
-        await onEndTasks();
+        onEndTasks();
         if (context.mounted) context.go(previousRoute);
       }
     }

@@ -71,13 +71,13 @@ class DriverLogAppBar extends HookConsumerWidget {
 
     driveStatesWithTasks.sort((final a, final b) => b.timestamp.compareTo(a.timestamp));
 
-    final List<TruckDriveStateWithTaskType> testList = [];
+    final List<TruckDriveStateWithTaskType> finalDriveStatesWithTasks = [];
 
     for (final (index, state) in driveStatesWithTasks.indexed) {
       if (state.taskType != null && state.endedAt != null) {
-        testList.add(driveStatesWithTasks.elementAt(index + 1));
+        finalDriveStatesWithTasks.add(driveStatesWithTasks.elementAt(index + 1));
       }
-      testList.add(state);
+      finalDriveStatesWithTasks.add(state);
     }
 
     Future<dynamic> showTopModal(final BuildContext context) =>
@@ -91,11 +91,11 @@ class DriverLogAppBar extends HookConsumerWidget {
             reverse: true,
             children: ListTile.divideTiles(
               context: context,
-              tiles: testList.mapIndexed(
+              tiles: finalDriveStatesWithTasks.mapIndexed(
               (final index, final driveState) =>
                 DriveLogRow(
                   driveState: driveState,
-                  nextDriveState: testList.elementAtOrNull(index == 0 ? 0 : index - 1 ),
+                  nextDriveState: finalDriveStatesWithTasks.elementAtOrNull(index == 0 ? 0 : index - 1 ),
                   isLatest: index == 0,
                   isExpanded: true,
                   isTask: driveState.taskType != null,
@@ -114,11 +114,11 @@ class DriverLogAppBar extends HookConsumerWidget {
         onVerticalDragUpdate: (final details) => showTopModal(context),
         onTap: () => showTopModal(context),
         child: DriveLogRow(
-          driveState: testList.first,
-          nextDriveState: testList.elementAtOrNull(1),
+          driveState: finalDriveStatesWithTasks.first,
+          nextDriveState: finalDriveStatesWithTasks.elementAtOrNull(1),
           isLatest: true,
           isExpanded: false,
-          isTask: testList.first.taskType != null,
+          isTask: finalDriveStatesWithTasks.first.taskType != null,
         ),
       ),
     );

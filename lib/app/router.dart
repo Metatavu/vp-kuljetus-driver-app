@@ -57,13 +57,22 @@ GoRouter router(final RouterRef ref) {
           final context,
           final state,
           final child,
-        ) =>
-            NoTransitionPage(
-          child: Scaffold(
-            appBar: AppBar(titleSpacing: 0, title: const DriverLogAppBar()),
-            body: child,
-          ),
-        ),
+        ) {
+          final statusBarHeight = MediaQuery.of(context).viewPadding.top;
+          final defaultPanelHeight = statusBarHeight + 54;
+          final contentHeight = MediaQuery.of(context).size.height - defaultPanelHeight;
+
+          return NoTransitionPage(
+            child: Scaffold(
+              body: Column(
+                children: [
+                  const DriverLogAppBar(),
+                  Container(constraints: BoxConstraints.loose(Size.fromHeight(contentHeight)), child: child),
+                ],
+              ),
+            ),
+          );
+        },
         routes: [
           ShellRoute(
             pageBuilder: (

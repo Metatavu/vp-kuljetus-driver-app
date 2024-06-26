@@ -5,6 +5,7 @@ ThemeData getTheme(final BuildContext context) {
   final baseTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(0xFF00414F),
+      primary: const Color(0xFF18404D),
       secondary: const Color(0xFF547476),
       error: const Color(0xFFEE3912),
     ),

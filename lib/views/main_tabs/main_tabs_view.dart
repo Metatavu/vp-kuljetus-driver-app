@@ -16,6 +16,8 @@ class MainTabsView extends StatelessWidget {
       final theme = Theme.of(context);
 
       return TextButton.styleFrom(
+        minimumSize: const Size.fromHeight(48),
+        maximumSize: const Size.fromHeight(48),
         shape: const ContinuousRectangleBorder(),
         backgroundColor: selected ? null : theme.colorScheme.secondary,
         foregroundColor: selected ? theme.colorScheme.primary : Colors.white,

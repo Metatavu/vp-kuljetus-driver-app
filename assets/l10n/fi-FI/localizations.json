@@ -12,7 +12,8 @@
     "listPublicTrucks": "Virhe listatessa ajoneuvoja",
     "listRoutes": "Virhe listatessa reittejä",
     "findTask": "Virhe haettaessa tehtävää",
-    "updateRoute": "Virhe päivitettäessä reittiä"
+    "updateRoute": "Virhe päivitettäessä reittiä",
+    "listDriveStates": "Virhe listatessa ajotiloja"
   },
   "equipment": "Kalusto",
   "routes": "Reitit",
@@ -51,5 +52,16 @@
   "youCannotModifyTaskWayBillsAnymoreAfterConfirmation": "Et voi enää muokata tehtävän rahtikirjoja kuittaamisen jälkeen.",
   "checkOutAsDone": "Kuittaa tehdyksi",
   "taskIsInProgress": "Tehtävä on kesken",
-  "doYouWantToReturnToTaskList": "Haluatko palata takaisin tehtävälistaan ja kuitata nykyisen tehtävän tehdyksi?"
+  "doYouWantToReturnToTaskList": "Haluatko palata takaisin tehtävälistaan ja kuitata nykyisen tehtävän tehdyksi?",
+  "rest": "Lepo",
+  "driving": "Ajo",
+  "work": "Pysähdys, {{stopType}}",
+  "available": "Kuljettaja saatavilla",
+  "notAvailable": "Kuljettaja ei saatavilla",
+  "driveStateError": "Virhe",
+  "stopType": {
+    "loading": "Lastaus",
+    "unloading": "Purku",
+    "other": "Muu työ"
+  }
 }

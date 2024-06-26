@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**findTruck**](TrucksApi.md#findtruck) | **GET** /vehicle-management/v1/trucks/{truckId} | Find a truck.
 [**listDriveStates**](TrucksApi.md#listdrivestates) | **GET** /vehicle-management/v1/trucks/{truckId}/driveStates | List drive states.
+[**listTruckDriverCards**](TrucksApi.md#listtruckdrivercards) | **GET** /vehicle-management/v1/trucks/{truckId}/driverCards | Lists truck driver cards
 [**listTrucks**](TrucksApi.md#listtrucks) | **GET** /vehicle-management/v1/trucks | List Trucks.
 
 
@@ -100,6 +101,49 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**BuiltList&lt;TruckDriveState&gt;**](TruckDriveState.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **listTruckDriverCards**
+> BuiltList<TruckDriverCard> listTruckDriverCards(truckId)
+
+Lists truck driver cards
+
+Lists truck driver cards. Used to check if a truck has a driver card inserted.
+
+### Example
+```dart
+import 'package:tms_api/api.dart';
+
+final api = TmsApi().getTrucksApi();
+final String truckId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | truck ID
+
+try {
+    final response = api.listTruckDriverCards(truckId);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling TrucksApi->listTruckDriverCards: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **truckId** | **String**| truck ID | 
+
+### Return type
+
+[**BuiltList&lt;TruckDriverCard&gt;**](TruckDriverCard.md)
 
 ### Authorization
 

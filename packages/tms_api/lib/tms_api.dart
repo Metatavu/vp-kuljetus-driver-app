@@ -34,4 +34,5 @@ export 'package:tms_api/src/model/towable.dart';
 export 'package:tms_api/src/model/truck.dart';
 export 'package:tms_api/src/model/truck_drive_state.dart';
 export 'package:tms_api/src/model/truck_drive_state_enum.dart';
+export 'package:tms_api/src/model/truck_driver_card.dart';
 export 'package:tms_api/src/model/vehicle.dart';

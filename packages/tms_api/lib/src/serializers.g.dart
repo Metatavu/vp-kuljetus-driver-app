@@ -22,6 +22,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Truck.serializer)
       ..add(TruckDriveState.serializer)
       ..add(TruckDriveStateEnum.serializer)
+      ..add(TruckDriverCard.serializer)
       ..add(TruckTypeEnum.serializer)
       ..add(Vehicle.serializer)
       ..addBuilderFactory(

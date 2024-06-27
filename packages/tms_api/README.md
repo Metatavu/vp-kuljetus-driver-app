@@ -84,6 +84,7 @@ Class | Method | HTTP request | Description
 [*TowablesApi*](doc/TowablesApi.md) | [**listTowables**](doc/TowablesApi.md#listtowables) | **GET** /vehicle-management/v1/towables | List Towables.
 [*TrucksApi*](doc/TrucksApi.md) | [**findTruck**](doc/TrucksApi.md#findtruck) | **GET** /vehicle-management/v1/trucks/{truckId} | Find a truck.
 [*TrucksApi*](doc/TrucksApi.md) | [**listDriveStates**](doc/TrucksApi.md#listdrivestates) | **GET** /vehicle-management/v1/trucks/{truckId}/driveStates | List drive states.
+[*TrucksApi*](doc/TrucksApi.md) | [**listTruckDriverCards**](doc/TrucksApi.md#listtruckdrivercards) | **GET** /vehicle-management/v1/trucks/{truckId}/driverCards | Lists truck driver cards
 [*TrucksApi*](doc/TrucksApi.md) | [**listTrucks**](doc/TrucksApi.md#listtrucks) | **GET** /vehicle-management/v1/trucks | List Trucks.
 [*VehiclesApi*](doc/VehiclesApi.md) | [**createVehicle**](doc/VehiclesApi.md#createvehicle) | **POST** /vehicle-management/v1/vehicles | Create vehicle
 [*VehiclesApi*](doc/VehiclesApi.md) | [**findVehicle**](doc/VehiclesApi.md#findvehicle) | **GET** /vehicle-management/v1/vehicles/{vehicleId} | Find a vehicle.
@@ -106,6 +107,7 @@ Class | Method | HTTP request | Description
  - [Truck](doc/Truck.md)
  - [TruckDriveState](doc/TruckDriveState.md)
  - [TruckDriveStateEnum](doc/TruckDriveStateEnum.md)
+ - [TruckDriverCard](doc/TruckDriverCard.md)
  - [Vehicle](doc/Vehicle.md)
 
 

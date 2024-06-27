@@ -28,6 +28,7 @@ import 'package:tms_api/src/model/towable.dart';
 import 'package:tms_api/src/model/truck.dart';
 import 'package:tms_api/src/model/truck_drive_state.dart';
 import 'package:tms_api/src/model/truck_drive_state_enum.dart';
+import 'package:tms_api/src/model/truck_driver_card.dart';
 import 'package:tms_api/src/model/vehicle.dart';
 
 part 'serializers.g.dart';
@@ -47,9 +48,14 @@ part 'serializers.g.dart';
   Truck,
   TruckDriveState,
   TruckDriveStateEnum,
+  TruckDriverCard,
   Vehicle,
 ])
 Serializers serializers = (_$serializers.toBuilder()
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(TruckDriverCard)]),
+        () => ListBuilder<TruckDriverCard>(),
+      )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Towable)]),
         () => ListBuilder<Towable>(),

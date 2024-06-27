@@ -157,7 +157,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **listTrucks**
-> BuiltList<Truck> listTrucks(plateNumber, archived, first, max)
+> BuiltList<Truck> listTrucks(plateNumber, archived, sortBy, sortDirection, first, max)
 
 List Trucks.
 
@@ -170,11 +170,13 @@ import 'package:tms_api/api.dart';
 final api = TmsApi().getTrucksApi();
 final String plateNumber = plateNumber_example; // String | Filter results by plate number
 final bool archived = true; // bool | Filter results by archived status
+final TruckSortByField sortBy = ; // TruckSortByField | Sort results by field
+final SortOrder sortDirection = ; // SortOrder | Sort direction
 final int first = 56; // int | First result.
 final int max = 56; // int | Max results.
 
 try {
-    final response = api.listTrucks(plateNumber, archived, first, max);
+    final response = api.listTrucks(plateNumber, archived, sortBy, sortDirection, first, max);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling TrucksApi->listTrucks: $e\n');
@@ -187,6 +189,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **plateNumber** | **String**| Filter results by plate number | [optional] 
  **archived** | **bool**| Filter results by archived status | [optional] 
+ **sortBy** | [**TruckSortByField**](.md)| Sort results by field | [optional] 
+ **sortDirection** | [**SortOrder**](.md)| Sort direction | [optional] 
  **first** | **int**| First result. | [optional] 
  **max** | **int**| Max results. | [optional] 
 

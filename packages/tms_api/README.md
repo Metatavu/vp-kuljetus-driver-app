@@ -100,6 +100,7 @@ Class | Method | HTTP request | Description
  - [PublicTruck](doc/PublicTruck.md)
  - [Route](doc/Route.md)
  - [Site](doc/Site.md)
+ - [SortOrder](doc/SortOrder.md)
  - [Task](doc/Task.md)
  - [TaskStatus](doc/TaskStatus.md)
  - [TaskType](doc/TaskType.md)
@@ -108,6 +109,7 @@ Class | Method | HTTP request | Description
  - [TruckDriveState](doc/TruckDriveState.md)
  - [TruckDriveStateEnum](doc/TruckDriveStateEnum.md)
  - [TruckDriverCard](doc/TruckDriverCard.md)
+ - [TruckSortByField](doc/TruckSortByField.md)
  - [Vehicle](doc/Vehicle.md)
 
 

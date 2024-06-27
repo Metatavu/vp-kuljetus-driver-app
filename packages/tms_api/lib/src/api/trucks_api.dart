@@ -10,10 +10,12 @@ import 'package:dio/dio.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:tms_api/src/api_util.dart';
 import 'package:tms_api/src/model/error.dart';
+import 'package:tms_api/src/model/sort_order.dart';
 import 'package:tms_api/src/model/truck.dart';
 import 'package:tms_api/src/model/truck_drive_state.dart';
 import 'package:tms_api/src/model/truck_drive_state_enum.dart';
 import 'package:tms_api/src/model/truck_driver_card.dart';
+import 'package:tms_api/src/model/truck_sort_by_field.dart';
 
 class TrucksApi {
   final Dio _dio;
@@ -324,6 +326,8 @@ class TrucksApi {
   /// Parameters:
   /// * [plateNumber] - Filter results by plate number
   /// * [archived] - Filter results by archived status
+  /// * [sortBy] - Sort results by field
+  /// * [sortDirection] - Sort direction
   /// * [first] - First result.
   /// * [max] - Max results.
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -338,6 +342,8 @@ class TrucksApi {
   Future<Response<BuiltList<Truck>>> listTrucks({
     String? plateNumber,
     bool? archived,
+    TruckSortByField? sortBy,
+    SortOrder? sortDirection,
     int? first,
     int? max,
     CancelToken? cancelToken,
@@ -373,6 +379,12 @@ class TrucksApi {
       if (archived != null)
         r'archived':
             encodeQueryParameter(_serializers, archived, const FullType(bool)),
+      if (sortBy != null)
+        r'sortBy': encodeQueryParameter(
+            _serializers, sortBy, const FullType(TruckSortByField)),
+      if (sortDirection != null)
+        r'sortDirection': encodeQueryParameter(
+            _serializers, sortDirection, const FullType(SortOrder)),
       if (first != null)
         r'first':
             encodeQueryParameter(_serializers, first, const FullType(int)),

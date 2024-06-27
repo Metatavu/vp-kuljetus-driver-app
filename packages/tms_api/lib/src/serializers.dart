@@ -21,6 +21,7 @@ import 'package:tms_api/src/model/freight_unit.dart';
 import 'package:tms_api/src/model/public_truck.dart';
 import 'package:tms_api/src/model/route.dart';
 import 'package:tms_api/src/model/site.dart';
+import 'package:tms_api/src/model/sort_order.dart';
 import 'package:tms_api/src/model/task.dart';
 import 'package:tms_api/src/model/task_status.dart';
 import 'package:tms_api/src/model/task_type.dart';
@@ -29,6 +30,7 @@ import 'package:tms_api/src/model/truck.dart';
 import 'package:tms_api/src/model/truck_drive_state.dart';
 import 'package:tms_api/src/model/truck_drive_state_enum.dart';
 import 'package:tms_api/src/model/truck_driver_card.dart';
+import 'package:tms_api/src/model/truck_sort_by_field.dart';
 import 'package:tms_api/src/model/vehicle.dart';
 
 part 'serializers.g.dart';
@@ -41,6 +43,7 @@ part 'serializers.g.dart';
   PublicTruck,
   Route,
   Site,
+  SortOrder,
   Task,
   TaskStatus,
   TaskType,
@@ -49,6 +52,7 @@ part 'serializers.g.dart';
   TruckDriveState,
   TruckDriveStateEnum,
   TruckDriverCard,
+  TruckSortByField,
   Vehicle,
 ])
 Serializers serializers = (_$serializers.toBuilder()

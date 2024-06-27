@@ -14,6 +14,7 @@ doc/Route.md
 doc/RoutesApi.md
 doc/Site.md
 doc/SitesApi.md
+doc/SortOrder.md
 doc/Task.md
 doc/TaskStatus.md
 doc/TaskType.md
@@ -24,6 +25,7 @@ doc/Truck.md
 doc/TruckDriveState.md
 doc/TruckDriveStateEnum.md
 doc/TruckDriverCard.md
+doc/TruckSortByField.md
 doc/TrucksApi.md
 doc/Vehicle.md
 doc/VehiclesApi.md
@@ -53,6 +55,7 @@ lib/src/model/freight_unit.dart
 lib/src/model/public_truck.dart
 lib/src/model/route.dart
 lib/src/model/site.dart
+lib/src/model/sort_order.dart
 lib/src/model/task.dart
 lib/src/model/task_status.dart
 lib/src/model/task_type.dart
@@ -61,8 +64,8 @@ lib/src/model/truck.dart
 lib/src/model/truck_drive_state.dart
 lib/src/model/truck_drive_state_enum.dart
 lib/src/model/truck_driver_card.dart
+lib/src/model/truck_sort_by_field.dart
 lib/src/model/vehicle.dart
 lib/src/serializers.dart
 lib/tms_api.dart
 pubspec.yaml
-test/truck_driver_card_test.dart

@@ -157,7 +157,7 @@ class _ListFreightUnitsProviderElement
   String get freightId => (origin as ListFreightUnitsProvider).freightId;
 }
 
-String _$updateFreightUnitHash() => r'44630e10e9c21cb376fb5747dc37c622a3859d83';
+String _$updateFreightUnitHash() => r'1570667e25aac076393ab74fc1dc8b5f1954c886';
 
 abstract class _$UpdateFreightUnit
     extends BuildlessAutoDisposeNotifier<Object?> {

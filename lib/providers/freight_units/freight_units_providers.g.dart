@@ -156,5 +156,151 @@ class _ListFreightUnitsProviderElement
   @override
   String get freightId => (origin as ListFreightUnitsProvider).freightId;
 }
+
+String _$updateFreightUnitHash() => r'44630e10e9c21cb376fb5747dc37c622a3859d83';
+
+abstract class _$UpdateFreightUnit
+    extends BuildlessAutoDisposeNotifier<Object?> {
+  late final String freightUnitId;
+
+  Object? build(
+    String freightUnitId,
+  );
+}
+
+/// See also [UpdateFreightUnit].
+@ProviderFor(UpdateFreightUnit)
+const updateFreightUnitProvider = UpdateFreightUnitFamily();
+
+/// See also [UpdateFreightUnit].
+class UpdateFreightUnitFamily extends Family<Object?> {
+  /// See also [UpdateFreightUnit].
+  const UpdateFreightUnitFamily();
+
+  /// See also [UpdateFreightUnit].
+  UpdateFreightUnitProvider call(
+    String freightUnitId,
+  ) {
+    return UpdateFreightUnitProvider(
+      freightUnitId,
+    );
+  }
+
+  @override
+  UpdateFreightUnitProvider getProviderOverride(
+    covariant UpdateFreightUnitProvider provider,
+  ) {
+    return call(
+      provider.freightUnitId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateFreightUnitProvider';
+}
+
+/// See also [UpdateFreightUnit].
+class UpdateFreightUnitProvider
+    extends AutoDisposeNotifierProviderImpl<UpdateFreightUnit, Object?> {
+  /// See also [UpdateFreightUnit].
+  UpdateFreightUnitProvider(
+    String freightUnitId,
+  ) : this._internal(
+          () => UpdateFreightUnit()..freightUnitId = freightUnitId,
+          from: updateFreightUnitProvider,
+          name: r'updateFreightUnitProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateFreightUnitHash,
+          dependencies: UpdateFreightUnitFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateFreightUnitFamily._allTransitiveDependencies,
+          freightUnitId: freightUnitId,
+        );
+
+  UpdateFreightUnitProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.freightUnitId,
+  }) : super.internal();
+
+  final String freightUnitId;
+
+  @override
+  Object? runNotifierBuild(
+    covariant UpdateFreightUnit notifier,
+  ) {
+    return notifier.build(
+      freightUnitId,
+    );
+  }
+
+  @override
+  Override overrideWith(UpdateFreightUnit Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateFreightUnitProvider._internal(
+        () => create()..freightUnitId = freightUnitId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        freightUnitId: freightUnitId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<UpdateFreightUnit, Object?>
+      createElement() {
+    return _UpdateFreightUnitProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateFreightUnitProvider &&
+        other.freightUnitId == freightUnitId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, freightUnitId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UpdateFreightUnitRef on AutoDisposeNotifierProviderRef<Object?> {
+  /// The parameter `freightUnitId` of this provider.
+  String get freightUnitId;
+}
+
+class _UpdateFreightUnitProviderElement
+    extends AutoDisposeNotifierProviderElement<UpdateFreightUnit, Object?>
+    with UpdateFreightUnitRef {
+  _UpdateFreightUnitProviderElement(super.provider);
+
+  @override
+  String get freightUnitId =>
+      (origin as UpdateFreightUnitProvider).freightUnitId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

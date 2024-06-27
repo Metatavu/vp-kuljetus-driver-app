@@ -1,9 +1,13 @@
+import "dart:async";
+import "dart:developer";
+
 import "package:oidc/oidc.dart";
 import "package:oidc_default_store/oidc_default_store.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
+import "package:vp_kuljetus_driver_app/services/store/store.dart";
 
 part "authentication_providers.g.dart";
 
@@ -40,12 +44,16 @@ class AuthNotifier extends _$AuthNotifier {
     final userChangesStream = authManager.userChanges();
 
     final apiAuthSubscription = userChangesStream.listen((final user) {
-      if (user?.token.accessToken != null) {
-        tmsApi.setBearerAuth("BearerAuth", user!.token.accessToken!);
-      }
+      tmsApi.setBearerAuth("BearerAuth", user?.token.accessToken ?? "");
     });
 
+    final logoutViaCardRemovalInterval = Timer.periodic(
+      const Duration(seconds: 10),
+      _handleLogoutIfCardIsRemoved,
+    );
+
     ref.onDispose(apiAuthSubscription.cancel);
+    ref.onDispose(logoutViaCardRemovalInterval.cancel);
 
     return userChangesStream;
   }
@@ -54,6 +62,22 @@ class AuthNotifier extends _$AuthNotifier {
       authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:$truckId");
 
   Future<void> logout() async => authManager.logout();
+
+  Future<void> _handleLogoutIfCardIsRemoved(final Timer timer) async {
+    final truckId = store.getString(lastSelectedTruckIdStoreKey);
+
+    if (truckId == null || state.value?.userInfo == null) return;
+
+    final driverCardsResponse =
+        await tmsApi.getTrucksApi().listTruckDriverCards(truckId: truckId);
+
+    if (driverCardsResponse.statusCode != 200) {
+      log("Failed to list driver cards: ${driverCardsResponse.statusCode}");
+      return;
+    }
+
+    if (driverCardsResponse.data!.isEmpty) await logout();
+  }
 }
 
 @riverpod

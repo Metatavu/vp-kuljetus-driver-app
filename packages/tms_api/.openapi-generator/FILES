@@ -23,6 +23,7 @@ doc/TowablesApi.md
 doc/Truck.md
 doc/TruckDriveState.md
 doc/TruckDriveStateEnum.md
+doc/TruckDriverCard.md
 doc/TrucksApi.md
 doc/Vehicle.md
 doc/VehiclesApi.md
@@ -59,7 +60,9 @@ lib/src/model/towable.dart
 lib/src/model/truck.dart
 lib/src/model/truck_drive_state.dart
 lib/src/model/truck_drive_state_enum.dart
+lib/src/model/truck_driver_card.dart
 lib/src/model/vehicle.dart
 lib/src/serializers.dart
 lib/tms_api.dart
 pubspec.yaml
+test/truck_driver_card_test.dart

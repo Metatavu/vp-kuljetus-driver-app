@@ -21,7 +21,8 @@ return _TaskGroupTimestamps.fromJson(json);
 /// @nodoc
 mixin _$TaskGroupTimestamps {
 
- String get taskGroupKey => throw _privateConstructorUsedError; DateTime get startedAt => throw _privateConstructorUsedError;@JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) TaskType get taskType => throw _privateConstructorUsedError; DateTime? get finishedAt => throw _privateConstructorUsedError;
+ String get taskGroupKey => throw _privateConstructorUsedError; DateTime get startedAt => throw _privateConstructorUsedError;// ignore: invalid_annotation_target
+@JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) TaskType get taskType => throw _privateConstructorUsedError; DateTime? get finishedAt => throw _privateConstructorUsedError;
 
 
 
@@ -109,6 +110,7 @@ class _$TaskGroupTimestampsImpl  implements _TaskGroupTimestamps {
 
 @override final  String taskGroupKey;
 @override final  DateTime startedAt;
+// ignore: invalid_annotation_target
 @override@JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) final  TaskType taskType;
 @override final  DateTime? finishedAt;
 
@@ -144,7 +146,8 @@ abstract class _TaskGroupTimestamps implements TaskGroupTimestamps {
 
   factory _TaskGroupTimestamps.fromJson(Map<String, dynamic> json) = _$TaskGroupTimestampsImpl.fromJson;
 
-@override  String get taskGroupKey;@override  DateTime get startedAt;@override @JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) TaskType get taskType;@override  DateTime? get finishedAt;
+@override  String get taskGroupKey;@override  DateTime get startedAt;@override // ignore: invalid_annotation_target
+@JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) TaskType get taskType;@override  DateTime? get finishedAt;
 @override @JsonKey(ignore: true)
 _$$TaskGroupTimestampsImplCopyWith<_$TaskGroupTimestampsImpl> get copyWith => throw _privateConstructorUsedError;
 

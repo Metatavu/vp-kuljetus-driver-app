@@ -74,6 +74,8 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
       contextMenuBuilder: (final _, final __) => const SizedBox.shrink(),
       keyboardType: TextInputType.number,
       controller: textEditController,
+      // TODO: Properly handle keyboard padding
+      // Client currently uses one phone model and this is sufficient for the time being.
       scrollPadding: const EdgeInsets.only(bottom: 210),
       decoration: InputDecoration(
         fillColor: Color.fromRGBO(255, 255, 0, editMode ? 0.5 : 0.0),

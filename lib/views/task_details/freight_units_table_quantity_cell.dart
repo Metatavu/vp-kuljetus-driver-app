@@ -50,9 +50,9 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
     });
 
 
-  Widget renderSuffixIcon() =>
+  Widget? renderSuffixIcon() => readOnly ? null :
     IconButton(
-      onPressed: onEditingComplete,
+      onPressed: readOnly ? null : onEditingComplete,
       icon: Icon(
         editMode ? Icons.check : Icons.edit,
         size: 20,
@@ -62,7 +62,8 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
 
     return TextField(
       focusNode: focusNode,
-      readOnly: !editMode,
+      enableInteractiveSelection: editMode,
+      readOnly: readOnly || !editMode,
       contextMenuBuilder: (final _, final __) => const SizedBox.shrink(),
       keyboardType: TextInputType.number,
       controller: textEditController,

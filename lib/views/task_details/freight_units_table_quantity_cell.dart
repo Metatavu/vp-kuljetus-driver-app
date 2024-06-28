@@ -74,7 +74,7 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
       contextMenuBuilder: (final _, final __) => const SizedBox.shrink(),
       keyboardType: TextInputType.number,
       controller: textEditController,
-      scrollPadding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      scrollPadding: const EdgeInsets.only(bottom: 210),
       decoration: InputDecoration(
         fillColor: Color.fromRGBO(255, 255, 0, editMode ? 0.5 : 0.0),
         filled: true,

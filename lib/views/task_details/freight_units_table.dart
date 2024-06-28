@@ -51,10 +51,10 @@ class FreightUnitsTable extends HookConsumerWidget {
               readOnly: readOnly,
               editMode: rowInEditMode.value == freightUnit.id,
               freightUnit: freightUnit,
+              setEditMode: (final editMode) => rowInEditMode.value = editMode ? freightUnit.id : null,
               toggleEditMode: () => rowInEditMode.value == freightUnit.id ? rowInEditMode.value = null : rowInEditMode.value = freightUnit.id,
             ),
           ),
-          onTap: () {},
         ),
         DataCell(
           Container(

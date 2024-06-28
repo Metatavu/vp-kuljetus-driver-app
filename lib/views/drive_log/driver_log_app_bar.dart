@@ -47,7 +47,7 @@ class DriverLogAppBar extends HookConsumerWidget {
       listDriveStatesProvider(
         truckId: selectedTruckId,
         driverId: driverId,
-        // after: DateTime.fromMillisecondsSinceEpoch(sessionStartedAt).toUtc(),
+        after: DateTime.fromMillisecondsSinceEpoch(sessionStartedAt).toUtc(),
       ),
     );
 

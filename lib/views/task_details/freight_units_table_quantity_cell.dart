@@ -4,6 +4,14 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/providers/freight_units/freight_units_providers.dart";
 
+String formatFreightUnitQuantity(final FreightUnit freightUnit) {
+  final quantity = freightUnit.quantity;
+  if (quantity == null) return "-";
+  if (quantity.toInt() == quantity.roundToDouble()) return quantity.toInt().toString();
+
+  return freightUnit.quantity.toString();
+}
+
 class FreightUnitsTableQuantityCell extends HookConsumerWidget {
   const FreightUnitsTableQuantityCell({
     super.key,
@@ -11,12 +19,14 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
     required this.editMode,
     required this.freightUnit,
     required this.toggleEditMode,
+    required this.setEditMode,
   });
 
   final bool readOnly;
   final bool editMode;
   final FreightUnit freightUnit;
   final VoidCallback toggleEditMode;
+  final Function(bool) setEditMode;
 
   @override
   Widget build(final context, final ref) {
@@ -24,10 +34,12 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
 
     final updateFreightUnitNotifier = ref.watch(updateFreightUnitProvider(freightUnit.id!).notifier);
 
-    final initialQuantityString = freightUnit.quantity == null ? "" : freightUnit.quantity.toString();
-    final textEditController = useTextEditingController(text: initialQuantityString);
+    final textEditController = useTextEditingController(text: formatFreightUnitQuantity(freightUnit));
 
-    useEffect(() => focusNode.requestFocus, [ editMode ],);
+    useEffect(() {
+      editMode ? focusNode.requestFocus() : null;
+      return null;
+  }, [ editMode ],);
 
     void onEditingComplete() {
       final newQuantity = double.tryParse(textEditController.text);
@@ -37,22 +49,16 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
           freightUnit.rebuild((final builder) => builder.quantity = newQuantity),
         );
       } else {
-        textEditController.text = initialQuantityString;
+        textEditController.text = formatFreightUnitQuantity(freightUnit);
       }
       FocusManager.instance.primaryFocus?.unfocus();
       toggleEditMode();
     }
 
-    focusNode.addListener(() {
-      if (editMode && !focusNode.hasFocus) {
-        onEditingComplete();
-      }
-    });
 
-
-  Widget renderSuffixIcon() =>
+  Widget? renderSuffixIcon() => readOnly ? null :
     IconButton(
-      onPressed: onEditingComplete,
+      onPressed: readOnly ? null : onEditingComplete,
       icon: Icon(
         editMode ? Icons.check : Icons.edit,
         size: 20,
@@ -62,16 +68,22 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
 
     return TextField(
       focusNode: focusNode,
-      readOnly: !editMode,
+      onTap: () => setEditMode(true),
+      enableInteractiveSelection: editMode,
+      readOnly: readOnly || !editMode,
       contextMenuBuilder: (final _, final __) => const SizedBox.shrink(),
       keyboardType: TextInputType.number,
       controller: textEditController,
+      // TODO: Properly handle keyboard padding
+      // Client currently uses one phone model and this is sufficient for the time being.
+      scrollPadding: const EdgeInsets.only(bottom: 210),
       decoration: InputDecoration(
         fillColor: Color.fromRGBO(255, 255, 0, editMode ? 0.5 : 0.0),
         filled: true,
         border: InputBorder.none,
         suffixIcon: renderSuffixIcon(),
         ),
+        onEditingComplete: onEditingComplete,
     );
   }
 }

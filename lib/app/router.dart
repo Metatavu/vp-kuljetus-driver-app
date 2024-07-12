@@ -5,7 +5,10 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
-import "package:vp_kuljetus_driver_app/views/login/login_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/driver_login_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/login_screen_shell.dart";
+import "package:vp_kuljetus_driver_app/views/login/login_selection_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/terminal_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/main_tabs/main_tabs_view.dart";
 import "package:vp_kuljetus_driver_app/views/route_tasks/route_tasks_screen.dart";
 import "package:vp_kuljetus_driver_app/views/routes/routes_screen.dart";
@@ -45,12 +48,43 @@ GoRouter router(final RouterRef ref) {
           child: SplashScreen(),
         ),
       ),
-      GoRoute(
-        path: "/login",
-        name: "login",
-        pageBuilder: (final context, final state) => const NoTransitionPage(
-          child: LoginScreen(),
-        ),
+      ShellRoute(
+        pageBuilder: (
+          final context,
+          final state,
+          final child,
+        ) =>
+          NoTransitionPage(
+            child: LoginScreenShell(
+              navigateBackVisible: state.uri.toString() != "/login",
+              child: child,
+            ),
+          ),
+        routes: [
+          GoRoute(
+            path: "/login",
+            name: "login",
+            pageBuilder: (final context, final state) => const NoTransitionPage(
+                child: LoginSelectionScreen(),
+              ),
+            routes: [
+              GoRoute(
+                path: "driver",
+                name: "driver-login",
+                pageBuilder: (final context, final state) => const NoTransitionPage(
+                  child: DriverLoginScreen(),
+                ),
+              ),
+              GoRoute(
+                path: "terminal",
+                name: "terminal-login",
+                pageBuilder: (final context, final state) => const NoTransitionPage(
+                  child: TerminalLoginScreen(),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       ShellRoute(
         pageBuilder: (
@@ -140,12 +174,14 @@ String? handleRedirect(
     return "/";
   }
 
+  final authPaths = ["/login", "/login/driver", "/login/terminal"];
+
   final auth = authenticatedNotifier.value.requireValue;
 
   final isSplash = state.uri.path == "/";
   if (isSplash) return auth ? "/vehicle" : "/login";
 
-  final isLoggingIn = state.uri.path == "/login";
+  final isLoggingIn = authPaths.contains(state.uri.path);
   if (isLoggingIn) return auth ? "/vehicle" : null;
 
   return auth ? null : "/login";

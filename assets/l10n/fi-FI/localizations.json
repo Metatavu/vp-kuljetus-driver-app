@@ -6,7 +6,7 @@
   "installingUpdate": "Asennetaan päivitystä...",
   "skipUpdate": "Ohita päivitys",
   "loginInstructions": "Aseta digikortti piirturiin ja paina \"Kirjaudu\".",
-  "login": "Kirjaudu",
+  "login": "Kirjaudu sisään",
   "logout": "Kirjaudu ulos",
   "errors": {
     "listPublicTrucks": "Virhe listatessa ajoneuvoja",
@@ -63,5 +63,11 @@
     "loading": "Lastaus",
     "unloading": "Purku",
     "other": "Muu työ"
-  }
+  },
+  "driver": "Kuljettaja",
+  "terminalOrOffice": "Terminaali / Toimisto",
+  "loginSelectionTitle": "Valitse tuntikirjauksen tyyppi",
+  "navigateBackToLoginSelection": "Takaisin tyypin valintaan",
+  "loginWithPinCode": "Kirjaudu pin-koodillasi",
+  "pinCode": "Pin-koodi"
 }

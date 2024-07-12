@@ -80,6 +80,9 @@ Class | Method | HTTP request | Description
 [*TasksApi*](doc/TasksApi.md) | [**findTask**](doc/TasksApi.md#findtask) | **GET** /delivery-info/v1/tasks/{taskId} | Find a task.
 [*TasksApi*](doc/TasksApi.md) | [**listTasks**](doc/TasksApi.md#listtasks) | **GET** /delivery-info/v1/tasks | List Tasks.
 [*TasksApi*](doc/TasksApi.md) | [**updateTask**](doc/TasksApi.md#updatetask) | **PUT** /delivery-info/v1/tasks/{taskId} | Updates task
+[*TimeEntriesApi*](doc/TimeEntriesApi.md) | [**createEmployeeTimeEntry**](doc/TimeEntriesApi.md#createemployeetimeentry) | **POST** /user-management/v1/employees/{employeeId}/timeEntries | Create Employees Time Entry.
+[*TimeEntriesApi*](doc/TimeEntriesApi.md) | [**findEmployeeTimeEntry**](doc/TimeEntriesApi.md#findemployeetimeentry) | **GET** /user-management/v1/employees/{employeeId}/timeEntries/{timeEntryId} | Find an employee&#39;s time entry.
+[*TimeEntriesApi*](doc/TimeEntriesApi.md) | [**listEmployeeTimeEntries**](doc/TimeEntriesApi.md#listemployeetimeentries) | **GET** /user-management/v1/employees/{employeeId}/timeEntries | List Employees Time Entries.
 [*TowablesApi*](doc/TowablesApi.md) | [**findTowable**](doc/TowablesApi.md#findtowable) | **GET** /vehicle-management/v1/towables/{towableId} | Find a towable.
 [*TowablesApi*](doc/TowablesApi.md) | [**listTowables**](doc/TowablesApi.md#listtowables) | **GET** /vehicle-management/v1/towables | List Towables.
 [*TrucksApi*](doc/TrucksApi.md) | [**findTruck**](doc/TrucksApi.md#findtruck) | **GET** /vehicle-management/v1/trucks/{truckId} | Find a truck.
@@ -89,21 +92,26 @@ Class | Method | HTTP request | Description
 [*VehiclesApi*](doc/VehiclesApi.md) | [**createVehicle**](doc/VehiclesApi.md#createvehicle) | **POST** /vehicle-management/v1/vehicles | Create vehicle
 [*VehiclesApi*](doc/VehiclesApi.md) | [**findVehicle**](doc/VehiclesApi.md#findvehicle) | **GET** /vehicle-management/v1/vehicles/{vehicleId} | Find a vehicle.
 [*VehiclesApi*](doc/VehiclesApi.md) | [**listVehicles**](doc/VehiclesApi.md#listvehicles) | **GET** /vehicle-management/v1/vehicles | List Vehicles.
+[*WorkTypesApi*](doc/WorkTypesApi.md) | [**listWorkTypes**](doc/WorkTypesApi.md#listworktypes) | **GET** /user-management/v1/workTypes | List Work Types.
 
 
 ## Documentation For Models
 
  - [Driver](doc/Driver.md)
+ - [EmployeeType](doc/EmployeeType.md)
  - [Error](doc/Error.md)
  - [Freight](doc/Freight.md)
  - [FreightUnit](doc/FreightUnit.md)
+ - [Office](doc/Office.md)
  - [PublicTruck](doc/PublicTruck.md)
  - [Route](doc/Route.md)
+ - [SalaryGroup](doc/SalaryGroup.md)
  - [Site](doc/Site.md)
  - [SortOrder](doc/SortOrder.md)
  - [Task](doc/Task.md)
  - [TaskStatus](doc/TaskStatus.md)
  - [TaskType](doc/TaskType.md)
+ - [TimeEntry](doc/TimeEntry.md)
  - [Towable](doc/Towable.md)
  - [Truck](doc/Truck.md)
  - [TruckDriveState](doc/TruckDriveState.md)
@@ -111,6 +119,8 @@ Class | Method | HTTP request | Description
  - [TruckDriverCard](doc/TruckDriverCard.md)
  - [TruckSortByField](doc/TruckSortByField.md)
  - [Vehicle](doc/Vehicle.md)
+ - [WorkType](doc/WorkType.md)
+ - [WorkTypeCategory](doc/WorkTypeCategory.md)
 
 
 ## Documentation For Authorization

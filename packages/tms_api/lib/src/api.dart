@@ -16,9 +16,11 @@ import 'package:tms_api/src/api/public_trucks_api.dart';
 import 'package:tms_api/src/api/routes_api.dart';
 import 'package:tms_api/src/api/sites_api.dart';
 import 'package:tms_api/src/api/tasks_api.dart';
+import 'package:tms_api/src/api/time_entries_api.dart';
 import 'package:tms_api/src/api/towables_api.dart';
 import 'package:tms_api/src/api/trucks_api.dart';
 import 'package:tms_api/src/api/vehicles_api.dart';
+import 'package:tms_api/src/api/work_types_api.dart';
 
 class TmsApi {
   static const String basePath = r'http://localhost';
@@ -127,6 +129,12 @@ class TmsApi {
     return TasksApi(dio, serializers);
   }
 
+  /// Get TimeEntriesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  TimeEntriesApi getTimeEntriesApi() {
+    return TimeEntriesApi(dio, serializers);
+  }
+
   /// Get TowablesApi instance, base route and serializer can be overridden by a given but be careful,
   /// by doing that all interceptors will not be executed
   TowablesApi getTowablesApi() {
@@ -143,5 +151,11 @@ class TmsApi {
   /// by doing that all interceptors will not be executed
   VehiclesApi getVehiclesApi() {
     return VehiclesApi(dio, serializers);
+  }
+
+  /// Get WorkTypesApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  WorkTypesApi getWorkTypesApi() {
+    return WorkTypesApi(dio, serializers);
   }
 }

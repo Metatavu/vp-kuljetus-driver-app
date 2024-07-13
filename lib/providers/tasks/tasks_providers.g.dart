@@ -251,7 +251,7 @@ class _ListTasksProviderElement
   int? get max => (origin as ListTasksProvider).max;
 }
 
-String _$findTaskHash() => r'dc95f8887f0b25b4e857babd0dc28bc2925abcb4';
+String _$findTaskHash() => r'2363e0b6ffb4c1ff9f5d1780b50cee9dd03011c7';
 
 /// See also [findTask].
 @ProviderFor(findTask)

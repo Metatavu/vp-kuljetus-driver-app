@@ -6,9 +6,9 @@ import "package:vp_kuljetus_driver_app/providers/authentication/authentication_p
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
 import "package:vp_kuljetus_driver_app/views/login/driver_login_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/employee_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/login_screen_shell.dart";
 import "package:vp_kuljetus_driver_app/views/login/login_selection_screen.dart";
-import "package:vp_kuljetus_driver_app/views/login/terminal_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/main_tabs/main_tabs_view.dart";
 import "package:vp_kuljetus_driver_app/views/route_tasks/route_tasks_screen.dart";
 import "package:vp_kuljetus_driver_app/views/routes/routes_screen.dart";
@@ -76,10 +76,10 @@ GoRouter router(final RouterRef ref) {
                 ),
               ),
               GoRoute(
-                path: "terminal",
-                name: "terminal-login",
+                path: "employee",
+                name: "employee-login",
                 pageBuilder: (final context, final state) => const NoTransitionPage(
-                  child: TerminalLoginScreen(),
+                  child: EmployeeLoginScreen(),
                 ),
               ),
             ],
@@ -174,7 +174,7 @@ String? handleRedirect(
     return "/";
   }
 
-  final authPaths = ["/login", "/login/driver", "/login/terminal"];
+  final authPaths = ["/login", "/login/driver", "/login/employee"];
 
   final auth = authenticatedNotifier.value.requireValue;
 

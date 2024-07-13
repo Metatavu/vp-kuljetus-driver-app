@@ -3,8 +3,8 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
-class TerminalLoginScreen extends HookConsumerWidget {
-  const TerminalLoginScreen({super.key});
+class EmployeeLoginScreen extends HookConsumerWidget {
+  const EmployeeLoginScreen({super.key});
 
   @override
   Widget build(final context, final ref) {

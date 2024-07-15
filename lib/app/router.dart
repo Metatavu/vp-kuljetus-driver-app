@@ -5,6 +5,8 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
+import "package:vp_kuljetus_driver_app/views/employee/employee_app_bar.dart";
+import "package:vp_kuljetus_driver_app/views/employee/employee_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/driver_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/employee_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/login_screen_shell.dart";
@@ -83,6 +85,38 @@ GoRouter router(final RouterRef ref) {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+      ShellRoute(
+        pageBuilder: (
+          final context,
+          final state,
+          final child,
+        ) {
+          final statusBarHeight = MediaQuery.of(context).viewPadding.top;
+          final defaultPanelHeight = statusBarHeight + 77;
+          final contentHeight = MediaQuery.of(context).size.height - defaultPanelHeight;
+
+          return NoTransitionPage(
+            child: Scaffold(
+              body: Column(
+                children: [
+                  const EmployeeAppBar(),
+                  Container(
+                    constraints: BoxConstraints.loose(Size.fromHeight(contentHeight)),
+                    child: child,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+        routes: [
+          GoRoute(
+            path: "/employee",
+            name: "employee",
+            pageBuilder: (final context, final state) => const NoTransitionPage(child: EmployeeScreen()),
           ),
         ],
       ),
@@ -174,17 +208,24 @@ String? handleRedirect(
     return "/";
   }
 
-  final authPaths = ["/login", "/login/driver", "/login/employee"];
-
   final auth = authenticatedNotifier.value.requireValue;
 
+  final loginPaths = ["/login", "/login/employee", "/login/driver"];
+  //TODO: Don't redirect to /vehicle if we're logged in to terminal
   final isSplash = state.uri.path == "/";
   if (isSplash) return auth ? "/vehicle" : "/login";
 
-  final isLoggingIn = authPaths.contains(state.uri.path);
-  if (isLoggingIn) return auth ? "/vehicle" : null;
+  final isEmployeeLogin = state.uri.path == "/login/employee";
+  final isDriverLogin = state.uri.path == "/login/driver";
 
-  return auth ? null : "/login";
+  if (auth) {
+    if (isEmployeeLogin) return "/employee";
+    if (isDriverLogin) return "/driver";
+
+    return null;
+  }
+
+  return loginPaths.contains(state.uri.path) ? null : "/login";
 }
 
 String? handleRedirectIfOngoingTasks(

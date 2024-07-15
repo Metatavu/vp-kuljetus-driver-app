@@ -107,3 +107,7 @@ dart_define:
       description: URL for app updates
     - name: UPDATES_SKIPPABLE
       description: Whether updates can be skipped
+    - name: OVERRIDE_LOGIN_USERNAME
+      description: Override login username. Used in development before PIN-code login.
+    - name: OVERRIDE_LOGIN_PASSWORD
+      description: Override login password. Used in development before PIN-code login.

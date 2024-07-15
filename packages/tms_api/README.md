@@ -83,6 +83,7 @@ Class | Method | HTTP request | Description
 [*TimeEntriesApi*](doc/TimeEntriesApi.md) | [**createEmployeeTimeEntry**](doc/TimeEntriesApi.md#createemployeetimeentry) | **POST** /user-management/v1/employees/{employeeId}/timeEntries | Create Employees Time Entry.
 [*TimeEntriesApi*](doc/TimeEntriesApi.md) | [**findEmployeeTimeEntry**](doc/TimeEntriesApi.md#findemployeetimeentry) | **GET** /user-management/v1/employees/{employeeId}/timeEntries/{timeEntryId} | Find an employee&#39;s time entry.
 [*TimeEntriesApi*](doc/TimeEntriesApi.md) | [**listEmployeeTimeEntries**](doc/TimeEntriesApi.md#listemployeetimeentries) | **GET** /user-management/v1/employees/{employeeId}/timeEntries | List Employees Time Entries.
+[*TimeEntriesApi*](doc/TimeEntriesApi.md) | [**updateEmployeeTimeEntry**](doc/TimeEntriesApi.md#updateemployeetimeentry) | **PUT** /user-management/v1/employees/{employeeId}/timeEntries/{timeEntryId} | Update Employee&#39;s Time Entry.
 [*TowablesApi*](doc/TowablesApi.md) | [**findTowable**](doc/TowablesApi.md#findtowable) | **GET** /vehicle-management/v1/towables/{towableId} | Find a towable.
 [*TowablesApi*](doc/TowablesApi.md) | [**listTowables**](doc/TowablesApi.md#listtowables) | **GET** /vehicle-management/v1/towables | List Towables.
 [*TrucksApi*](doc/TrucksApi.md) | [**findTruck**](doc/TrucksApi.md#findtruck) | **GET** /vehicle-management/v1/trucks/{truckId} | Find a truck.

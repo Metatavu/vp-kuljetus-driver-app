@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
 class EmployeeLoginScreen extends HookConsumerWidget {
@@ -10,6 +11,7 @@ class EmployeeLoginScreen extends HookConsumerWidget {
   Widget build(final context, final ref) {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
+    final authNotifier = ref.watch(authNotifierProvider.notifier);
 
     final textEditingController = useTextEditingController();
 
@@ -39,7 +41,7 @@ class EmployeeLoginScreen extends HookConsumerWidget {
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: ()  {},
+          onPressed: ()  => authNotifier.login(null),
           style: ElevatedButton.styleFrom(
             elevation: 0,
             fixedSize: const Size.fromHeight(35),

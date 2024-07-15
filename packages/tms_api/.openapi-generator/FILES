@@ -85,11 +85,3 @@ lib/src/model/work_type_category.dart
 lib/src/serializers.dart
 lib/tms_api.dart
 pubspec.yaml
-test/employee_type_test.dart
-test/office_test.dart
-test/salary_group_test.dart
-test/time_entries_api_test.dart
-test/time_entry_test.dart
-test/work_type_category_test.dart
-test/work_type_test.dart
-test/work_types_api_test.dart

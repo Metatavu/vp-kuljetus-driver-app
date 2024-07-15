@@ -9,6 +9,7 @@ const lastSelectedTruckIdStoreKey = "last_selected_truck_id";
 const ongoingTaskDataStoreKey = "ongoing_task_id";
 const taskGroupTimestampsKey = "task_group_timestamps";
 const sessionStartedTimestampStoreKey = "session_started_timestamp";
+const lastStartedTimeEntryStoreKey = "last_started_time_entry";
 
 late final SharedPreferences store;
 

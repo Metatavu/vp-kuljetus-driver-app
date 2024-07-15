@@ -1,5 +1,3 @@
-import "dart:developer";
-
 import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
@@ -45,18 +43,7 @@ class DriverLoginScreen extends HookConsumerWidget {
       [publicTrucks.hasValue],
     );
 
-    Future<void> initLogin(final PublicTruck selectedTruck) async {
-      try {
-        await authNotifier.login(selectedTruck.id!);
-        final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-        await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt.toInt());
-      } catch (error) {
-        log(
-          "Failed to login to truck ${selectedTruck.name} (ID ${selectedTruck.id}, VIN ${selectedTruck.vin})",
-          error: error,
-        );
-      }
-    }
+    Future<void> initLogin(final PublicTruck selectedTruck) async => authNotifier.login(selectedTruck);
 
     void onSelectTruck(final PublicTruck? publicTruck) {
       selectedPublicTruck.value = publicTruck;

@@ -4,6 +4,7 @@ import "dart:developer";
 import "package:oidc/oidc.dart";
 import "package:oidc_default_store/oidc_default_store.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
+import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -58,8 +59,33 @@ class AuthNotifier extends _$AuthNotifier {
     return userChangesStream;
   }
 
-  Future<void> login(final String truckId) =>
-      authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:$truckId");
+  Future<void> login(final PublicTruck? truck) async {
+    if (truck != null) {
+      await _login(truck);
+    } else {
+      await _loginEmployee();
+    }
+
+    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
+  }
+
+  Future<void> _login(final PublicTruck truck) async {
+    try {
+      await authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:${truck.id}");
+    } catch (error) {
+      log("Failed to login to truck ${truck.name} (ID ${truck.id}, VIN ${truck.vin})", error: error);
+    }
+  }
+
+  Future<void> _loginEmployee() async {
+    try {
+      // TODO: Implement PIN-code login flow.
+      await authManager.loginPassword(username: Env.overrideLoginUsername, password: Env.overrideLoginPassword);
+    } catch (error) {
+      log("Failed to login as employee", error: error);
+    }
+  }
 
   Future<void> logout() async => authManager.logout();
 

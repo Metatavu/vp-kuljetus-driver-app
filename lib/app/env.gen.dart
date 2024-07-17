@@ -22,6 +22,12 @@ class Env {
 
   /// Whether updates can be skipped
   static const updatesSkippable = bool.fromEnvironment('UPDATES_SKIPPABLE');
+
+  /// Override login username. Used in development before PIN-code login.
+  static const overrideLoginUsername = String.fromEnvironment('OVERRIDE_LOGIN_USERNAME');
+
+  /// Override login password. Used in development before PIN-code login.
+  static const overrideLoginPassword = String.fromEnvironment('OVERRIDE_LOGIN_PASSWORD');
 }
 
     

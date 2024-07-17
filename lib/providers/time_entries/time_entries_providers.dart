@@ -12,11 +12,15 @@ part "time_entries_providers.g.dart";
 class TimeEntries extends _$TimeEntries {
 
   @override
-  Future<List<TimeEntry>> build(final String employeeId) async {
+  Future<List<TimeEntry>> build(final String? employeeId) async {
     final cancelToken = CancelToken();
     ref.onDispose(cancelToken.cancel);
 
     try {
+      if (employeeId == null) {
+        log("Attempted to list time entries with $employeeId employeeId");
+        return [];
+      }
       final response = await tmsApi.getTimeEntriesApi().listEmployeeTimeEntries(
             employeeId: employeeId,
             cancelToken: cancelToken,

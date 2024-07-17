@@ -69,5 +69,7 @@
   "loginSelectionTitle": "Valitse tuntikirjauksen tyyppi",
   "navigateBackToLoginSelection": "Takaisin tyypin valintaan",
   "loginWithPinCode": "Kirjaudu pin-koodillasi",
-  "pinCode": "Pin-koodi"
+  "pinCode": "Pin-koodi",
+  "workingTime": "Työaika",
+  "finishWorkDay": "Lopeta työpäivä"
 }

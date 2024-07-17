@@ -6,7 +6,7 @@ part of 'time_entries_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$timeEntriesHash() => r'd364c1d6f79d6693bfec6c68a31ee8710aad6def';
+String _$timeEntriesHash() => r'1324bff0ac4c14524403aa2a766f9f93020f2b4a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 
 abstract class _$TimeEntries
     extends BuildlessAutoDisposeAsyncNotifier<List<TimeEntry>> {
-  late final String employeeId;
+  late final String? employeeId;
 
   FutureOr<List<TimeEntry>> build(
-    String employeeId,
+    String? employeeId,
   );
 }
 
@@ -49,7 +49,7 @@ class TimeEntriesFamily extends Family<AsyncValue<List<TimeEntry>>> {
 
   /// See also [TimeEntries].
   TimeEntriesProvider call(
-    String employeeId,
+    String? employeeId,
   ) {
     return TimeEntriesProvider(
       employeeId,
@@ -85,7 +85,7 @@ class TimeEntriesProvider
     extends AutoDisposeAsyncNotifierProviderImpl<TimeEntries, List<TimeEntry>> {
   /// See also [TimeEntries].
   TimeEntriesProvider(
-    String employeeId,
+    String? employeeId,
   ) : this._internal(
           () => TimeEntries()..employeeId = employeeId,
           from: timeEntriesProvider,
@@ -110,7 +110,7 @@ class TimeEntriesProvider
     required this.employeeId,
   }) : super.internal();
 
-  final String employeeId;
+  final String? employeeId;
 
   @override
   FutureOr<List<TimeEntry>> runNotifierBuild(
@@ -159,7 +159,7 @@ class TimeEntriesProvider
 
 mixin TimeEntriesRef on AutoDisposeAsyncNotifierProviderRef<List<TimeEntry>> {
   /// The parameter `employeeId` of this provider.
-  String get employeeId;
+  String? get employeeId;
 }
 
 class _TimeEntriesProviderElement
@@ -168,7 +168,7 @@ class _TimeEntriesProviderElement
   _TimeEntriesProviderElement(super.provider);
 
   @override
-  String get employeeId => (origin as TimeEntriesProvider).employeeId;
+  String? get employeeId => (origin as TimeEntriesProvider).employeeId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

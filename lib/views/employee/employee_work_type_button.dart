@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:developer";
 
 import "package:collection/collection.dart";
 import "package:flutter/material.dart";
@@ -9,6 +10,7 @@ import "package:vp_kuljetus_driver_app/providers/authentication/authentication_p
 import "package:vp_kuljetus_driver_app/providers/time_entries/time_entries_providers.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/utils/date.dart";
+import "package:vp_kuljetus_driver_app/utils/time_entries.dart";
 
 class EmployeeWorkTypeButton extends HookConsumerWidget {
   const EmployeeWorkTypeButton({super.key, required this.workType});
@@ -19,73 +21,46 @@ class EmployeeWorkTypeButton extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final theme = Theme.of(context);
     final employeeId = ref.watch(userInfoProvider)?.sub;
+    final lastStartedTimeEntryId = store.getString(lastStartedTimeEntryStoreKey);
 
-    if (employeeId == null) {
-      throw Error((final builder) => builder.message = "Attempted to render EmployeeWorkTypeButton without an employeeId");
-    }
-
-    final timeEntries = ref.watch(timeEntriesProvider(employeeId)).asData?.value;
+    final timeEntries = ref
+      .watch(timeEntriesProvider(employeeId))
+      .asData
+      ?.value
+      .where((final timeEntry) => timeEntry.workTypeId == workType.id)
+      .toList();
 
     if (timeEntries == null) {
       return const SizedBox.shrink();
     }
 
-    Duration calculateTotalWorkTypeDuration() {
-      final workTypeTimeEntries = timeEntries.where((final timeEntry) => timeEntry.workTypeId == workType.id);
-      return workTypeTimeEntries.fold(Duration.zero, (final Duration previousValue, final element) {
-        final isRunningTimeEntry = element.endTime == null;
-        if (isRunningTimeEntry) {
-          final runningTimeEntryDuration = DateTime.now().toUtc().difference(element.startTime);
-          return previousValue + runningTimeEntryDuration;
-        } else {
-          return previousValue + element.endTime!.difference(element.startTime);
-        }
-      });
-    }
+    final lastStartedTimeEntry = useMemoized(() => timeEntries.firstWhereOrNull((final timeEntry) => timeEntry.id == lastStartedTimeEntryId), [ timeEntries, lastStartedTimeEntryId]);
+    final isRunning = useState(lastStartedTimeEntry?.workTypeId == workType.id);
 
-    final totalWorkTypeDuration = useState(calculateTotalWorkTypeDuration());
+    final totalWorkTypeDuration = useState(sumTimeEntries(timeEntries));
+
+    useEffect(() {
+      isRunning.value = lastStartedTimeEntry?.workTypeId == workType.id;
+
+      return null;
+    }, [lastStartedTimeEntry],);
 
     useEffect(() {
       final timer = Timer.periodic(const Duration(minutes: 1), (final _) {
-        totalWorkTypeDuration.value = calculateTotalWorkTypeDuration();
+        totalWorkTypeDuration.value = sumTimeEntries(timeEntries);
       });
 
       return timer.cancel;
     }, [timeEntries],);
 
-    Color? getBackgroundColor(final WorkType workType) {
-      final lastStartedTimeEntryId = store.getString(lastStartedTimeEntryStoreKey);
-      final lastStartedTimeEntry = timeEntries.firstWhereOrNull((final element) => element.id == lastStartedTimeEntryId);
-
-      if (lastStartedTimeEntry?.workTypeId == workType.id) {
-        return const Color(0xFF1B4649);
-      }
-      return null;
-    }
-
-    Color? getTextColor(final WorkType workType) {
-      final lastStartedTimeEntryId = store.getString(lastStartedTimeEntryStoreKey);
-      final lastStartedTimeEntry = timeEntries.firstWhereOrNull((final element) => element.id == lastStartedTimeEntryId);
-
-      if (lastStartedTimeEntry?.workTypeId == workType.id) {
-        return Colors.white;
-      }
-      return null;
-    }
-
-    IconData getIcon(final WorkType workType) {
-      final lastStartedTimeEntryId = store.getString(lastStartedTimeEntryStoreKey);
-      final lastStartedTimeEntry = timeEntries.firstWhereOrNull((final element) => element.id == lastStartedTimeEntryId);
-
-      if (lastStartedTimeEntry?.workTypeId == workType.id) {
-        return Icons.pause;
-      }
-      return Icons.play_arrow;
-    }
-
     void onButtonPressed() {
       final lastStartedTimeEntryId = store.getString(lastStartedTimeEntryStoreKey);
       final lastStartedTimeEntry = timeEntries.firstWhereOrNull((final element) => element.id == lastStartedTimeEntryId);
+
+      if (employeeId == null) {
+        log("Attempted to start or end a time entry with $employeeId employeeId");
+        return;
+      }
 
       if (lastStartedTimeEntry?.workTypeId == workType.id) {
         ref
@@ -99,10 +74,11 @@ class EmployeeWorkTypeButton extends HookConsumerWidget {
     }
 
     return OutlinedButton(
+      // TODO: Do we want to also use the button itself for user interactions?
       onPressed: () {},
       style: OutlinedButton.styleFrom(
         fixedSize: const Size.fromHeight(53),
-        backgroundColor: getBackgroundColor(workType),
+        backgroundColor: isRunning.value ? const Color(0xFF1B4649) : null,
         padding: const EdgeInsets.all(12),
         side: BorderSide(color: Colors.black.withOpacity(0.2), width: 1),
         shape: const RoundedRectangleBorder(
@@ -117,7 +93,7 @@ class EmployeeWorkTypeButton extends HookConsumerWidget {
             child: Text(
               workType.name,
               style: theme.textTheme.titleMedium?.copyWith(
-                color: getTextColor(workType),
+                color: isRunning.value ? Colors.white : null,
               ),
             ),
           ),
@@ -129,15 +105,15 @@ class EmployeeWorkTypeButton extends HookConsumerWidget {
                 Text(
                   formatDurationToPaddedHhMm(totalWorkTypeDuration.value),
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: getTextColor(workType),
+                    color: isRunning.value ? Colors.white : null,
                   ),
                 ),
                 IconButton(
                   padding: const EdgeInsets.all(0),
                   onPressed: onButtonPressed,
                   icon: Icon(
-                    getIcon(workType),
-                    color: getTextColor(workType),
+                    isRunning.value ? Icons.pause : Icons.play_arrow,
+                    color: isRunning.value ? Colors.white : null,
                   ),
                 ),
               ],

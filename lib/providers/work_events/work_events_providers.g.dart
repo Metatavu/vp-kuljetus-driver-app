@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'time_entries_providers.dart';
+part of 'work_events_providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$timeEntriesHash() => r'1324bff0ac4c14524403aa2a766f9f93020f2b4a';
+String _$workEventsHash() => r'55d64d60e26a2ce8f46ca6363d15ffd7f00d80e1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +29,36 @@ class _SystemHash {
   }
 }
 
-abstract class _$TimeEntries
-    extends BuildlessAutoDisposeAsyncNotifier<List<TimeEntry>> {
+abstract class _$WorkEvents
+    extends BuildlessAutoDisposeAsyncNotifier<List<WorkEvent>> {
   late final String? employeeId;
 
-  FutureOr<List<TimeEntry>> build(
+  FutureOr<List<WorkEvent>> build(
     String? employeeId,
   );
 }
 
-/// See also [TimeEntries].
-@ProviderFor(TimeEntries)
-const timeEntriesProvider = TimeEntriesFamily();
+/// See also [WorkEvents].
+@ProviderFor(WorkEvents)
+const workEventsProvider = WorkEventsFamily();
 
-/// See also [TimeEntries].
-class TimeEntriesFamily extends Family<AsyncValue<List<TimeEntry>>> {
-  /// See also [TimeEntries].
-  const TimeEntriesFamily();
+/// See also [WorkEvents].
+class WorkEventsFamily extends Family<AsyncValue<List<WorkEvent>>> {
+  /// See also [WorkEvents].
+  const WorkEventsFamily();
 
-  /// See also [TimeEntries].
-  TimeEntriesProvider call(
+  /// See also [WorkEvents].
+  WorkEventsProvider call(
     String? employeeId,
   ) {
-    return TimeEntriesProvider(
+    return WorkEventsProvider(
       employeeId,
     );
   }
 
   @override
-  TimeEntriesProvider getProviderOverride(
-    covariant TimeEntriesProvider provider,
+  WorkEventsProvider getProviderOverride(
+    covariant WorkEventsProvider provider,
   ) {
     return call(
       provider.employeeId,
@@ -77,30 +77,30 @@ class TimeEntriesFamily extends Family<AsyncValue<List<TimeEntry>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'timeEntriesProvider';
+  String? get name => r'workEventsProvider';
 }
 
-/// See also [TimeEntries].
-class TimeEntriesProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<TimeEntries, List<TimeEntry>> {
-  /// See also [TimeEntries].
-  TimeEntriesProvider(
+/// See also [WorkEvents].
+class WorkEventsProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<WorkEvents, List<WorkEvent>> {
+  /// See also [WorkEvents].
+  WorkEventsProvider(
     String? employeeId,
   ) : this._internal(
-          () => TimeEntries()..employeeId = employeeId,
-          from: timeEntriesProvider,
-          name: r'timeEntriesProvider',
+          () => WorkEvents()..employeeId = employeeId,
+          from: workEventsProvider,
+          name: r'workEventsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$timeEntriesHash,
-          dependencies: TimeEntriesFamily._dependencies,
+                  : _$workEventsHash,
+          dependencies: WorkEventsFamily._dependencies,
           allTransitiveDependencies:
-              TimeEntriesFamily._allTransitiveDependencies,
+              WorkEventsFamily._allTransitiveDependencies,
           employeeId: employeeId,
         );
 
-  TimeEntriesProvider._internal(
+  WorkEventsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,8 +113,8 @@ class TimeEntriesProvider
   final String? employeeId;
 
   @override
-  FutureOr<List<TimeEntry>> runNotifierBuild(
-    covariant TimeEntries notifier,
+  FutureOr<List<WorkEvent>> runNotifierBuild(
+    covariant WorkEvents notifier,
   ) {
     return notifier.build(
       employeeId,
@@ -122,10 +122,10 @@ class TimeEntriesProvider
   }
 
   @override
-  Override overrideWith(TimeEntries Function() create) {
+  Override overrideWith(WorkEvents Function() create) {
     return ProviderOverride(
       origin: this,
-      override: TimeEntriesProvider._internal(
+      override: WorkEventsProvider._internal(
         () => create()..employeeId = employeeId,
         from: from,
         name: null,
@@ -138,14 +138,14 @@ class TimeEntriesProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<TimeEntries, List<TimeEntry>>
+  AutoDisposeAsyncNotifierProviderElement<WorkEvents, List<WorkEvent>>
       createElement() {
-    return _TimeEntriesProviderElement(this);
+    return _WorkEventsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TimeEntriesProvider && other.employeeId == employeeId;
+    return other is WorkEventsProvider && other.employeeId == employeeId;
   }
 
   @override
@@ -157,18 +157,18 @@ class TimeEntriesProvider
   }
 }
 
-mixin TimeEntriesRef on AutoDisposeAsyncNotifierProviderRef<List<TimeEntry>> {
+mixin WorkEventsRef on AutoDisposeAsyncNotifierProviderRef<List<WorkEvent>> {
   /// The parameter `employeeId` of this provider.
   String? get employeeId;
 }
 
-class _TimeEntriesProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<TimeEntries,
-        List<TimeEntry>> with TimeEntriesRef {
-  _TimeEntriesProviderElement(super.provider);
+class _WorkEventsProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<WorkEvents, List<WorkEvent>>
+    with WorkEventsRef {
+  _WorkEventsProviderElement(super.provider);
 
   @override
-  String? get employeeId => (origin as TimeEntriesProvider).employeeId;
+  String? get employeeId => (origin as WorkEventsProvider).employeeId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

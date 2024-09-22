@@ -4,10 +4,10 @@ import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
-import "package:vp_kuljetus_driver_app/providers/time_entries/time_entries_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/work_events/work_events_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/utils/date.dart";
-import "package:vp_kuljetus_driver_app/utils/time_entries.dart";
+import "package:vp_kuljetus_driver_app/utils/work_events.dart";
 
 class EmployeeAppBar extends HookConsumerWidget {
   const EmployeeAppBar({super.key});
@@ -21,24 +21,24 @@ class EmployeeAppBar extends HookConsumerWidget {
     final defaultPanelHeight = statusBarHeight + 77;
 
     final employeeId = ref.watch(userInfoProvider)?.sub;
-    final timeEntries = ref.watch(
-      timeEntriesProvider(employeeId),
+    final workEvents = ref.watch(
+      workEventsProvider(employeeId),
     );
 
-    final totalWorkingTime = useState(sumTimeEntries(timeEntries.valueOrNull ?? []));
+    final totalWorkingTime = useState(sumWorkEvents(workEvents.valueOrNull ?? []));
 
     useEffect(() {
       final timer = Timer.periodic(const Duration(minutes: 1), (final _) {
-        totalWorkingTime.value = sumTimeEntries(timeEntries.valueOrNull ?? []);
+        totalWorkingTime.value = sumWorkEvents(workEvents.valueOrNull ?? []);
       });
 
       return timer.cancel;
     }, [],);
 
     useEffect(() {
-      totalWorkingTime.value = sumTimeEntries(timeEntries.valueOrNull ?? []);
+      totalWorkingTime.value = sumWorkEvents(workEvents.valueOrNull ?? []);
       return null;
-    }, [timeEntries.valueOrNull],);
+    }, [workEvents.valueOrNull],);
 
     return Material(
       elevation: 5,

@@ -17,14 +17,14 @@ Method | HTTP request | Description
 
 Find a driver.
 
-Finds a driver by id.
+Finds a driver by ID.
 
 ### Example
 ```dart
 import 'package:tms_api/api.dart';
 
 final api = TmsApi().getDriversApi();
-final String driverId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | driver's id
+final String driverId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | driver's ID
 
 try {
     final response = api.findDriver(driverId);
@@ -38,7 +38,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **driverId** | **String**| driver's id | 
+ **driverId** | **String**| driver's ID | 
 
 ### Return type
 

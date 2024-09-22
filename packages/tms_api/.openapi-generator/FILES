@@ -22,8 +22,6 @@ doc/Task.md
 doc/TaskStatus.md
 doc/TaskType.md
 doc/TasksApi.md
-doc/TimeEntriesApi.md
-doc/TimeEntry.md
 doc/Towable.md
 doc/TowablesApi.md
 doc/Truck.md
@@ -34,9 +32,9 @@ doc/TruckSortByField.md
 doc/TrucksApi.md
 doc/Vehicle.md
 doc/VehiclesApi.md
-doc/WorkType.md
-doc/WorkTypeCategory.md
-doc/WorkTypesApi.md
+doc/WorkEvent.md
+doc/WorkEventType.md
+doc/WorkEventsApi.md
 lib/src/api.dart
 lib/src/api/drivers_api.dart
 lib/src/api/freight_units_api.dart
@@ -45,11 +43,10 @@ lib/src/api/public_trucks_api.dart
 lib/src/api/routes_api.dart
 lib/src/api/sites_api.dart
 lib/src/api/tasks_api.dart
-lib/src/api/time_entries_api.dart
 lib/src/api/towables_api.dart
 lib/src/api/trucks_api.dart
 lib/src/api/vehicles_api.dart
-lib/src/api/work_types_api.dart
+lib/src/api/work_events_api.dart
 lib/src/api_util.dart
 lib/src/auth/api_key_auth.dart
 lib/src/auth/auth.dart
@@ -72,7 +69,6 @@ lib/src/model/sort_order.dart
 lib/src/model/task.dart
 lib/src/model/task_status.dart
 lib/src/model/task_type.dart
-lib/src/model/time_entry.dart
 lib/src/model/towable.dart
 lib/src/model/truck.dart
 lib/src/model/truck_drive_state.dart
@@ -80,8 +76,11 @@ lib/src/model/truck_drive_state_enum.dart
 lib/src/model/truck_driver_card.dart
 lib/src/model/truck_sort_by_field.dart
 lib/src/model/vehicle.dart
-lib/src/model/work_type.dart
-lib/src/model/work_type_category.dart
+lib/src/model/work_event.dart
+lib/src/model/work_event_type.dart
 lib/src/serializers.dart
 lib/tms_api.dart
 pubspec.yaml
+test/work_event_test.dart
+test/work_event_type_test.dart
+test/work_events_api_test.dart

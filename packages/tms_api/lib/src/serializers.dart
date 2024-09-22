@@ -28,7 +28,6 @@ import 'package:tms_api/src/model/sort_order.dart';
 import 'package:tms_api/src/model/task.dart';
 import 'package:tms_api/src/model/task_status.dart';
 import 'package:tms_api/src/model/task_type.dart';
-import 'package:tms_api/src/model/time_entry.dart';
 import 'package:tms_api/src/model/towable.dart';
 import 'package:tms_api/src/model/truck.dart';
 import 'package:tms_api/src/model/truck_drive_state.dart';
@@ -36,8 +35,8 @@ import 'package:tms_api/src/model/truck_drive_state_enum.dart';
 import 'package:tms_api/src/model/truck_driver_card.dart';
 import 'package:tms_api/src/model/truck_sort_by_field.dart';
 import 'package:tms_api/src/model/vehicle.dart';
-import 'package:tms_api/src/model/work_type.dart';
-import 'package:tms_api/src/model/work_type_category.dart';
+import 'package:tms_api/src/model/work_event.dart';
+import 'package:tms_api/src/model/work_event_type.dart';
 
 part 'serializers.g.dart';
 
@@ -56,7 +55,6 @@ part 'serializers.g.dart';
   Task,
   TaskStatus,
   TaskType,
-  TimeEntry,
   Towable,
   Truck,
   TruckDriveState,
@@ -64,13 +62,17 @@ part 'serializers.g.dart';
   TruckDriverCard,
   TruckSortByField,
   Vehicle,
-  WorkType,
-  WorkTypeCategory,
+  WorkEvent,
+  WorkEventType,
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Towable)]),
         () => ListBuilder<Towable>(),
+      )
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(WorkEvent)]),
+        () => ListBuilder<WorkEvent>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Site)]),
@@ -89,16 +91,8 @@ Serializers serializers = (_$serializers.toBuilder()
         () => ListBuilder<Truck>(),
       )
       ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(WorkType)]),
-        () => ListBuilder<WorkType>(),
-      )
-      ..addBuilderFactory(
         const FullType(BuiltList, [FullType(TruckDriverCard)]),
         () => ListBuilder<TruckDriverCard>(),
-      )
-      ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(TimeEntry)]),
-        () => ListBuilder<TimeEntry>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Route)]),

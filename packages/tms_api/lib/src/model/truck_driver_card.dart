@@ -12,12 +12,17 @@ part 'truck_driver_card.g.dart';
 ///
 /// Properties:
 /// * [id] - Driver card ID
+/// * [timestamp] - Timestamp for driver card insertion. Unix timestamp in milliseconds.
 @BuiltValue()
 abstract class TruckDriverCard
     implements Built<TruckDriverCard, TruckDriverCardBuilder> {
   /// Driver card ID
   @BuiltValueField(wireName: r'id')
   String get id;
+
+  /// Timestamp for driver card insertion. Unix timestamp in milliseconds.
+  @BuiltValueField(wireName: r'timestamp')
+  int get timestamp;
 
   TruckDriverCard._();
 
@@ -50,6 +55,11 @@ class _$TruckDriverCardSerializer
       object.id,
       specifiedType: const FullType(String),
     );
+    yield r'timestamp';
+    yield serializers.serialize(
+      object.timestamp,
+      specifiedType: const FullType(int),
+    );
   }
 
   @override
@@ -81,6 +91,13 @@ class _$TruckDriverCardSerializer
             specifiedType: const FullType(String),
           ) as String;
           result.id = valueDes;
+          break;
+        case r'timestamp':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
+          result.timestamp = valueDes;
           break;
         default:
           unhandled.add(key);

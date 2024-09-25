@@ -213,7 +213,7 @@ String? handleRedirect(
   final loginPaths = ["/login", "/login/employee", "/login/driver"];
   //TODO: Don't redirect to /vehicle if we're logged in to terminal
   final isSplash = state.uri.path == "/";
-  if (isSplash) return auth ? "/vehicle" : "/login";
+  if (isSplash) return auth ? getLastStartedSessionType() == SessionType.driver ? "/vehicle" : "/employee" :"/login";
 
   final isEmployeeLogin = state.uri.path == "/login/employee";
   final isDriverLogin = state.uri.path == "/login/driver";

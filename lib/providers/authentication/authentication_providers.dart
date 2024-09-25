@@ -48,43 +48,54 @@ class AuthNotifier extends _$AuthNotifier {
       tmsApi.setBearerAuth("BearerAuth", user?.token.accessToken ?? "");
     });
 
-    final logoutViaCardRemovalInterval = Timer.periodic(
-      const Duration(seconds: 10),
-      _handleLogoutIfCardIsRemoved,
-    );
-
     ref.onDispose(apiAuthSubscription.cancel);
-    ref.onDispose(logoutViaCardRemovalInterval.cancel);
 
     return userChangesStream;
   }
 
-  Future<void> login(final PublicTruck? truck) async {
+  Future<OidcUser?> login(final PublicTruck? truck) async {
+    OidcUser? oidcUser;
     if (truck != null) {
-      await _login(truck);
+      oidcUser = await _login(truck);
     } else {
-      await _loginEmployee();
+      oidcUser = await _loginEmployee();
     }
 
     final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
     await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
+
+    return oidcUser;
   }
 
-  Future<void> _login(final PublicTruck truck) async {
+  Future<OidcUser?> _login(final PublicTruck truck) async {
     try {
-      await authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:${truck.id}");
+      final oidcUser = await authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:${truck.id}");
+
+      final logoutViaCardRemovalInterval = Timer.periodic(
+        const Duration(seconds: 10),
+        _handleLogoutIfCardIsRemoved,
+      );
+      ref.onDispose(logoutViaCardRemovalInterval.cancel);
+      await setLastStartedSessionType(SessionType.driver);
+
+      return oidcUser;
     } catch (error) {
       log("Failed to login to truck ${truck.name} (ID ${truck.id}, VIN ${truck.vin})", error: error);
     }
+    return null;
   }
 
-  Future<void> _loginEmployee() async {
+  Future<OidcUser?> _loginEmployee() async {
     try {
       // TODO: Implement PIN-code login flow.
-      await authManager.loginPassword(username: Env.overrideLoginUsername, password: Env.overrideLoginPassword);
+      final oidcUser = await authManager.loginPassword(username: Env.overrideLoginUsername, password: Env.overrideLoginPassword);
+      await setLastStartedSessionType(SessionType.terminal);
+
+      return oidcUser;
     } catch (error) {
       log("Failed to login as employee", error: error);
     }
+    return null;
   }
 
   Future<void> logout() async => authManager.logout();

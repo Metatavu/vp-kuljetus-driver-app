@@ -9,8 +9,8 @@ DateTime endOfToday() {
 }
 
 String formatDateToPaddedHhMm(final DateTime date) {
-  final hour = date.hour.toString().padLeft(2, "0");
-  final minute = date.minute.toString().padLeft(2, "0");
+  final hour = date.toLocal().hour.toString().padLeft(2, "0");
+  final minute = date.toLocal().minute.toString().padLeft(2, "0");
 
   return "$hour:$minute";
 }

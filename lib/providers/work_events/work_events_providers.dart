@@ -4,11 +4,10 @@ import "package:dio/dio.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
-import "package:vp_kuljetus_driver_app/utils/provider_cache.dart";
 
 part "work_events_providers.g.dart";
 
-@riverpod
+@Riverpod(keepAlive: true)
 class WorkEvents extends _$WorkEvents {
 
   @override
@@ -24,11 +23,9 @@ class WorkEvents extends _$WorkEvents {
       final response = await tmsApi.getWorkEventsApi().listEmployeeWorkEvents(
             employeeId: employeeId,
             // TODO: Implement pagination/infinite scroll etc.
-            max: double.maxFinite.toInt(),
             cancelToken: cancelToken,
           );
 
-      ref.cacheFor(const Duration(minutes: 1));
       return response.data?.toList() ?? [];
     } on DioException catch (error) {
       log("Failed to list work events: $error");
@@ -37,24 +34,7 @@ class WorkEvents extends _$WorkEvents {
     }
   }
 
-  Future<WorkEvent?> getLatestWorkEvent(final String employeeId) async {
-    final cancelToken = CancelToken();
-    ref.onDispose(cancelToken.cancel);
-
-    try {
-      final response = await tmsApi.getWorkEventsApi().listEmployeeWorkEvents(
-        employeeId: employeeId,
-        max: 1,
-        cancelToken: cancelToken,
-      );
-
-      return response.data?.first;
-    } on DioException catch (error) {
-      log("Failed to get latest work event: $error");
-      log(error.requestOptions.toString());
-      rethrow;
-    }
-  }
+  WorkEvent? getLatestWorkEvent(final String employeeId) => state.asData?.value.first;
 
   Future<void> createWorkEvent(final String employeeId, final WorkEventType workEventType) async {
     try {

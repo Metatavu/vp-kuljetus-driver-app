@@ -1,14 +1,32 @@
 import "package:tms_api/tms_api.dart";
 
+Duration sumWorkEventsByType(
+  final WorkEventType workEventType,
+  final List<WorkEvent> workEvents,
+) => workEvents.fold(
+    Duration.zero, (
+      final Duration previousValue,
+      final workEvent,
+    ) =>
+        workEvent.workEventType == workEventType
+          ? previousValue + calculateWorkEventDuration(workEvent, workEvents)
+          : previousValue,
+  );
+
 Duration sumWorkEvents(
-  final List<WorkEvent> timeEntries,
-) => timeEntries.fold(
+  final List<WorkEvent> workEvents,
+) => workEvents.fold(
   Duration.zero, (
     final Duration previousValue,
-    final element,
-  ) {
-    // TODO: Refactor this
-      final index = timeEntries.indexOf(element);
-      final nextElement = timeEntries.elementAt(index + 1);
-      return previousValue + nextElement.time.difference(element.time);
-  });
+    final workEvent,
+  ) => previousValue + calculateWorkEventDuration(workEvent, workEvents),);
+
+Duration calculateWorkEventDuration(
+  final WorkEvent workEvent,
+  final List<WorkEvent> workEvents,
+) {
+  final index = workEvents.indexOf(workEvent);
+  final previousElement = index == 0 ? null : workEvents.elementAtOrNull(index - 1);
+
+  return previousElement?.time.difference(workEvent.time) ?? DateTime.now().difference(workEvent.time);
+}

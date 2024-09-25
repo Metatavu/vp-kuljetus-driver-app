@@ -1,7 +1,11 @@
+import "dart:developer";
+
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/work_events/work_events_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
 class EmployeeLoginScreen extends HookConsumerWidget {
@@ -14,6 +18,22 @@ class EmployeeLoginScreen extends HookConsumerWidget {
     final authNotifier = ref.watch(authNotifierProvider.notifier);
 
     final textEditingController = useTextEditingController();
+
+    Future<void> onLoginPressed() async {
+      final oidcUser = await authNotifier.login(null);
+      final userId = oidcUser?.uid;
+      if (userId == null) {
+        log("oidcUser is null");
+        return;
+      }
+      final workEventsProviderNotifier = ref.read(workEventsProvider(userId).notifier);
+      final latestWorkEventType = workEventsProviderNotifier.getLatestWorkEvent(userId)?.workEventType;
+      if (latestWorkEventType == WorkEventType.SHIFT_END) {
+        await workEventsProviderNotifier.createWorkEvent(userId, WorkEventType.SHIFT_START);
+      }
+      await workEventsProviderNotifier.createWorkEvent(userId, WorkEventType.LOGIN);
+      await workEventsProviderNotifier.createWorkEvent(userId, WorkEventType.OTHER_WORK);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,7 +61,7 @@ class EmployeeLoginScreen extends HookConsumerWidget {
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: ()  => authNotifier.login(null),
+          onPressed: onLoginPressed,
           style: ElevatedButton.styleFrom(
             elevation: 0,
             fixedSize: const Size.fromHeight(35),

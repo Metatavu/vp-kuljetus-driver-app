@@ -1,6 +1,7 @@
 import "dart:developer";
 
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
@@ -8,6 +9,20 @@ import "package:vp_kuljetus_driver_app/providers/authentication/authentication_p
 import "package:vp_kuljetus_driver_app/providers/work_events/work_events_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_work_event_type_button.dart";
+
+final workEventTypes = [
+  // TODO: ADD OFFICE WORK TO SPECS
+  WorkEventType.BREAK,
+  WorkEventType.OTHER_WORK,
+  WorkEventType.GREASE,
+  WorkEventType.VEGETABLE,
+  WorkEventType.DRY,
+  WorkEventType.BREWERY,
+  WorkEventType.PALTE,
+  WorkEventType.MEAT_CELLAR,
+  WorkEventType.MEIRA,
+  WorkEventType.FROZEN,
+];
 
 class EmployeeScreen extends HookConsumerWidget {
   const EmployeeScreen({super.key});
@@ -20,14 +35,17 @@ class EmployeeScreen extends HookConsumerWidget {
     final employeeId = ref.watch(userInfoProvider)?.sub;
     final authNotifier = ref.watch(authNotifierProvider.notifier);
 
+    final loading = useState(false);
+
     if (employeeId == null) {
         return const Center(child: Text("Employee not found"));
     }
 
+    /// TODO: Define whether finishing work day should send a lougout event or both logout and shift end events.
     Future<void> onFinishWorkDayPressed(final BuildContext context) async {
       log("Finishing work day...");
-      await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(employeeId, WorkEventType.SHIFT_END);
-      log("Ended time entry. Logging out...");
+      await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(employeeId, WorkEventType.LOGOUT);
+      log("Created logout work event. Logging out...");
       await authNotifier.logout();
       log("Logged out");
       if (context.mounted) {
@@ -38,19 +56,19 @@ class EmployeeScreen extends HookConsumerWidget {
 
     return SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
+          padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (final workEventType in WorkEventType.values)
+              for (final workEventType in workEventTypes)
                 Column(
                   children: [
-                    EmployeeWorkEventTypeButton(workEventType: workEventType),
+                    EmployeeWorkEventTypeButton(workEventType: workEventType, loading: loading,),
                     const SizedBox(height: 8),
                   ],
                 ),
               ElevatedButton(
-                onPressed: () => onFinishWorkDayPressed(context),
+                onPressed: loading.value ? null : () => onFinishWorkDayPressed(context),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(0),
                   fixedSize: const Size.fromHeight(35),

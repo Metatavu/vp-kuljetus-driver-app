@@ -31,3 +31,22 @@ getDriveStateWorkTypeKey(final TaskType? taskType, final bool isLatest) =>
     TaskType.UNLOAD => "stopType.unloading",
     _ => "stopType.other",
   };
+
+getWorkEventTypeKey(final WorkEventType workEventType) =>
+  switch (workEventType) {
+    WorkEventType.BREAK => "workEventType.break",
+    WorkEventType.VEGETABLE => "workEventType.vegetable",
+    WorkEventType.PALTE => "workEventType.palte",
+    WorkEventType.MEIRA => "workEventType.meira",
+    WorkEventType.BREWERY => "workEventType.brewery",
+    WorkEventType.DRY => "workEventType.dry",
+    WorkEventType.MEAT_CELLAR => "workEventType.meatCellar",
+    WorkEventType.FROZEN => "workEventType.frozen",
+    WorkEventType.GREASE => "workEventType.grease",
+    WorkEventType.OTHER_WORK => "workEventType.otherWork",
+    WorkEventType.LOGIN => "workEventType.login",
+    WorkEventType.LOGOUT => "workEventType.logout",
+    WorkEventType.SHIFT_START => "workEventType.shiftStart",
+    WorkEventType.SHIFT_END => "workEventType.shiftEnd",
+    _ => throw Exception("Unknown work event type: $workEventType")
+  };

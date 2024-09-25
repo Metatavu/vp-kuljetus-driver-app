@@ -1,6 +1,7 @@
 import "dart:convert";
 import "dart:developer";
 
+import "package:collection/collection.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/models/task_group_timestamps/task_group_timestamps.dart";
@@ -9,8 +10,11 @@ const lastSelectedTruckIdStoreKey = "last_selected_truck_id";
 const ongoingTaskDataStoreKey = "ongoing_task_id";
 const taskGroupTimestampsKey = "task_group_timestamps";
 const sessionStartedTimestampStoreKey = "session_started_timestamp";
+const lastStartedSessionTypeKey = "last_started_session_type";
 
 late final SharedPreferences store;
+
+enum SessionType { driver, terminal }
 
 Future<void> initStore() async {
   store = await SharedPreferences.getInstance();
@@ -58,5 +62,14 @@ void setTaskGroupEndedAt(final DateTime endedAt, final String groupedTaskKey, fi
     taskGroupTimestampsKey,
     jsonEncode(updatedTaskTimestamps),
   );
+}
 
+SessionType? getLastStartedSessionType() {
+  final sessionType = store.getString(lastStartedSessionTypeKey);
+
+  return SessionType.values.firstWhereOrNull((final type) => type.toString() == sessionType);
+}
+
+Future<void> setLastStartedSessionType(final SessionType sessionType) async {
+  await store.setString(lastStartedSessionTypeKey, sessionType.name);
 }

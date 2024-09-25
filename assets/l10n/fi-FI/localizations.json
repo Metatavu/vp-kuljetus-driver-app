@@ -71,5 +71,21 @@
   "loginWithPinCode": "Kirjaudu pin-koodillasi",
   "pinCode": "Pin-koodi",
   "workingTime": "Työaika",
-  "finishWorkDay": "Lopeta työpäivä"
+  "finishWorkDay": "Lopeta työpäivä",
+  "workEventType": {
+    "break": "Tauko",
+    "vegetable": "Hevi",
+    "palte": "Palte",
+    "meira": "Meira",
+    "brewery": "Panimo",
+    "dry": "Kuiva",
+    "meatCellar": "Lihakellari",
+    "frozen": "Pakaste",
+    "grease": "Rasva",
+    "otherWork": "Muu työ",
+    "login": "Sisäänkirjautuminen",
+    "logout": "Ulos kirjautuminen",
+    "shiftStart": "Vuoron aloitus",
+    "shiftEnd": "Vuoron lopetus"
+  }
 }

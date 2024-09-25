@@ -19,7 +19,7 @@ class LoginSelectionScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: () => context.goNamed("driver-login"),
+          onPressed: () => context.goNamed("driverLogin"),
           style: ElevatedButton.styleFrom(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -43,7 +43,7 @@ class LoginSelectionScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: () => context.goNamed("employee-login"),
+          onPressed: () => context.goNamed("employeeLogin"),
           style: ElevatedButton.styleFrom(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(3)),

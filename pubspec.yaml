@@ -46,6 +46,7 @@ dependencies:
   hooks_riverpod: ^2.4.10
   http: ^1.2.0
   i18next: ^0.7.3
+  indexed: ^0.0.8
   json_annotation: ^4.8.1
   jwt_decoder: ^2.0.1
   oidc: ^0.5.1

@@ -5,7 +5,7 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
-import "package:vp_kuljetus_driver_app/views/employee/employee_app_bar.dart";
+import "package:vp_kuljetus_driver_app/views/employee/employee_page.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/driver_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/employee_login_screen.dart";
@@ -72,14 +72,14 @@ GoRouter router(final RouterRef ref) {
             routes: [
               GoRoute(
                 path: "driver",
-                name: "driver-login",
+                name: "driverLogin",
                 pageBuilder: (final context, final state) => const NoTransitionPage(
                   child: DriverLoginScreen(),
                 ),
               ),
               GoRoute(
                 path: "employee",
-                name: "employee-login",
+                name: "employeeLogin",
                 pageBuilder: (final context, final state) => const NoTransitionPage(
                   child: EmployeeLoginScreen(),
                 ),
@@ -89,29 +89,7 @@ GoRouter router(final RouterRef ref) {
         ],
       ),
       ShellRoute(
-        pageBuilder: (
-          final context,
-          final state,
-          final child,
-        ) {
-          final statusBarHeight = MediaQuery.of(context).viewPadding.top;
-          final defaultPanelHeight = statusBarHeight + 77;
-          final contentHeight = MediaQuery.of(context).size.height - defaultPanelHeight;
-
-          return NoTransitionPage(
-            child: Scaffold(
-              body: Column(
-                children: [
-                  const EmployeeAppBar(),
-                  Container(
-                    constraints: BoxConstraints.loose(Size.fromHeight(contentHeight)),
-                    child: child,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+        pageBuilder: EmployeePage.builder,
         routes: [
           GoRoute(
             path: "/employee",

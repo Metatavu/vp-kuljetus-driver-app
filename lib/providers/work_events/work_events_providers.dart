@@ -9,7 +9,6 @@ part "work_events_providers.g.dart";
 
 @Riverpod(keepAlive: true)
 class WorkEvents extends _$WorkEvents {
-
   @override
   Future<List<WorkEvent>> build(final String? employeeId) async {
     final cancelToken = CancelToken();
@@ -21,10 +20,10 @@ class WorkEvents extends _$WorkEvents {
         return [];
       }
       final response = await tmsApi.getWorkEventsApi().listEmployeeWorkEvents(
-            employeeId: employeeId,
-            // TODO: Implement pagination/infinite scroll etc.
-            cancelToken: cancelToken,
-          );
+        employeeId: employeeId,
+        max: 1000,
+        cancelToken: cancelToken,
+      );
 
       return response.data?.toList() ?? [];
     } on DioException catch (error) {

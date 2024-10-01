@@ -19,6 +19,7 @@ import 'package:tms_api/src/api/tasks_api.dart';
 import 'package:tms_api/src/api/towables_api.dart';
 import 'package:tms_api/src/api/trucks_api.dart';
 import 'package:tms_api/src/api/vehicles_api.dart';
+import 'package:tms_api/src/api/work_events_api.dart';
 
 class TmsApi {
   static const String basePath = r'http://localhost';
@@ -143,5 +144,11 @@ class TmsApi {
   /// by doing that all interceptors will not be executed
   VehiclesApi getVehiclesApi() {
     return VehiclesApi(dio, serializers);
+  }
+
+  /// Get WorkEventsApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  WorkEventsApi getWorkEventsApi() {
+    return WorkEventsApi(dio, serializers);
   }
 }

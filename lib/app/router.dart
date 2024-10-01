@@ -5,7 +5,12 @@ import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
-import "package:vp_kuljetus_driver_app/views/login/login_screen.dart";
+import "package:vp_kuljetus_driver_app/views/employee/employee_page.dart";
+import "package:vp_kuljetus_driver_app/views/employee/employee_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/driver_login_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/employee_login_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/login_screen_shell.dart";
+import "package:vp_kuljetus_driver_app/views/login/login_selection_screen.dart";
 import "package:vp_kuljetus_driver_app/views/main_tabs/main_tabs_view.dart";
 import "package:vp_kuljetus_driver_app/views/route_tasks/route_tasks_screen.dart";
 import "package:vp_kuljetus_driver_app/views/routes/routes_screen.dart";
@@ -45,12 +50,53 @@ GoRouter router(final RouterRef ref) {
           child: SplashScreen(),
         ),
       ),
-      GoRoute(
-        path: "/login",
-        name: "login",
-        pageBuilder: (final context, final state) => const NoTransitionPage(
-          child: LoginScreen(),
-        ),
+      ShellRoute(
+        pageBuilder: (
+          final context,
+          final state,
+          final child,
+        ) =>
+          NoTransitionPage(
+            child: LoginScreenShell(
+              navigateBackVisible: state.uri.toString() != "/login",
+              child: child,
+            ),
+          ),
+        routes: [
+          GoRoute(
+            path: "/login",
+            name: "login",
+            pageBuilder: (final context, final state) => const NoTransitionPage(
+                child: LoginSelectionScreen(),
+              ),
+            routes: [
+              GoRoute(
+                path: "driver",
+                name: "driverLogin",
+                pageBuilder: (final context, final state) => const NoTransitionPage(
+                  child: DriverLoginScreen(),
+                ),
+              ),
+              GoRoute(
+                path: "employee",
+                name: "employeeLogin",
+                pageBuilder: (final context, final state) => const NoTransitionPage(
+                  child: EmployeeLoginScreen(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      ShellRoute(
+        pageBuilder: EmployeePage.builder,
+        routes: [
+          GoRoute(
+            path: "/employee",
+            name: "employee",
+            pageBuilder: (final context, final state) => const NoTransitionPage(child: EmployeeScreen()),
+          ),
+        ],
       ),
       ShellRoute(
         pageBuilder: (
@@ -142,13 +188,22 @@ String? handleRedirect(
 
   final auth = authenticatedNotifier.value.requireValue;
 
+  final loginPaths = ["/login", "/login/employee", "/login/driver"];
+  //TODO: Don't redirect to /vehicle if we're logged in to terminal
   final isSplash = state.uri.path == "/";
-  if (isSplash) return auth ? "/vehicle" : "/login";
+  if (isSplash) return auth ? getLastStartedSessionType() == SessionType.driver ? "/vehicle" : "/employee" :"/login";
 
-  final isLoggingIn = state.uri.path == "/login";
-  if (isLoggingIn) return auth ? "/vehicle" : null;
+  final isEmployeeLogin = state.uri.path == "/login/employee";
+  final isDriverLogin = state.uri.path == "/login/driver";
 
-  return auth ? null : "/login";
+  if (auth) {
+    if (isEmployeeLogin) return "/employee";
+    if (isDriverLogin) return "/driver";
+
+    return null;
+  }
+
+  return loginPaths.contains(state.uri.path) ? null : "/login";
 }
 
 String? handleRedirectIfOngoingTasks(

@@ -47,7 +47,7 @@ import 'package:tms_api/tms_api.dart';
 
 
 final api = TmsApi().getDriversApi();
-final String driverId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | driver's id
+final String driverId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | driver's ID
 
 try {
     final response = await api.findDriver(driverId);
@@ -89,16 +89,23 @@ Class | Method | HTTP request | Description
 [*VehiclesApi*](doc/VehiclesApi.md) | [**createVehicle**](doc/VehiclesApi.md#createvehicle) | **POST** /vehicle-management/v1/vehicles | Create vehicle
 [*VehiclesApi*](doc/VehiclesApi.md) | [**findVehicle**](doc/VehiclesApi.md#findvehicle) | **GET** /vehicle-management/v1/vehicles/{vehicleId} | Find a vehicle.
 [*VehiclesApi*](doc/VehiclesApi.md) | [**listVehicles**](doc/VehiclesApi.md#listvehicles) | **GET** /vehicle-management/v1/vehicles | List Vehicles.
+[*WorkEventsApi*](doc/WorkEventsApi.md) | [**createEmployeeWorkEvent**](doc/WorkEventsApi.md#createemployeeworkevent) | **POST** /user-management/v1/employees/{employeeId}/workEvents | Create Employees Work Event.
+[*WorkEventsApi*](doc/WorkEventsApi.md) | [**findEmployeeWorkEvent**](doc/WorkEventsApi.md#findemployeeworkevent) | **GET** /user-management/v1/employees/{employeeId}/workEvents/{workEventId} | Find an employee&#39;s work event.
+[*WorkEventsApi*](doc/WorkEventsApi.md) | [**listEmployeeWorkEvents**](doc/WorkEventsApi.md#listemployeeworkevents) | **GET** /user-management/v1/employees/{employeeId}/workEvents | List Employees Time Entries.
+[*WorkEventsApi*](doc/WorkEventsApi.md) | [**updateEmployeeWorkEvent**](doc/WorkEventsApi.md#updateemployeeworkevent) | **PUT** /user-management/v1/employees/{employeeId}/workEvents/{workEventId} | Update Employee&#39;s Work Event.
 
 
 ## Documentation For Models
 
  - [Driver](doc/Driver.md)
+ - [EmployeeType](doc/EmployeeType.md)
  - [Error](doc/Error.md)
  - [Freight](doc/Freight.md)
  - [FreightUnit](doc/FreightUnit.md)
+ - [Office](doc/Office.md)
  - [PublicTruck](doc/PublicTruck.md)
  - [Route](doc/Route.md)
+ - [SalaryGroup](doc/SalaryGroup.md)
  - [Site](doc/Site.md)
  - [SortOrder](doc/SortOrder.md)
  - [Task](doc/Task.md)
@@ -111,6 +118,8 @@ Class | Method | HTTP request | Description
  - [TruckDriverCard](doc/TruckDriverCard.md)
  - [TruckSortByField](doc/TruckSortByField.md)
  - [Vehicle](doc/Vehicle.md)
+ - [WorkEvent](doc/WorkEvent.md)
+ - [WorkEventType](doc/WorkEventType.md)
 
 
 ## Documentation For Authorization

@@ -8,11 +8,14 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Driver.serializer)
+      ..add(EmployeeType.serializer)
       ..add(Error.serializer)
       ..add(Freight.serializer)
       ..add(FreightUnit.serializer)
+      ..add(Office.serializer)
       ..add(PublicTruck.serializer)
       ..add(Route.serializer)
+      ..add(SalaryGroup.serializer)
       ..add(Site.serializer)
       ..add(SortOrder.serializer)
       ..add(Task.serializer)
@@ -27,6 +30,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TruckSortByField.serializer)
       ..add(TruckTypeEnum.serializer)
       ..add(Vehicle.serializer)
+      ..add(WorkEvent.serializer)
+      ..add(WorkEventType.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>()))

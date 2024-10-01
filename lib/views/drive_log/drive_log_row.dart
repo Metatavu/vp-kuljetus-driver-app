@@ -6,6 +6,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/models/truck_drive_state_with_task_type.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
+import "package:vp_kuljetus_driver_app/utils/date.dart";
 import "package:vp_kuljetus_driver_app/utils/drive_state.dart";
 
 class DriveLogRow extends HookConsumerWidget {
@@ -24,21 +25,6 @@ class DriveLogRow extends HookConsumerWidget {
   final bool isLatest;
   final bool isExpanded;
   final bool isTask;
-
-  String formatDuration(final Duration duration) {
-    final hours = duration.inHours.toString().padLeft(2, "0");
-    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, "0");
-    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, "0");
-
-    return "$hours:$minutes:$seconds";
-  }
-
-  String formatStartTime(final DateTime startTime) {
-    final hours = startTime.hour.toString().padLeft(2, "0");
-    final minutes = startTime.minute.toString().padLeft(2, "0");
-
-    return "$hours:$minutes";
-  }
 
   Duration getNonLatestDriveStateDuration() {
     if (nextDriveState == null) {
@@ -73,22 +59,22 @@ class DriveLogRow extends HookConsumerWidget {
     final stateStartedAt = DateTime.fromMillisecondsSinceEpoch(driveState.timestamp * 1000);
 
     useEffect(() {
-    final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-      currentStateDuration.value = currentStateDuration.value + const Duration(seconds: 1);
-    });
+      final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
+        currentStateDuration.value = currentStateDuration.value + const Duration(seconds: 1);
+      });
       return timer.cancel;
     }, [],);
 
     return ListTile(
       tileColor: driveState.state == TruckDriveStateEnum.DRIVE ? const Color(0xFFE8F5E9) : Colors.white,
       contentPadding: isExpanded ? null :  const EdgeInsets.fromLTRB(24, 20, 24, 0),
-      leading: isLatest ? null : Text(formatStartTime(stateStartedAt), style: getTextStyle(false, context),),
+      leading: isLatest ? null : Text(formatDateToPaddedHhMm(stateStartedAt), style: getTextStyle(false, context),),
       title: Text(
         getDriveStateTitle(l10n, driveState, isLatest),
         style: getTextStyle(true, context),
       ),
       trailing: Text(
-        formatDuration(isLatest ? currentStateDuration.value : getNonLatestDriveStateDuration()),
+        formatDurationToPaddedHhMmSs(isLatest ? currentStateDuration.value : getNonLatestDriveStateDuration()),
         style: getTextStyle(false, context),
       ),
     );

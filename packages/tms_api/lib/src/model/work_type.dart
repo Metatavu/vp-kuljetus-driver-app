@@ -3,69 +3,77 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:tms_api/src/model/work_type_category.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'truck_driver_card.g.dart';
+part 'work_type.g.dart';
 
-/// TruckDriverCard
+/// Describes different work types that employees can have
 ///
 /// Properties:
-/// * [id] - Driver card ID
-/// * [timestamp] - Timestamp for driver card insertion. Unix timestamp in milliseconds.
+/// * [name] - Work type name
+/// * [category]
+/// * [id]
 @BuiltValue()
-abstract class TruckDriverCard
-    implements Built<TruckDriverCard, TruckDriverCardBuilder> {
-  /// Driver card ID
+abstract class WorkType implements Built<WorkType, WorkTypeBuilder> {
+  /// Work type name
+  @BuiltValueField(wireName: r'name')
+  String get name;
+
+  @BuiltValueField(wireName: r'category')
+  WorkTypeCategory get category;
+  // enum categoryEnum {  DRIVER,  TERMINAL,  OFFICE,  };
+
   @BuiltValueField(wireName: r'id')
-  String get id;
+  String? get id;
 
-  /// Timestamp for driver card insertion. Unix timestamp in milliseconds.
-  @BuiltValueField(wireName: r'timestamp')
-  int get timestamp;
+  WorkType._();
 
-  TruckDriverCard._();
-
-  factory TruckDriverCard([void updates(TruckDriverCardBuilder b)]) =
-      _$TruckDriverCard;
+  factory WorkType([void updates(WorkTypeBuilder b)]) = _$WorkType;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(TruckDriverCardBuilder b) => b;
+  static void _defaults(WorkTypeBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<TruckDriverCard> get serializer =>
-      _$TruckDriverCardSerializer();
+  static Serializer<WorkType> get serializer => _$WorkTypeSerializer();
 }
 
-class _$TruckDriverCardSerializer
-    implements PrimitiveSerializer<TruckDriverCard> {
+class _$WorkTypeSerializer implements PrimitiveSerializer<WorkType> {
   @override
-  final Iterable<Type> types = const [TruckDriverCard, _$TruckDriverCard];
+  final Iterable<Type> types = const [WorkType, _$WorkType];
 
   @override
-  final String wireName = r'TruckDriverCard';
+  final String wireName = r'WorkType';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    TruckDriverCard object, {
+    WorkType object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'id';
+    yield r'name';
     yield serializers.serialize(
-      object.id,
+      object.name,
       specifiedType: const FullType(String),
     );
-    yield r'timestamp';
+    yield r'category';
     yield serializers.serialize(
-      object.timestamp,
-      specifiedType: const FullType(int),
+      object.category,
+      specifiedType: const FullType(WorkTypeCategory),
     );
+    if (object.id != null) {
+      yield r'id';
+      yield serializers.serialize(
+        object.id,
+        specifiedType: const FullType(String),
+      );
+    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    TruckDriverCard object, {
+    WorkType object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -78,26 +86,33 @@ class _$TruckDriverCardSerializer
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required TruckDriverCardBuilder result,
+    required WorkTypeBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
+        case r'name':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.name = valueDes;
+          break;
+        case r'category':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(WorkTypeCategory),
+          ) as WorkTypeCategory;
+          result.category = valueDes;
+          break;
         case r'id':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(String),
           ) as String;
           result.id = valueDes;
-          break;
-        case r'timestamp':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(int),
-          ) as int;
-          result.timestamp = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -108,12 +123,12 @@ class _$TruckDriverCardSerializer
   }
 
   @override
-  TruckDriverCard deserialize(
+  WorkType deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = TruckDriverCardBuilder();
+    final result = WorkTypeBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

@@ -4,6 +4,7 @@ import "dart:developer";
 import "package:oidc/oidc.dart";
 import "package:oidc_default_store/oidc_default_store.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
+import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -47,19 +48,55 @@ class AuthNotifier extends _$AuthNotifier {
       tmsApi.setBearerAuth("BearerAuth", user?.token.accessToken ?? "");
     });
 
-    final logoutViaCardRemovalInterval = Timer.periodic(
-      const Duration(seconds: 10),
-      _handleLogoutIfCardIsRemoved,
-    );
-
     ref.onDispose(apiAuthSubscription.cancel);
-    ref.onDispose(logoutViaCardRemovalInterval.cancel);
 
     return userChangesStream;
   }
 
-  Future<void> login(final String truckId) =>
-      authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:$truckId");
+  Future<OidcUser?> login(final PublicTruck? truck) async {
+    OidcUser? oidcUser;
+    if (truck != null) {
+      oidcUser = await _login(truck);
+    } else {
+      oidcUser = await _loginEmployee();
+    }
+
+    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
+
+    return oidcUser;
+  }
+
+  Future<OidcUser?> _login(final PublicTruck truck) async {
+    try {
+      final oidcUser = await authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:${truck.id}");
+
+      final logoutViaCardRemovalInterval = Timer.periodic(
+        const Duration(seconds: 10),
+        _handleLogoutIfCardIsRemoved,
+      );
+      ref.onDispose(logoutViaCardRemovalInterval.cancel);
+      await setLastStartedSessionType(SessionType.driver);
+
+      return oidcUser;
+    } catch (error) {
+      log("Failed to login to truck ${truck.name} (ID ${truck.id}, VIN ${truck.vin})", error: error);
+    }
+    return null;
+  }
+
+  Future<OidcUser?> _loginEmployee() async {
+    try {
+      // TODO: Implement PIN-code login flow.
+      final oidcUser = await authManager.loginPassword(username: Env.overrideLoginUsername, password: Env.overrideLoginPassword);
+      await setLastStartedSessionType(SessionType.terminal);
+
+      return oidcUser;
+    } catch (error) {
+      log("Failed to login as employee", error: error);
+    }
+    return null;
+  }
 
   Future<void> logout() async => authManager.logout();
 

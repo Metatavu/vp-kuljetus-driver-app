@@ -40,8 +40,9 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final isRunning = ref.watch(workEventsProviderNotifier).getLatestWorkEvent(employeeId)?.workEventType == workEventType;
-    final isPaused = ref.watch(workEventsProviderNotifier).getLatestWorkEvent(employeeId)?.workEventType == WorkEventType.BREAK;
+    final latestWorkEvent = ref.watch(workEventsProviderNotifier).getLatestWorkEvent(employeeId);
+    final isRunning = latestWorkEvent?.workEventType == workEventType;
+    final isPaused = latestWorkEvent?.workEventType == WorkEventType.BREAK;
 
     final totalWorkTypeDuration = useState(sumWorkEventsByType(workEventType, workEvents));
 

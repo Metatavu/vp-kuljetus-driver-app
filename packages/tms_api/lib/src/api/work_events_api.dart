@@ -20,7 +20,7 @@ class WorkEventsApi {
   const WorkEventsApi(this._dio, this._serializers);
 
   /// Create Employees Work Event.
-  /// Creates Employees Work Event.
+  /// Creates Employees Work Event.  If the work event starts a new shift, a new employee work shift is also created automatically.
   ///
   /// Parameters:
   /// * [employeeId] - employee's ID
@@ -222,11 +222,12 @@ class WorkEventsApi {
     );
   }
 
-  /// List Employees Time Entries.
+  /// List Employees Work Events.
   /// Lists Employees Work Events. Sort by time, latest first.
   ///
   /// Parameters:
   /// * [employeeId] - employee's ID
+  /// * [employeeWorkShiftId] - Filter work events by a specific work shift of the employee
   /// * [after] - Filter work events after specified date.
   /// * [before] - Filter work events before specified date.
   /// * [first] - First result.
@@ -242,6 +243,7 @@ class WorkEventsApi {
   /// Throws [DioException] if API call or serialization fails
   Future<Response<BuiltList<WorkEvent>>> listEmployeeWorkEvents({
     required String employeeId,
+    String? employeeWorkShiftId,
     DateTime? after,
     DateTime? before,
     int? first = 0,
@@ -278,6 +280,9 @@ class WorkEventsApi {
     );
 
     final _queryParameters = <String, dynamic>{
+      if (employeeWorkShiftId != null)
+        r'employeeWorkShiftId': encodeQueryParameter(
+            _serializers, employeeWorkShiftId, const FullType(String)),
       if (after != null)
         r'after':
             encodeQueryParameter(_serializers, after, const FullType(DateTime)),

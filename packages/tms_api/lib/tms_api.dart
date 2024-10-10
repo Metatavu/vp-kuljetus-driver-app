@@ -9,6 +9,7 @@ export 'package:tms_api/src/auth/oauth.dart';
 export 'package:tms_api/src/serializers.dart';
 export 'package:tms_api/src/model/date.dart';
 
+export 'package:tms_api/src/api/client_apps_api.dart';
 export 'package:tms_api/src/api/drivers_api.dart';
 export 'package:tms_api/src/api/freight_units_api.dart';
 export 'package:tms_api/src/api/freights_api.dart';
@@ -21,6 +22,9 @@ export 'package:tms_api/src/api/trucks_api.dart';
 export 'package:tms_api/src/api/vehicles_api.dart';
 export 'package:tms_api/src/api/work_events_api.dart';
 
+export 'package:tms_api/src/model/client_app.dart';
+export 'package:tms_api/src/model/client_app_metadata.dart';
+export 'package:tms_api/src/model/client_app_status.dart';
 export 'package:tms_api/src/model/driver.dart';
 export 'package:tms_api/src/model/employee_type.dart';
 export 'package:tms_api/src/model/error.dart';
@@ -44,3 +48,4 @@ export 'package:tms_api/src/model/truck_sort_by_field.dart';
 export 'package:tms_api/src/model/vehicle.dart';
 export 'package:tms_api/src/model/work_event.dart';
 export 'package:tms_api/src/model/work_event_type.dart';
+export 'package:tms_api/src/model/work_type.dart';

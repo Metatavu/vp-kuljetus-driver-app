@@ -9,6 +9,7 @@ import 'package:tms_api/src/auth/api_key_auth.dart';
 import 'package:tms_api/src/auth/basic_auth.dart';
 import 'package:tms_api/src/auth/bearer_auth.dart';
 import 'package:tms_api/src/auth/oauth.dart';
+import 'package:tms_api/src/api/client_apps_api.dart';
 import 'package:tms_api/src/api/drivers_api.dart';
 import 'package:tms_api/src/api/freight_units_api.dart';
 import 'package:tms_api/src/api/freights_api.dart';
@@ -84,6 +85,12 @@ class TmsApi {
               as ApiKeyAuthInterceptor)
           .apiKeys[name] = apiKey;
     }
+  }
+
+  /// Get ClientAppsApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  ClientAppsApi getClientAppsApi() {
+    return ClientAppsApi(dio, serializers);
   }
 
   /// Get DriversApi instance, base route and serializer can be overridden by a given but be careful,

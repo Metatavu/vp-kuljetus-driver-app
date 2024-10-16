@@ -7,4 +7,5 @@ initTmsApi() {
   tmsApi = TmsApi(basePathOverride: Env.apiBaseUrl);
   tmsApi.dio.options.connectTimeout = const Duration(seconds: 10);
   tmsApi.dio.options.receiveTimeout = const Duration(seconds: 10);
+  tmsApi.setApiKey("X-API-Key", Env.);
 }

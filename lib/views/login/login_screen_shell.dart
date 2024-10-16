@@ -9,10 +9,16 @@ import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/updates/updater.dart";
 
 class LoginScreenShell extends HookConsumerWidget {
-  const LoginScreenShell({super.key, required this.child, required this.navigateBackVisible});
+  const LoginScreenShell({
+    super.key,
+    required this.child,
+    required this.navigateBackVisible,
+    required this.navigateClientAppVisible,
+  });
 
   final Widget child;
   final bool navigateBackVisible;
+  final bool navigateClientAppVisible;
 
   @override
   Widget build(final context, final ref) {
@@ -161,10 +167,17 @@ class LoginScreenShell extends HookConsumerWidget {
                           borderRadius: BorderRadius.all(Radius.circular(3)),
                         ),
                       ),
+                      child: Text(
+                        l10n.t("navigateBackToLoginSelection"),
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ),
+                    if (navigateClientAppVisible) ElevatedButton(
+                      onPressed: () => context.goNamed("clientApp"),
                       child: Stack(
                         children: [
                           Text(
-                            l10n.t("navigateBackToLoginSelection"),
+                            "Laiteen käyttöönottoon",
                             style: theme.textTheme.bodySmall,
                           ),
                         ],

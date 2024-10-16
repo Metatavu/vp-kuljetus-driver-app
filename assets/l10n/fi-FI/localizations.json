@@ -87,5 +87,6 @@
     "logout": "Ulos kirjautuminen",
     "shiftStart": "Vuoron aloitus",
     "shiftEnd": "Vuoron lopetus"
-  }
+  },
+  "clientApp": "Asiakassovellus"
 }

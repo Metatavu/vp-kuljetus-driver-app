@@ -11,6 +11,7 @@ const ongoingTaskDataStoreKey = "ongoing_task_id";
 const taskGroupTimestampsKey = "task_group_timestamps";
 const sessionStartedTimestampStoreKey = "session_started_timestamp";
 const lastStartedSessionTypeKey = "last_started_session_type";
+const clientAppCreatedKey = "client_app_created";
 
 late final SharedPreferences store;
 
@@ -72,4 +73,10 @@ SessionType? getLastStartedSessionType() {
 
 Future<void> setLastStartedSessionType(final SessionType sessionType) async {
   await store.setString(lastStartedSessionTypeKey, sessionType.name);
+}
+
+bool getClientAppCreated() => store.getBool(clientAppCreatedKey) ?? false;
+
+Future<void> setClientAppCreated(final bool created) async {
+  await store.setBool(clientAppCreatedKey, created);
 }

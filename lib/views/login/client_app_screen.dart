@@ -9,6 +9,7 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:package_info_plus/package_info_plus.dart";
 import "package:tms_api/tms_api.dart";
+import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
@@ -21,8 +22,6 @@ class ClientAppScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
 
     final textEditingController = useTextEditingController();
-
-    final clientAppPairingHelper = useState("");
 
   Future<ClientApp> constructClientApp() async {
     if (!Platform.isAndroid) {
@@ -37,6 +36,7 @@ class ClientAppScreen extends HookConsumerWidget {
       ..deviceOSVersion = osVersion
       ..appVersion = appVersion
       ..deviceOS = ClientAppMetadataDeviceOSEnum.ANDROID;
+
     return ClientApp((final builder) =>
       builder
         ..deviceId = deviceId
@@ -49,6 +49,7 @@ class ClientAppScreen extends HookConsumerWidget {
     Future<void> onCreateClientAppPressed(final BuildContext context) async {
       try {
         final clientApp = await constructClientApp();
+        tmsApi.dio.options.headers["X-API-Key"] = Env.apiKey;
         final createdClientApp = (await tmsApi.getClientAppsApi().createClientApp(clientApp: clientApp)).data;
 
         if (createdClientApp == null) {
@@ -94,10 +95,6 @@ class ClientAppScreen extends HookConsumerWidget {
           ),
         ),
         const SizedBox(height: 16),
-        Text(
-          clientAppPairingHelper.value,
-          style: theme.textTheme.titleLarge,
-        ),
         ElevatedButton(
           onPressed: () => onCreateClientAppPressed(context),
           child: Text(l10n.t("registerClientApp")),

@@ -90,5 +90,9 @@
   },
   "registerClientApp": "Rekisteröi päätelaite",
   "clientAppName": "Päätelaitteen nimi",
-  "registerClientAppHelper": "Voit antaa päätelaitteelle nimen tässä tai myöhemmin hallintaohjelmassa."
+  "registerClientAppHelper": "Voit antaa päätelaitteelle nimen tässä tai myöhemmin hallintaohjelmassa.",
+  "registeredClientApp": "Päätelaite rekisteröity",
+  "clientAppIdentifier": "Päätelaitteen tunniste",
+  "registeredClientAppHelper": "Suorita päätelaitteen hyväksyntä loppuun hallintaohjelmassa, jotta sovelluksella voidaan kirjautua sisään PIN-koodilla.\n\nKäytä alla olevia tietoja apuna päätelaitteen tunnistamisessa.",
+  "continue": "Jatka"
 }

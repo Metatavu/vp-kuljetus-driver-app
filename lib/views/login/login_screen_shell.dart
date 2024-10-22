@@ -13,12 +13,10 @@ class LoginScreenShell extends HookConsumerWidget {
     super.key,
     required this.child,
     required this.navigateBackVisible,
-    required this.navigateClientAppVisible,
   });
 
   final Widget child;
   final bool navigateBackVisible;
-  final bool navigateClientAppVisible;
 
   @override
   Widget build(final context, final ref) {
@@ -170,17 +168,6 @@ class LoginScreenShell extends HookConsumerWidget {
                       child: Text(
                         l10n.t("navigateBackToLoginSelection"),
                         style: theme.textTheme.bodySmall,
-                      ),
-                    ),
-                    if (navigateClientAppVisible) ElevatedButton(
-                      onPressed: () => context.goNamed("clientApp"),
-                      child: Stack(
-                        children: [
-                          Text(
-                            "Laiteen käyttöönottoon",
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ],
                       ),
                     ),
                   ],

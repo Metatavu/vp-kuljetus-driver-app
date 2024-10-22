@@ -61,7 +61,6 @@ GoRouter router(final RouterRef ref) {
           NoTransitionPage(
             child: LoginScreenShell(
               navigateBackVisible: state.uri.toString() != "/login" && !state.uri.toString().startsWith("/client-app"),
-              navigateClientAppVisible: !state.uri.toString().startsWith("/client-app") && state.uri.toString() != "/login",
               child: child,
             ),
           ),

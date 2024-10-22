@@ -12,6 +12,7 @@ import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
+import "package:vp_kuljetus_driver_app/services/store/store.dart";
 
 class ClientAppScreen extends HookConsumerWidget {
   const ClientAppScreen({super.key});
@@ -56,6 +57,7 @@ class ClientAppScreen extends HookConsumerWidget {
           log("Failed to create client app");
           return;
         }
+        await setClientAppCreated(true);
         context.goNamed(
           "confirmClientApp",
           pathParameters: {"deviceId": createdClientApp.deviceId},

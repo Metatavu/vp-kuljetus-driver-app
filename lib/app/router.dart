@@ -203,10 +203,8 @@ String? handleRedirect(
   final GoRouterState state,
   final ValueNotifier<AsyncValue<bool>> authenticatedNotifier,
 ) {
-  if (!getClientAppCreated()) {
-    if (state.uri.toString().startsWith("/client-app")) return null;
-    return "/client-app";
-  }
+  if (!getClientAppCreated()) return "/client-app";
+  if (state.uri.toString().startsWith("/client-app")) return state.uri.toString();
   if (authenticatedNotifier.value.unwrapPrevious().hasError) return "/login";
 
   if (authenticatedNotifier.value.isLoading ||

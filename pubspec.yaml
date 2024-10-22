@@ -54,7 +54,7 @@ dependencies:
   oidc: ^0.5.1
   oidc_default_store: ^0.2.0+7
   openapi_generator_annotations: ^5.0.1
-  package_info_plus: ^8.0.0
+  package_info_plus: 8.0.2
   path_provider: ^2.1.3
   riverpod_annotation: ^2.3.4
   shared_preferences: ^2.2.2

@@ -88,5 +88,7 @@
     "shiftStart": "Vuoron aloitus",
     "shiftEnd": "Vuoron lopetus"
   },
-  "clientApp": "Asiakassovellus"
+  "registerClientApp": "Rekisteröi päätelaite",
+  "clientAppName": "Päätelaitteen nimi",
+  "registerClientAppHelper": "Voit antaa päätelaitteelle nimen tässä tai myöhemmin hallintaohjelmassa."
 }

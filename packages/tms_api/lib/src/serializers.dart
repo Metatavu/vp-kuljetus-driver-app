@@ -14,6 +14,9 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:tms_api/src/date_serializer.dart';
 import 'package:tms_api/src/model/date.dart';
 
+import 'package:tms_api/src/model/client_app.dart';
+import 'package:tms_api/src/model/client_app_metadata.dart';
+import 'package:tms_api/src/model/client_app_status.dart';
 import 'package:tms_api/src/model/driver.dart';
 import 'package:tms_api/src/model/employee_type.dart';
 import 'package:tms_api/src/model/error.dart';
@@ -37,10 +40,14 @@ import 'package:tms_api/src/model/truck_sort_by_field.dart';
 import 'package:tms_api/src/model/vehicle.dart';
 import 'package:tms_api/src/model/work_event.dart';
 import 'package:tms_api/src/model/work_event_type.dart';
+import 'package:tms_api/src/model/work_type.dart';
 
 part 'serializers.g.dart';
 
 @SerializersFor([
+  ClientApp,
+  ClientAppMetadata,
+  ClientAppStatus,
   Driver,
   EmployeeType,
   Error,
@@ -64,6 +71,7 @@ part 'serializers.g.dart';
   Vehicle,
   WorkEvent,
   WorkEventType,
+  WorkType,
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(

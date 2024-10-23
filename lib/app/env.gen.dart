@@ -28,6 +28,9 @@ class Env {
 
   /// Override login password. Used in development before PIN-code login.
   static const overrideLoginPassword = String.fromEnvironment('OVERRIDE_LOGIN_PASSWORD');
+
+  /// API key for the app
+  static const apiKey = String.fromEnvironment('API_KEY');
 }
 
     

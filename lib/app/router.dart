@@ -7,6 +7,8 @@ import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_page.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/client_app_confirm_screen.dart";
+import "package:vp_kuljetus_driver_app/views/login/client_app_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/driver_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/employee_login_screen.dart";
 import "package:vp_kuljetus_driver_app/views/login/login_screen_shell.dart";
@@ -58,11 +60,32 @@ GoRouter router(final RouterRef ref) {
         ) =>
           NoTransitionPage(
             child: LoginScreenShell(
-              navigateBackVisible: state.uri.toString() != "/login",
+              navigateBackVisible: state.uri.toString() != "/login" && !state.uri.toString().startsWith("/client-app"),
               child: child,
             ),
           ),
         routes: [
+          GoRoute(
+            path: "/client-app",
+            name: "clientApp",
+            pageBuilder: (final context, final state) => const NoTransitionPage(
+              child: ClientAppScreen(),
+            ),
+            routes: [
+              GoRoute(
+                path: ":deviceId/confirm",
+                name: "confirmClientApp",
+                pageBuilder: (final context, final state) {
+                  final deviceId = state.pathParameters["deviceId"]!;
+                  final clientAppName = state.uri.queryParameters["clientAppName"];
+
+                  return NoTransitionPage(
+                    child: ConfirmClientAppScreen(deviceId: deviceId, clientAppName: clientAppName),
+                  );
+                },
+              ),
+            ],
+          ),
           GoRoute(
             path: "/login",
             name: "login",
@@ -179,6 +202,8 @@ String? handleRedirect(
   final GoRouterState state,
   final ValueNotifier<AsyncValue<bool>> authenticatedNotifier,
 ) {
+  if (!getClientAppCreated()) return "/client-app";
+  if (state.uri.toString().startsWith("/client-app")) return state.uri.toString();
   if (authenticatedNotifier.value.unwrapPrevious().hasError) return "/login";
 
   if (authenticatedNotifier.value.isLoading ||

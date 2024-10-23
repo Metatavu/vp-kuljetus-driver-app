@@ -9,7 +9,11 @@ import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/updates/updater.dart";
 
 class LoginScreenShell extends HookConsumerWidget {
-  const LoginScreenShell({super.key, required this.child, required this.navigateBackVisible});
+  const LoginScreenShell({
+    super.key,
+    required this.child,
+    required this.navigateBackVisible,
+  });
 
   final Widget child;
   final bool navigateBackVisible;
@@ -161,13 +165,9 @@ class LoginScreenShell extends HookConsumerWidget {
                           borderRadius: BorderRadius.all(Radius.circular(3)),
                         ),
                       ),
-                      child: Stack(
-                        children: [
-                          Text(
-                            l10n.t("navigateBackToLoginSelection"),
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ],
+                      child: Text(
+                        l10n.t("navigateBackToLoginSelection"),
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
                   ],

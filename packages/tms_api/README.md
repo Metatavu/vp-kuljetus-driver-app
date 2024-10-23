@@ -46,14 +46,14 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import 'package:tms_api/tms_api.dart';
 
 
-final api = TmsApi().getDriversApi();
-final String driverId = 38400000-8cf0-11bd-b23e-10b96e4ef00d; // String | driver's ID
+final api = TmsApi().getClientAppsApi();
+final ClientApp clientApp = ; // ClientApp | 
 
 try {
-    final response = await api.findDriver(driverId);
+    final response = await api.createClientApp(clientApp);
     print(response);
 } catch on DioException (e) {
-    print("Exception when calling DriversApi->findDriver: $e\n");
+    print("Exception when calling ClientAppsApi->createClientApp: $e\n");
 }
 
 ```
@@ -64,6 +64,7 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+[*ClientAppsApi*](doc/ClientAppsApi.md) | [**createClientApp**](doc/ClientAppsApi.md#createclientapp) | **POST** /user-management/v1/clientApps | Create a client app.
 [*DriversApi*](doc/DriversApi.md) | [**findDriver**](doc/DriversApi.md#finddriver) | **GET** /user-management/v1/drivers/{driverId} | Find a driver.
 [*FreightUnitsApi*](doc/FreightUnitsApi.md) | [**createFreightUnit**](doc/FreightUnitsApi.md#createfreightunit) | **POST** /delivery-info/v1/freightUnits | Create freight unit
 [*FreightUnitsApi*](doc/FreightUnitsApi.md) | [**findFreightUnit**](doc/FreightUnitsApi.md#findfreightunit) | **GET** /delivery-info/v1/freightUnits/{freightUnitId} | Find a freight unit.
@@ -91,12 +92,15 @@ Class | Method | HTTP request | Description
 [*VehiclesApi*](doc/VehiclesApi.md) | [**listVehicles**](doc/VehiclesApi.md#listvehicles) | **GET** /vehicle-management/v1/vehicles | List Vehicles.
 [*WorkEventsApi*](doc/WorkEventsApi.md) | [**createEmployeeWorkEvent**](doc/WorkEventsApi.md#createemployeeworkevent) | **POST** /user-management/v1/employees/{employeeId}/workEvents | Create Employees Work Event.
 [*WorkEventsApi*](doc/WorkEventsApi.md) | [**findEmployeeWorkEvent**](doc/WorkEventsApi.md#findemployeeworkevent) | **GET** /user-management/v1/employees/{employeeId}/workEvents/{workEventId} | Find an employee&#39;s work event.
-[*WorkEventsApi*](doc/WorkEventsApi.md) | [**listEmployeeWorkEvents**](doc/WorkEventsApi.md#listemployeeworkevents) | **GET** /user-management/v1/employees/{employeeId}/workEvents | List Employees Time Entries.
+[*WorkEventsApi*](doc/WorkEventsApi.md) | [**listEmployeeWorkEvents**](doc/WorkEventsApi.md#listemployeeworkevents) | **GET** /user-management/v1/employees/{employeeId}/workEvents | List Employees Work Events.
 [*WorkEventsApi*](doc/WorkEventsApi.md) | [**updateEmployeeWorkEvent**](doc/WorkEventsApi.md#updateemployeeworkevent) | **PUT** /user-management/v1/employees/{employeeId}/workEvents/{workEventId} | Update Employee&#39;s Work Event.
 
 
 ## Documentation For Models
 
+ - [ClientApp](doc/ClientApp.md)
+ - [ClientAppMetadata](doc/ClientAppMetadata.md)
+ - [ClientAppStatus](doc/ClientAppStatus.md)
  - [Driver](doc/Driver.md)
  - [EmployeeType](doc/EmployeeType.md)
  - [Error](doc/Error.md)
@@ -120,6 +124,7 @@ Class | Method | HTTP request | Description
  - [Vehicle](doc/Vehicle.md)
  - [WorkEvent](doc/WorkEvent.md)
  - [WorkEventType](doc/WorkEventType.md)
+ - [WorkType](doc/WorkType.md)
 
 
 ## Documentation For Authorization

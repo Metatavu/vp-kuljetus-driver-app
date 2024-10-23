@@ -1,4 +1,4 @@
-// Openapi Generator last run: : 2024-09-25T14:36:00.591856
+// Openapi Generator last run: : 2024-10-22T14:43:33.447274
 import "package:openapi_generator_annotations/openapi_generator_annotations.dart";
 
 @Openapi(
@@ -7,6 +7,7 @@ import "package:openapi_generator_annotations/openapi_generator_annotations.dart
   ),
   generatorName: Generator.dio,
   outputDirectory: "./packages/tms_api",
+  runSourceGenOnOutput: false,
   additionalProperties: DioProperties(pubName: "tms_api"),
 )
 class OpenApiGeneratorConfig {}

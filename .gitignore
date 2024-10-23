@@ -55,3 +55,4 @@ lib/updates/models/output_metadata.g.dart
 
 # FVM Version Cache
 .fvm/
+android/app/build

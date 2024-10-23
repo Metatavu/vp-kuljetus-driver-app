@@ -15,6 +15,10 @@ class _$WorkEvent extends WorkEvent {
   final WorkEventType workEventType;
   @override
   final String? id;
+  @override
+  final String? employeeWorkShiftId;
+  @override
+  final String? truckId;
 
   factory _$WorkEvent([void Function(WorkEventBuilder)? updates]) =>
       (new WorkEventBuilder()..update(updates))._build();
@@ -23,7 +27,9 @@ class _$WorkEvent extends WorkEvent {
       {required this.employeeId,
       required this.time,
       required this.workEventType,
-      this.id})
+      this.id,
+      this.employeeWorkShiftId,
+      this.truckId})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         employeeId, r'WorkEvent', 'employeeId');
@@ -46,7 +52,9 @@ class _$WorkEvent extends WorkEvent {
         employeeId == other.employeeId &&
         time == other.time &&
         workEventType == other.workEventType &&
-        id == other.id;
+        id == other.id &&
+        employeeWorkShiftId == other.employeeWorkShiftId &&
+        truckId == other.truckId;
   }
 
   @override
@@ -56,6 +64,8 @@ class _$WorkEvent extends WorkEvent {
     _$hash = $jc(_$hash, time.hashCode);
     _$hash = $jc(_$hash, workEventType.hashCode);
     _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, employeeWorkShiftId.hashCode);
+    _$hash = $jc(_$hash, truckId.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -66,7 +76,9 @@ class _$WorkEvent extends WorkEvent {
           ..add('employeeId', employeeId)
           ..add('time', time)
           ..add('workEventType', workEventType)
-          ..add('id', id))
+          ..add('id', id)
+          ..add('employeeWorkShiftId', employeeWorkShiftId)
+          ..add('truckId', truckId))
         .toString();
   }
 }
@@ -91,6 +103,15 @@ class WorkEventBuilder implements Builder<WorkEvent, WorkEventBuilder> {
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
+  String? _employeeWorkShiftId;
+  String? get employeeWorkShiftId => _$this._employeeWorkShiftId;
+  set employeeWorkShiftId(String? employeeWorkShiftId) =>
+      _$this._employeeWorkShiftId = employeeWorkShiftId;
+
+  String? _truckId;
+  String? get truckId => _$this._truckId;
+  set truckId(String? truckId) => _$this._truckId = truckId;
+
   WorkEventBuilder() {
     WorkEvent._defaults(this);
   }
@@ -102,6 +123,8 @@ class WorkEventBuilder implements Builder<WorkEvent, WorkEventBuilder> {
       _time = $v.time;
       _workEventType = $v.workEventType;
       _id = $v.id;
+      _employeeWorkShiftId = $v.employeeWorkShiftId;
+      _truckId = $v.truckId;
       _$v = null;
     }
     return this;
@@ -130,7 +153,9 @@ class WorkEventBuilder implements Builder<WorkEvent, WorkEventBuilder> {
                 time, r'WorkEvent', 'time'),
             workEventType: BuiltValueNullFieldError.checkNotNull(
                 workEventType, r'WorkEvent', 'workEventType'),
-            id: id);
+            id: id,
+            employeeWorkShiftId: employeeWorkShiftId,
+            truckId: truckId);
     replace(_$result);
     return _$result;
   }

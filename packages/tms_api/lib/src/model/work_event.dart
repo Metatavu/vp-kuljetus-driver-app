@@ -16,6 +16,8 @@ part 'work_event.g.dart';
 /// * [time] - Work event time
 /// * [workEventType]
 /// * [id]
+/// * [employeeWorkShiftId] - employee work shift ID
+/// * [truckId] - The ID of truck used during the work event
 @BuiltValue()
 abstract class WorkEvent implements Built<WorkEvent, WorkEventBuilder> {
   /// Employee's ID
@@ -32,6 +34,14 @@ abstract class WorkEvent implements Built<WorkEvent, WorkEventBuilder> {
 
   @BuiltValueField(wireName: r'id')
   String? get id;
+
+  /// employee work shift ID
+  @BuiltValueField(wireName: r'employeeWorkShiftId')
+  String? get employeeWorkShiftId;
+
+  /// The ID of truck used during the work event
+  @BuiltValueField(wireName: r'truckId')
+  String? get truckId;
 
   WorkEvent._();
 
@@ -75,6 +85,20 @@ class _$WorkEventSerializer implements PrimitiveSerializer<WorkEvent> {
       yield r'id';
       yield serializers.serialize(
         object.id,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.employeeWorkShiftId != null) {
+      yield r'employeeWorkShiftId';
+      yield serializers.serialize(
+        object.employeeWorkShiftId,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.truckId != null) {
+      yield r'truckId';
+      yield serializers.serialize(
+        object.truckId,
         specifiedType: const FullType(String),
       );
     }
@@ -130,6 +154,20 @@ class _$WorkEventSerializer implements PrimitiveSerializer<WorkEvent> {
             specifiedType: const FullType(String),
           ) as String;
           result.id = valueDes;
+          break;
+        case r'employeeWorkShiftId':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.employeeWorkShiftId = valueDes;
+          break;
+        case r'truckId':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.truckId = valueDes;
           break;
         default:
           unhandled.add(key);

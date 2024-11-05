@@ -105,6 +105,7 @@ jobs:
           flutter pub get
           flutter pub run build_runner build --delete-conflicting-outputs
           flutter build apk --dart-define-from-file=env.json
+          find build/app/outputs 
           mkdir -p update/android/${{ needs.bumpVersion.outputs.new_tag }}
           mv build/app/outputs/flutter-apk/release/output-metadata.json update/android/output-metadata.json
           mv build/app/outputs/flutter-apk/release/*.apk update/android/${{ needs.bumpVersion.outputs.new_tag }}/

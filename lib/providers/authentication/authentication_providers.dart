@@ -86,15 +86,7 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   Future<OidcUser?> _loginEmployee() async {
-    try {
-      // TODO: Implement PIN-code login flow.
-      final oidcUser = await authManager.loginPassword(username: Env.overrideLoginUsername, password: Env.overrideLoginPassword);
-      await setLastStartedSessionType(SessionType.terminal);
-
-      return oidcUser;
-    } catch (error) {
-      log("Failed to login as employee", error: error);
-    }
+    /// This is a placeholder for the actual implementation
     return null;
   }
 

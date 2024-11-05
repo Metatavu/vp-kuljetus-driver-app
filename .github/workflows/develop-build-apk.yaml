@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - develop
-      - feature-32-hcv
 jobs:
   bumpVersion:
     runs-on: ubuntu-latest

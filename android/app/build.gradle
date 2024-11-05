@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
-    id "org.jetbrains.kotlin.android"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -29,29 +30,25 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "fi.metatavu.vp_kuljetus_driver_app"
-    compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    namespace = "fi.metatavu.vp_kuljetus_driver_app"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = '17'
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
         applicationId "fi.metatavu.vp_kuljetus_driver_app"
-        minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        minSdk 21
+        targetSdk flutter.targetSdkVersion
+        versionCode flutter.versionCode
+        versionName flutter.versionName
         manifestPlaceholders += [
             "appAuthRedirectScheme": "fi.metatavu.vp.kuljetus.driver.app"
         ]
@@ -73,5 +70,5 @@ android {
 }
 
 flutter {
-    source '../..'
+    source = "../.."
 }

@@ -16,7 +16,7 @@ class FreightCardCarousel extends HookWidget {
 
   @override
   Widget build(final context) {
-    final carouselController = useState(CarouselController());
+    final carouselController = useState(CarouselSliderController());
     final currentPage = useState(0);
 
     final onFirstPage = currentPage.value == 0;

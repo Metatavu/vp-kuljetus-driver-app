@@ -19,10 +19,10 @@ jobs:
           fetch-depth: 0
       - name: Install vault cli
         run: |
-          apt update && apt install gpg wget &&
-          wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
+          sudo apt update && sudo apt install gpg wget &&
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
-          apt update && apt install vault -y
+          sudo apt update && sudo apt install vault -y
       - name: Get env variables
         run: |
           vault kv get -format json -mount="${{ secrets.VAULT_MOUNT_PATH }}" "driver-app"|jq -r '.data.data' > env.json

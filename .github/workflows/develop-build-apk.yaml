@@ -95,7 +95,6 @@ jobs:
               ${{ secrets.VAULT_PATH }} UPDATES_URL | UPDATES_URL ;
               ${{ secrets.VAULT_PATH }} UPDATES_SKIPPABLE | UPDATES_SKIPPABLE ;
       - run: |
-          vault kv get -format json -mount="${{ secrets.VAULT_MOUNT_PATH }}" "driver-app"|jq -r '.data.data' > env.json &&
           echo ${{ env.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
           echo storePassword=${{ env.SIGN_STORE_PASSWORD }} >> android/key.properties
           echo keyPassword=${{ env.SIGN_STORE_PASSWORD }} >> android/key.properties

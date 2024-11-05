@@ -87,12 +87,13 @@ jobs:
               ${{ secrets.VAULT_PATH }} AWS_ACCESS_KEY_ID | AWS_ACCESS_KEY_ID ;
               ${{ secrets.VAULT_PATH }} AWS_SECRET_ACCESS_KEY | AWS_SECRET_ACCESS_KEY ;
               ${{ secrets.VAULT_PATH }} UPDATES_BUCKET | UPDATES_BUCKET ;
-      - name: Install vault cli
-        run: |
-          sudo apt update && sudo apt install gpg wget &&
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
-          sudo apt update && sudo apt install vault -y
+              ${{ secrets.VAULT_PATH }} API_BASE_URL | API_BASE_URL ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_URL | KEYCLOAK_URL ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_REALM | KEYCLOAK_REALM ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_CLIENT_ID | KEYCLOAK_CLIENT_ID ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_CLIENT_SECRET | KEYCLOAK_CLIENT_SECRET ;
+              ${{ secrets.VAULT_PATH }} UPDATES_URL | UPDATES_URL ;
+              ${{ secrets.VAULT_PATH }} UPDATES_SKIPPABLE | UPDATES_SKIPPABLE ;
       - run: |
           vault kv get -format json -mount="${{ secrets.VAULT_MOUNT_PATH }}" "driver-app"|jq -r '.data.data' > env.json &&
           echo ${{ env.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore

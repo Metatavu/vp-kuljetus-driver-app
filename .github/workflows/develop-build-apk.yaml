@@ -115,7 +115,7 @@ jobs:
           echo "  ]" >> update/android/output-metadata.json
           echo "}" >> update/android/output-metadata.json
 
-          mv build/app/outputs/flutter-apk/release/*.apk update/android/${{ needs.bumpVersion.outputs.new_tag }}/
+          mv build/app/outputs/flutter-apk/*.apk update/android/${{ needs.bumpVersion.outputs.new_tag }}/
       - name: Upload APK
         uses: shallwefootball/s3-upload-action@master
         with:

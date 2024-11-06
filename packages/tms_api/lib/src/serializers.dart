@@ -18,14 +18,11 @@ import 'package:tms_api/src/model/client_app.dart';
 import 'package:tms_api/src/model/client_app_metadata.dart';
 import 'package:tms_api/src/model/client_app_status.dart';
 import 'package:tms_api/src/model/driver.dart';
-import 'package:tms_api/src/model/employee_type.dart';
 import 'package:tms_api/src/model/error.dart';
 import 'package:tms_api/src/model/freight.dart';
 import 'package:tms_api/src/model/freight_unit.dart';
-import 'package:tms_api/src/model/office.dart';
 import 'package:tms_api/src/model/public_truck.dart';
 import 'package:tms_api/src/model/route.dart';
-import 'package:tms_api/src/model/salary_group.dart';
 import 'package:tms_api/src/model/site.dart';
 import 'package:tms_api/src/model/sort_order.dart';
 import 'package:tms_api/src/model/task.dart';
@@ -40,7 +37,6 @@ import 'package:tms_api/src/model/truck_sort_by_field.dart';
 import 'package:tms_api/src/model/vehicle.dart';
 import 'package:tms_api/src/model/work_event.dart';
 import 'package:tms_api/src/model/work_event_type.dart';
-import 'package:tms_api/src/model/work_type.dart';
 
 part 'serializers.g.dart';
 
@@ -49,14 +45,11 @@ part 'serializers.g.dart';
   ClientAppMetadata,
   ClientAppStatus,
   Driver,
-  EmployeeType,
   Error,
   Freight,
   FreightUnit,
-  Office,
   PublicTruck,
   Route,
-  SalaryGroup,
   Site,
   SortOrder,
   Task,
@@ -71,7 +64,6 @@ part 'serializers.g.dart';
   Vehicle,
   WorkEvent,
   WorkEventType,
-  WorkType,
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(

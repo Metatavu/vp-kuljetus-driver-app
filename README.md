@@ -8,16 +8,22 @@ Mobile app for VP-Kuljetus drivers
 - After setting up environment variables you can run the project via VS Code's debugging (F5) or via CLI with command `flutter run --dart-define-from-file=env.json`
 
 ### Generate API client
+
 - API client is linked through git submodule. Initialize the link by running `git submodule update --init` in terminal.
 - Generate the client by running `flutter pub run build_runner build`.
+- All generated files ***should*** be in Git.
 
 ### Developing state providers
+
 - This project uses [Riverpod](https://riverpod.dev/docs/essentials/first_request) as state management tool.
 - When creating providers, generate boilerplate for providers annotated with `@riverpod` or `@Riverpod()` by running `flutter pub run build_runner build`
+- All generated files ***should*** be in Git.
 
 ### Creating Freezed models
+
 - This project utilizes [Freezed](https://pub.dev/packages/freezed#changing-the-behavior-for-a-specific-model) to generate boilerplate for data classes and JSON serialization.
 - When defining data classes with Freezed, generate boilerplate for classes annotated with `@freezed` by running `flutter pub run build_runner build`
+- All generated files ***should*** be in Git.
 
 ### Environment variables
 

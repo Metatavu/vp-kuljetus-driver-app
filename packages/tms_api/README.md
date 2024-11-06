@@ -102,14 +102,11 @@ Class | Method | HTTP request | Description
  - [ClientAppMetadata](doc/ClientAppMetadata.md)
  - [ClientAppStatus](doc/ClientAppStatus.md)
  - [Driver](doc/Driver.md)
- - [EmployeeType](doc/EmployeeType.md)
  - [Error](doc/Error.md)
  - [Freight](doc/Freight.md)
  - [FreightUnit](doc/FreightUnit.md)
- - [Office](doc/Office.md)
  - [PublicTruck](doc/PublicTruck.md)
  - [Route](doc/Route.md)
- - [SalaryGroup](doc/SalaryGroup.md)
  - [Site](doc/Site.md)
  - [SortOrder](doc/SortOrder.md)
  - [Task](doc/Task.md)
@@ -124,7 +121,6 @@ Class | Method | HTTP request | Description
  - [Vehicle](doc/Vehicle.md)
  - [WorkEvent](doc/WorkEvent.md)
  - [WorkEventType](doc/WorkEventType.md)
- - [WorkType](doc/WorkType.md)
 
 
 ## Documentation For Authorization

@@ -9,7 +9,7 @@ import 'package:built_value/serializer.dart';
 
 part 'work_event.g.dart';
 
-/// Represents single work event
+/// Represents single work event.  Whenever employee tracks a new work event, it is determined, whether a new work shift should be created for the event, or if the event should be added to the shift of the last work event recorded.  A new work shift should be created, if either - There are no previous work events for the employee, or - The last work event is of type SHIFT_END, or - The last work event is of type BREAK or UNKNOWN and has been going on longer than 3 hours  A work shift might already exist for the current day with _no_ events. This can happen, if a shift has been created manually by the manager in advance. In this case, whenever a new shift would be created, the event should be added to this existing work shift instead.
 ///
 /// Properties:
 /// * [employeeId] - Employee's ID

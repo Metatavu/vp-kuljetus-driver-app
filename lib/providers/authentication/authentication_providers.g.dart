@@ -34,7 +34,7 @@ final userInfoProvider = AutoDisposeProvider<UserInfo?>.internal(
 );
 
 typedef UserInfoRef = AutoDisposeProviderRef<UserInfo?>;
-String _$authNotifierHash() => r'3839a2a59db3a5533505134b5b2c6e78a8980cfd';
+String _$authNotifierHash() => r'de58c04d3790ad12d245b3e3b1fae9ffc6df0496';
 
 /// See also [AuthNotifier].
 @ProviderFor(AuthNotifier)

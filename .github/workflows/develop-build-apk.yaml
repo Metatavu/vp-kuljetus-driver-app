@@ -100,8 +100,8 @@ jobs:
           echo keyPassword=${{ env.SIGN_STORE_PASSWORD }} >> android/key.properties
           echo keyAlias=app >> android/key.properties
           echo storeFile=/tmp/app.keystore >> android/key.properties
-          flutter pub run dart_define generate
           flutter pub get
+          flutter pub run dart_define generate
           flutter pub run build_runner build --delete-conflicting-outputs
           flutter build apk --dart-define-from-file=env.json
           mkdir -p update/android/${{ needs.bumpVersion.outputs.new_tag }}

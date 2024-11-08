@@ -1,6 +1,7 @@
 import "dart:async";
 import "dart:developer";
 
+import "package:android_id/android_id.dart";
 import "package:oidc/oidc.dart";
 import "package:oidc_default_store/oidc_default_store.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
@@ -86,7 +87,16 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   Future<OidcUser?> _loginEmployee() async {
-    /// This is a placeholder for the actual implementation
+    try {
+      final deviceId = await const AndroidId().getId();
+      final oidcUser = await authManager.loginAuthorizationCodeFlow(loginHint: "device-id:$deviceId");
+
+      await setLastStartedSessionType(SessionType.terminal);
+
+      return oidcUser;
+    } catch (error) {
+      log("Failed to login as employee with deviceId: ", error: error);
+    }
     return null;
   }
 

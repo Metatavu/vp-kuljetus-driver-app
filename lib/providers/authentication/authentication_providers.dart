@@ -70,7 +70,7 @@ class AuthNotifier extends _$AuthNotifier {
 
   Future<OidcUser?> _login(final PublicTruck truck) async {
     try {
-      final oidcUser = await authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:${truck.id}");
+      final oidcUser = await authManager.loginAuthorizationCodeFlow(extraParameters: {"kc_idp_hint": "driver-card-authentication"}, loginHint: "truck-id:${truck.id}");
 
       final logoutViaCardRemovalInterval = Timer.periodic(
         const Duration(seconds: 10),
@@ -89,7 +89,7 @@ class AuthNotifier extends _$AuthNotifier {
   Future<OidcUser?> _loginEmployee() async {
     try {
       final deviceId = await const AndroidId().getId();
-      final oidcUser = await authManager.loginAuthorizationCodeFlow(loginHint: "device-id:$deviceId");
+      final oidcUser = await authManager.loginAuthorizationCodeFlow(extraParameters: {"kc_idp_hint": "pin-code-authentication"}, loginHint: "device-id:$deviceId");
 
       await setLastStartedSessionType(SessionType.terminal);
 

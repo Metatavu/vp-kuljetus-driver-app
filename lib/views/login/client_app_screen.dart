@@ -64,7 +64,7 @@ class ClientAppScreen extends HookConsumerWidget {
           queryParameters: {"clientAppName": createdClientApp.name},
         );
       } catch (error) {
-        print("Error while getting device info: $error");
+        log("Error while getting device info: $error");
       }
     }
 

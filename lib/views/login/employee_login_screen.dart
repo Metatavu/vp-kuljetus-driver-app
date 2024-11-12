@@ -2,6 +2,7 @@ import "dart:developer";
 
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
@@ -36,8 +37,10 @@ class EmployeeLoginScreen extends HookConsumerWidget {
 
     useEffect(() {
       login()
-        .then((final _) => log("Logged in with pin code"))
-        .catchError((final error) => log("Failed to login with pin code: $error"));
+        .then((final _) {
+          log("Logged in with pin code");
+          context.goNamed("employee");
+        });
       return null;
     }, [],);
 

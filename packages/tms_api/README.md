@@ -66,6 +66,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 [*ClientAppsApi*](doc/ClientAppsApi.md) | [**createClientApp**](doc/ClientAppsApi.md#createclientapp) | **POST** /user-management/v1/clientApps | Create a client app.
 [*DriversApi*](doc/DriversApi.md) | [**findDriver**](doc/DriversApi.md#finddriver) | **GET** /user-management/v1/drivers/{driverId} | Find a driver.
+[*EmployeeWorkShiftsApi*](doc/EmployeeWorkShiftsApi.md) | [**listEmployeeWorkShifts**](doc/EmployeeWorkShiftsApi.md#listemployeeworkshifts) | **GET** /user-management/v1/employees/{employeeId}/workShifts | List Employees Work Shifts.
 [*FreightUnitsApi*](doc/FreightUnitsApi.md) | [**createFreightUnit**](doc/FreightUnitsApi.md#createfreightunit) | **POST** /delivery-info/v1/freightUnits | Create freight unit
 [*FreightUnitsApi*](doc/FreightUnitsApi.md) | [**findFreightUnit**](doc/FreightUnitsApi.md#findfreightunit) | **GET** /delivery-info/v1/freightUnits/{freightUnitId} | Find a freight unit.
 [*FreightUnitsApi*](doc/FreightUnitsApi.md) | [**listFreightUnits**](doc/FreightUnitsApi.md#listfreightunits) | **GET** /delivery-info/v1/freightUnits | List FreightUnits.
@@ -98,13 +99,16 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [AbsenceType](doc/AbsenceType.md)
  - [ClientApp](doc/ClientApp.md)
  - [ClientAppMetadata](doc/ClientAppMetadata.md)
  - [ClientAppStatus](doc/ClientAppStatus.md)
  - [Driver](doc/Driver.md)
+ - [EmployeeWorkShift](doc/EmployeeWorkShift.md)
  - [Error](doc/Error.md)
  - [Freight](doc/Freight.md)
  - [FreightUnit](doc/FreightUnit.md)
+ - [PerDiemAllowanceType](doc/PerDiemAllowanceType.md)
  - [PublicTruck](doc/PublicTruck.md)
  - [Route](doc/Route.md)
  - [Site](doc/Site.md)

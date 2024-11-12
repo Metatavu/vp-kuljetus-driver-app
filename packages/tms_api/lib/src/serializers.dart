@@ -14,13 +14,16 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:tms_api/src/date_serializer.dart';
 import 'package:tms_api/src/model/date.dart';
 
+import 'package:tms_api/src/model/absence_type.dart';
 import 'package:tms_api/src/model/client_app.dart';
 import 'package:tms_api/src/model/client_app_metadata.dart';
 import 'package:tms_api/src/model/client_app_status.dart';
 import 'package:tms_api/src/model/driver.dart';
+import 'package:tms_api/src/model/employee_work_shift.dart';
 import 'package:tms_api/src/model/error.dart';
 import 'package:tms_api/src/model/freight.dart';
 import 'package:tms_api/src/model/freight_unit.dart';
+import 'package:tms_api/src/model/per_diem_allowance_type.dart';
 import 'package:tms_api/src/model/public_truck.dart';
 import 'package:tms_api/src/model/route.dart';
 import 'package:tms_api/src/model/site.dart';
@@ -41,13 +44,16 @@ import 'package:tms_api/src/model/work_event_type.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
+  AbsenceType,
   ClientApp,
   ClientAppMetadata,
   ClientAppStatus,
   Driver,
+  EmployeeWorkShift,
   Error,
   Freight,
   FreightUnit,
+  PerDiemAllowanceType,
   PublicTruck,
   Route,
   Site,
@@ -93,6 +99,10 @@ Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(TruckDriverCard)]),
         () => ListBuilder<TruckDriverCard>(),
+      )
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(EmployeeWorkShift)]),
+        () => ListBuilder<EmployeeWorkShift>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Route)]),

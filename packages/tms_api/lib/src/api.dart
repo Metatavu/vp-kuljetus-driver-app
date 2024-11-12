@@ -11,6 +11,7 @@ import 'package:tms_api/src/auth/bearer_auth.dart';
 import 'package:tms_api/src/auth/oauth.dart';
 import 'package:tms_api/src/api/client_apps_api.dart';
 import 'package:tms_api/src/api/drivers_api.dart';
+import 'package:tms_api/src/api/employee_work_shifts_api.dart';
 import 'package:tms_api/src/api/freight_units_api.dart';
 import 'package:tms_api/src/api/freights_api.dart';
 import 'package:tms_api/src/api/public_trucks_api.dart';
@@ -97,6 +98,12 @@ class TmsApi {
   /// by doing that all interceptors will not be executed
   DriversApi getDriversApi() {
     return DriversApi(dio, serializers);
+  }
+
+  /// Get EmployeeWorkShiftsApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  EmployeeWorkShiftsApi getEmployeeWorkShiftsApi() {
+    return EmployeeWorkShiftsApi(dio, serializers);
   }
 
   /// Get FreightUnitsApi instance, base route and serializer can be overridden by a given but be careful,

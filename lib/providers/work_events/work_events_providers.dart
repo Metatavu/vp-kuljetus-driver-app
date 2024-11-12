@@ -19,11 +19,30 @@ class WorkEvents extends _$WorkEvents {
         log("Attempted to list time entries with $employeeId employeeId");
         return [];
       }
-      final response = await tmsApi.getWorkEventsApi().listEmployeeWorkEvents(
-        employeeId: employeeId,
-        max: 1000,
-        cancelToken: cancelToken,
-      );
+
+      final workShifts = (await tmsApi
+        .getEmployeeWorkShiftsApi()
+        .listEmployeeWorkShifts(
+          employeeId: employeeId,
+          max: 1,
+          cancelToken: cancelToken,
+        )).data;
+
+
+      if (workShifts == null || workShifts.isEmpty) {
+        return [];
+      }
+
+      final latestWorkShift = workShifts.first;
+
+      final response = await tmsApi
+        .getWorkEventsApi()
+        .listEmployeeWorkEvents(
+          employeeId: employeeId,
+          employeeWorkShiftId: latestWorkShift.id,
+          max: 1000,
+          cancelToken: cancelToken,
+        );
 
       return response.data?.toList() ?? [];
     } on DioException catch (error) {

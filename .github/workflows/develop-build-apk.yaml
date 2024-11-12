@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - develop
-  repository_dispatch:
+  workflow_dispatch:
 jobs:
   bumpVersion:
     runs-on: ubuntu-latest

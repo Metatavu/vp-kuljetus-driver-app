@@ -23,9 +23,9 @@ class ActionButton extends StatelessWidget {
           style: ButtonStyle(
             visualDensity: VisualDensity.compact,
             foregroundColor:
-                color != null ? WidgetStatePropertyAll(color) : null,
+                color != null ? MaterialStatePropertyAll(color) : null,
             backgroundColor: backgroundColor != null
-                ? WidgetStateProperty.all(backgroundColor)
+                ? MaterialStateProperty.all(backgroundColor)
                 : null,
           ),
           onPressed: onPressed,

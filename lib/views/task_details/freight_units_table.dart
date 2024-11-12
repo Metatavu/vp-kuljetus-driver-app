@@ -67,16 +67,16 @@ class FreightUnitsTable extends HookConsumerWidget {
     );
 
     return DataTable(
-      border: const TableBorder.symmetric(
-        outside: BorderSide(width: 0.75, color: Color(0xFFEAEAEA)),
-        inside: BorderSide(width: 1, color: Color(0xFFEAEAEA)),
+      border: TableBorder.symmetric(
+        outside: const BorderSide(width: 0.75, color: Color(0xFFEAEAEA)),
+        inside: const BorderSide(width: 1, color: Color(0xFFEAEAEA)),
       ),
       dividerThickness: 0.01,
       headingRowHeight: 32,
       dataRowMinHeight: 40,
       dataRowMaxHeight: 40,
-      headingRowColor: WidgetStateProperty.all(const Color(0xFFF2F8FA)),
-      dataRowColor: WidgetStateProperty.all(const Color(0xFFFAFAFA)),
+      headingRowColor: MaterialStateProperty.all(const Color(0xFFF2F8FA)),
+      dataRowColor: MaterialStateProperty.all(const Color(0xFFFAFAFA)),
       dataTextStyle: const TextStyle(color: Colors.black45),
       columnSpacing: 0,
       columns: [

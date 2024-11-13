@@ -35,47 +35,47 @@ ThemeData getTheme(final BuildContext context) {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        padding: const MaterialStatePropertyAll(
+        padding: const WidgetStatePropertyAll(
           EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         ),
-        elevation: MaterialStateProperty.resolveWith(
-          (final states) => states.contains(MaterialState.disabled) ? 0 : 3,
+        elevation: WidgetStateProperty.resolveWith(
+          (final states) => states.contains(WidgetState.disabled) ? 0 : 3,
         ),
-        shape: const MaterialStatePropertyAll(
+        shape: const WidgetStatePropertyAll(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
-        side: MaterialStateProperty.resolveWith(
+        side: WidgetStateProperty.resolveWith(
           (final states) => BorderSide(
-            color: states.contains(MaterialState.disabled)
+            color: states.contains(WidgetState.disabled)
                 ? themeWithFonts.disabledColor
                 : themeWithFonts.primaryColor,
             width: 1.5,
           ),
         ),
-        backgroundColor: const MaterialStatePropertyAll(Colors.white),
-        surfaceTintColor: const MaterialStatePropertyAll(Colors.transparent),
-        textStyle: MaterialStatePropertyAll(
+        backgroundColor: const WidgetStatePropertyAll(Colors.white),
+        surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+        textStyle: WidgetStatePropertyAll(
           themeWithFonts.textTheme.titleMedium,
         ),
       ),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
-        padding: const MaterialStatePropertyAll(
+        padding: const WidgetStatePropertyAll(
           EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         ),
-        shape: const MaterialStatePropertyAll(StadiumBorder()),
-        surfaceTintColor: const MaterialStatePropertyAll(Colors.white),
-        textStyle: MaterialStatePropertyAll(
+        shape: const WidgetStatePropertyAll(StadiumBorder()),
+        surfaceTintColor: const WidgetStatePropertyAll(Colors.white),
+        textStyle: WidgetStatePropertyAll(
           themeWithFonts.textTheme.titleMedium,
         ),
       ),
     ),
     textButtonTheme: const TextButtonThemeData(
       style: ButtonStyle(
-        shape: MaterialStatePropertyAll(
+        shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),

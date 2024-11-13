@@ -202,33 +202,33 @@ String? handleRedirect(
   final GoRouterState state,
   final ValueNotifier<AsyncValue<bool>> authenticatedNotifier,
 ) {
+  // Force redirect to client app creation if it's not created
   if (!getClientAppCreated()) return "/client-app";
   if (state.uri.toString().startsWith("/client-app")) return state.uri.toString();
-  if (authenticatedNotifier.value.unwrapPrevious().hasError) return "/login";
 
-  if (authenticatedNotifier.value.isLoading ||
-      !authenticatedNotifier.value.hasValue) {
-    return "/";
-  }
+  // Redirect to login if not authenticated or authentication is loading or has error
+  if (
+    authenticatedNotifier.value.unwrapPrevious().hasError ||
+    authenticatedNotifier.value.isLoading ||
+    !authenticatedNotifier.value.hasValue
+  ) return "/login";
 
   final auth = authenticatedNotifier.value.requireValue;
 
-  final loginPaths = ["/login", "/login/employee", "/login/driver"];
-  //TODO: Don't redirect to /vehicle if we're logged in to terminal
-  final isSplash = state.uri.path == "/";
-  if (isSplash) return auth ? getLastStartedSessionType() == SessionType.driver ? "/vehicle" : "/employee" :"/login";
+  final loginPaths = ["/login", "/login/driver", "/login/employee"];
 
-  final isEmployeeLogin = state.uri.path == "/login/employee";
-  final isDriverLogin = state.uri.path == "/login/driver";
 
-  if (auth) {
-    if (isEmployeeLogin) return "/employee";
-    if (isDriverLogin) return "/driver";
+  // Redirect to login if we're going to splash
+  if (state.uri.toString() == "/") return "/login";
 
-    return null;
-  }
-
-  return loginPaths.contains(state.uri.path) ? null : "/login";
+  return switch (getLastStartedSessionType()) {
+    // Redirect to driver login if not authenticated
+    SessionType.driver => auth ? null : "/login/driver",
+    // Redirect to employee login if not authenticated
+    SessionType.terminal => auth ? null : "/login/employee",
+    // Don't redirect if in loginPaths, otherwise redirect to login if last session type is unknown
+    _ => loginPaths.contains(state.uri.toString()) ? null : "/login",
+  };
 }
 
 String? handleRedirectIfOngoingTasks(

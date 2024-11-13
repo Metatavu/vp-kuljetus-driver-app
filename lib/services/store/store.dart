@@ -68,7 +68,7 @@ void setTaskGroupEndedAt(final DateTime endedAt, final String groupedTaskKey, fi
 SessionType? getLastStartedSessionType() {
   final sessionType = store.getString(lastStartedSessionTypeKey);
 
-  return SessionType.values.firstWhereOrNull((final type) => type.toString() == sessionType);
+  return SessionType.values.firstWhereOrNull((final type) => type.name == sessionType);
 }
 
 Future<void> setLastStartedSessionType(final SessionType sessionType) async {

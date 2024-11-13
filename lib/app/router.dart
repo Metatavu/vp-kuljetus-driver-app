@@ -206,7 +206,7 @@ String? handleRedirect(
   if (!getClientAppCreated()) return "/client-app";
   if (state.uri.toString().startsWith("/client-app")) return state.uri.toString();
 
-  // Redirect to login if not authenticated or authentication is login or has error
+  // Redirect to login if not authenticated or authentication is loading or has error
   if (
     authenticatedNotifier.value.unwrapPrevious().hasError ||
     authenticatedNotifier.value.isLoading ||

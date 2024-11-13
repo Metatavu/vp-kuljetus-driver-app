@@ -80,7 +80,6 @@ jobs:
         with:
           url: ${{ secrets.VAULT_ADDR }}
           token: ${{ secrets.VAULT_TOKEN }}
-          caCertificate: ${{ secrets.VAULT_CA_CERT }}
           secrets: |
               ${{ secrets.VAULT_PATH }} SIGN_KEYSTORE | SIGN_KEYSTORE ;
               ${{ secrets.VAULT_PATH }} SIGN_STORE_PASSWORD | SIGN_STORE_PASSWORD ;

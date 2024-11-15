@@ -91,7 +91,3 @@ lib/src/model/work_event_type.dart
 lib/src/serializers.dart
 lib/tms_api.dart
 pubspec.yaml
-test/absence_type_test.dart
-test/employee_work_shift_test.dart
-test/employee_work_shifts_api_test.dart
-test/per_diem_allowance_type_test.dart

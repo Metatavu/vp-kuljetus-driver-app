@@ -16,9 +16,9 @@ class _$EmployeeWorkShift extends EmployeeWorkShift {
   @override
   final String? id;
   @override
-  final Date? startedAt;
+  final DateTime? startedAt;
   @override
-  final Date? endedAt;
+  final DateTime? endedAt;
   @override
   final BuiltList<String>? truckIds;
   @override
@@ -135,13 +135,13 @@ class EmployeeWorkShiftBuilder
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
-  Date? _startedAt;
-  Date? get startedAt => _$this._startedAt;
-  set startedAt(Date? startedAt) => _$this._startedAt = startedAt;
+  DateTime? _startedAt;
+  DateTime? get startedAt => _$this._startedAt;
+  set startedAt(DateTime? startedAt) => _$this._startedAt = startedAt;
 
-  Date? _endedAt;
-  Date? get endedAt => _$this._endedAt;
-  set endedAt(Date? endedAt) => _$this._endedAt = endedAt;
+  DateTime? _endedAt;
+  DateTime? get endedAt => _$this._endedAt;
+  set endedAt(DateTime? endedAt) => _$this._endedAt = endedAt;
 
   ListBuilder<String>? _truckIds;
   ListBuilder<String> get truckIds =>

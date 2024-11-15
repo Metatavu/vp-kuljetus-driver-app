@@ -14,6 +14,7 @@ const WorkEventType _$FROZEN = const WorkEventType._('FROZEN');
 const WorkEventType _$PALTE = const WorkEventType._('PALTE');
 const WorkEventType _$BREWERY = const WorkEventType._('BREWERY');
 const WorkEventType _$GREASE = const WorkEventType._('GREASE');
+const WorkEventType _$OFFICE = const WorkEventType._('OFFICE');
 const WorkEventType _$LOGIN = const WorkEventType._('LOGIN');
 const WorkEventType _$LOGOUT = const WorkEventType._('LOGOUT');
 const WorkEventType _$OTHER_WORK = const WorkEventType._('OTHER_WORK');
@@ -48,6 +49,8 @@ WorkEventType _$valueOf(String name) {
       return _$BREWERY;
     case 'GREASE':
       return _$GREASE;
+    case 'OFFICE':
+      return _$OFFICE;
     case 'LOGIN':
       return _$LOGIN;
     case 'LOGOUT':
@@ -89,6 +92,7 @@ final BuiltSet<WorkEventType> _$values =
   _$PALTE,
   _$BREWERY,
   _$GREASE,
+  _$OFFICE,
   _$LOGIN,
   _$LOGOUT,
   _$OTHER_WORK,
@@ -114,6 +118,7 @@ class _$WorkEventTypeMeta {
   WorkEventType get PALTE => _$PALTE;
   WorkEventType get BREWERY => _$BREWERY;
   WorkEventType get GREASE => _$GREASE;
+  WorkEventType get OFFICE => _$OFFICE;
   WorkEventType get LOGIN => _$LOGIN;
   WorkEventType get LOGOUT => _$LOGOUT;
   WorkEventType get OTHER_WORK => _$OTHER_WORK;
@@ -149,6 +154,7 @@ class _$WorkEventTypeSerializer implements PrimitiveSerializer<WorkEventType> {
     'PALTE': 'PALTE',
     'BREWERY': 'BREWERY',
     'GREASE': 'GREASE',
+    'OFFICE': 'OFFICE',
     'LOGIN': 'LOGIN',
     'LOGOUT': 'LOGOUT',
     'OTHER_WORK': 'OTHER_WORK',
@@ -172,6 +178,7 @@ class _$WorkEventTypeSerializer implements PrimitiveSerializer<WorkEventType> {
     'PALTE': 'PALTE',
     'BREWERY': 'BREWERY',
     'GREASE': 'GREASE',
+    'OFFICE': 'OFFICE',
     'LOGIN': 'LOGIN',
     'LOGOUT': 'LOGOUT',
     'OTHER_WORK': 'OTHER_WORK',

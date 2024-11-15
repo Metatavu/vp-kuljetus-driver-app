@@ -11,7 +11,6 @@ import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_work_event_type_button.dart";
 
 final workEventTypes = [
-  // TODO: ADD OFFICE WORK TO SPECS
   WorkEventType.BREAK,
   WorkEventType.OTHER_WORK,
   WorkEventType.GREASE,
@@ -22,6 +21,7 @@ final workEventTypes = [
   WorkEventType.MEAT_CELLAR,
   WorkEventType.MEIRA,
   WorkEventType.FROZEN,
+  WorkEventType.OFFICE,
 ];
 
 class EmployeeScreen extends HookConsumerWidget {

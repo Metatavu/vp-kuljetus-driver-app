@@ -48,5 +48,6 @@ getWorkEventTypeKey(final WorkEventType workEventType) =>
     WorkEventType.LOGOUT => "workEventType.logout",
     WorkEventType.SHIFT_START => "workEventType.shiftStart",
     WorkEventType.SHIFT_END => "workEventType.shiftEnd",
+    WorkEventType.OFFICE => "workEventType.office",
     _ => throw Exception("Unknown work event type: $workEventType")
   };

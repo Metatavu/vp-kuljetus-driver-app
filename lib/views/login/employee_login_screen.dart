@@ -44,7 +44,7 @@ class EmployeeLoginScreen extends HookConsumerWidget {
             context.goNamed("employee");
           }
         }).whenComplete(() {
-          if (!context.mounted) {
+          if (context.mounted) {
             context.loaderOverlay.hide();
           }
         });

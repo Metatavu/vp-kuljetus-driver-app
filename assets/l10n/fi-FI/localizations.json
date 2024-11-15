@@ -73,6 +73,7 @@
   "pinCode": "Pin-koodi",
   "workingTime": "Työaika",
   "finishWorkDay": "Lopeta työpäivä",
+  "greeting": "Hei, {{name}}!",
   "workEventType": {
     "break": "Tauko",
     "vegetable": "Hevi",
@@ -84,6 +85,7 @@
     "frozen": "Pakaste",
     "grease": "Rasva",
     "otherWork": "Muu työ",
+    "office": "Toimisto",
     "login": "Sisäänkirjautuminen",
     "logout": "Ulos kirjautuminen",
     "shiftStart": "Vuoron aloitus",

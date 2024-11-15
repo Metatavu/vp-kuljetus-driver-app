@@ -1,6 +1,7 @@
 import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
+import "package:loader_overlay/loader_overlay.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
@@ -59,9 +60,15 @@ GoRouter router(final RouterRef ref) {
           final child,
         ) =>
           NoTransitionPage(
-            child: LoginScreenShell(
-              navigateBackVisible: state.uri.toString() != "/login" && !state.uri.toString().startsWith("/client-app"),
-              child: child,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: LoaderOverlay(
+                child: LoginScreenShell(
+                  navigateBackVisible: state.uri.toString() != "/login" && !state.uri.toString().startsWith("/client-app"),
+                  child: child,
+                ),
+              ),
             ),
           ),
         routes: [
@@ -133,6 +140,7 @@ GoRouter router(final RouterRef ref) {
 
           return NoTransitionPage(
             child: Scaffold(
+              backgroundColor: Colors.white,
               body: Column(
                 children: [
                   const DriverLogAppBar(),
@@ -220,6 +228,7 @@ String? handleRedirect(
 
   // Redirect to login if we're going to splash
   if (state.uri.toString() == "/") return "/login";
+  if (state.uri.toString() == "/login") return null;
 
   return switch (getLastStartedSessionType()) {
     // Redirect to driver login if not authenticated

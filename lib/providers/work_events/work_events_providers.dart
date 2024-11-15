@@ -24,7 +24,9 @@ class WorkEvents extends _$WorkEvents {
         .getEmployeeWorkShiftsApi()
         .listEmployeeWorkShifts(
           employeeId: employeeId,
+          first: 0,
           max: 1,
+
           cancelToken: cancelToken,
         )).data;
 

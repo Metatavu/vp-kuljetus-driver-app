@@ -31,7 +31,7 @@ class EmployeeAppBar extends HookConsumerWidget {
         height: 77,
         title: l10n.t("workingTime"),
         initialDuration: sumWorkEvents(workEvents),
-        childBuilder: (final _, final int index) => WorkEventRow(workEvent: workEvents[index], workEvents: workEvents),
+        childBuilder: (final _, final int index) => WorkEventRow(workEvent: workEvents[index], workEvents: workEvents, isLatest: index == 0),
         childCount: workEvents.length,
       ),
     );

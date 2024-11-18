@@ -11,7 +11,6 @@ import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_work_event_type_button.dart";
 
 final workEventTypes = [
-  // TODO: ADD OFFICE WORK TO SPECS
   WorkEventType.BREAK,
   WorkEventType.OTHER_WORK,
   WorkEventType.GREASE,
@@ -22,6 +21,7 @@ final workEventTypes = [
   WorkEventType.MEAT_CELLAR,
   WorkEventType.MEIRA,
   WorkEventType.FROZEN,
+  WorkEventType.OFFICE,
 ];
 
 class EmployeeScreen extends HookConsumerWidget {
@@ -33,6 +33,7 @@ class EmployeeScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
     final employeeId = ref.watch(userInfoProvider)?.sub;
+    final employeeName = ref.watch(userInfoProvider)?.name;
     final authNotifier = ref.watch(authNotifierProvider.notifier);
 
     final loading = useState(false);
@@ -41,10 +42,10 @@ class EmployeeScreen extends HookConsumerWidget {
         return const Center(child: Text("Employee not found"));
     }
 
-    /// TODO: Define whether finishing work day should send a lougout event or both logout and shift end events.
     Future<void> onFinishWorkDayPressed(final BuildContext context) async {
       log("Finishing work day...");
       await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(employeeId, WorkEventType.LOGOUT);
+      await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(employeeId, WorkEventType.SHIFT_END);
       log("Created logout work event. Logging out...");
       await authNotifier.logout();
       log("Logged out");
@@ -60,6 +61,8 @@ class EmployeeScreen extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Text(l10n.t("greeting", variables: { "name": employeeName ?? ""}), style: theme.textTheme.titleLarge),
+              const SizedBox(height: 16),
               for (final workEventType in workEventTypes)
                 Column(
                   children: [

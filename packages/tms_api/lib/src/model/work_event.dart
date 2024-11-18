@@ -30,7 +30,7 @@ abstract class WorkEvent implements Built<WorkEvent, WorkEventBuilder> {
 
   @BuiltValueField(wireName: r'workEventType')
   WorkEventType get workEventType;
-  // enum workEventTypeEnum {  VEGETABLE,  DRY,  MEAT_CELLAR,  MEIRA,  FROZEN,  PALTE,  BREWERY,  GREASE,  LOGIN,  LOGOUT,  OTHER_WORK,  BREAK,  SHIFT_START,  SHIFT_END,  UNKNOWN,  DRIVE,  LOADING,  UNLOADING,  AVAILABILITY,  DRIVER_CARD_INSERTED,  DRIVER_CARD_REMOVED,  };
+  // enum workEventTypeEnum {  VEGETABLE,  DRY,  MEAT_CELLAR,  MEIRA,  FROZEN,  PALTE,  BREWERY,  GREASE,  OFFICE,  LOGIN,  LOGOUT,  OTHER_WORK,  BREAK,  SHIFT_START,  SHIFT_END,  UNKNOWN,  DRIVE,  LOADING,  UNLOADING,  AVAILABILITY,  DRIVER_CARD_INSERTED,  DRIVER_CARD_REMOVED,  };
 
   @BuiltValueField(wireName: r'id')
   String? get id;

@@ -24,7 +24,9 @@ class WorkEvents extends _$WorkEvents {
         .getEmployeeWorkShiftsApi()
         .listEmployeeWorkShifts(
           employeeId: employeeId,
+          first: 0,
           max: 1,
+
           cancelToken: cancelToken,
         )).data;
 
@@ -52,7 +54,7 @@ class WorkEvents extends _$WorkEvents {
     }
   }
 
-  WorkEvent? getLatestWorkEvent(final String employeeId) => state.asData?.value.first;
+  WorkEvent? getLatestWorkEvent(final String employeeId) => state.asData?.value.firstOrNull;
 
   Future<void> createWorkEvent(final String employeeId, final WorkEventType workEventType) async {
     try {

@@ -12,8 +12,8 @@ Name | Type | Description | Notes
 **employeeId** | **String** | Employee's ID | 
 **approved** | **bool** | Whether the work shift has been approved by a supervisor. Work shift hours cannot be updated if the work shift is approved.  | 
 **id** | **String** |  | [optional] 
-**startedAt** | [**Date**](Date.md) | Work shift start time | [optional] 
-**endedAt** | [**Date**](Date.md) | Work shift end time | [optional] 
+**startedAt** | [**DateTime**](DateTime.md) | Work shift start time | [optional] 
+**endedAt** | [**DateTime**](DateTime.md) | Work shift end time | [optional] 
 **truckIds** | **BuiltList&lt;String&gt;** | List of truck IDs used during the work shift. Derived from work events in the shift. | [optional] 
 **dayOffWorkAllowance** | **bool** | Day off work allowance is used to mark the day when the work shift started as a day off for the employee. This means that all the work hours done during that day will be also added to the HOLIDAY_ALLOWANCE work type during work shift hours calculation.  | [optional] 
 **absence** | [**AbsenceType**](AbsenceType.md) |  | [optional] 

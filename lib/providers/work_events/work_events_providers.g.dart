@@ -6,7 +6,7 @@ part of 'work_events_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$workEventsHash() => r'a950bf586fc5f209ab1347f0d13e7e5e0d015657';
+String _$workEventsHash() => r'46877c3c2165c3b72462bf3035de49e79ebd6625';
 
 /// Copied from Dart SDK
 class _SystemHash {

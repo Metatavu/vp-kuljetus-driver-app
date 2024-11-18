@@ -21,6 +21,7 @@ class EmployeePage extends NoTransitionPage {
     return EmployeePage(
       key: state.pageKey,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Stack(
           children: [
             Indexer(

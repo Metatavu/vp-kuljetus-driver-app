@@ -46,11 +46,11 @@ abstract class EmployeeWorkShift
 
   /// Work shift start time
   @BuiltValueField(wireName: r'startedAt')
-  Date? get startedAt;
+  DateTime? get startedAt;
 
   /// Work shift end time
   @BuiltValueField(wireName: r'endedAt')
-  Date? get endedAt;
+  DateTime? get endedAt;
 
   /// List of truck IDs used during the work shift. Derived from work events in the shift.
   @BuiltValueField(wireName: r'truckIds')
@@ -64,7 +64,7 @@ abstract class EmployeeWorkShift
   AbsenceType? get absence;
   // enum absenceEnum {  TRAINING,  VACATION,  OFFICIAL_DUTIES,  COMPENSATORY_LEAVE,  SICK_LEAVE,  };
 
-  @BuiltValueField(wireName: r'PerDiemAllowance')
+  @BuiltValueField(wireName: r'perDiemAllowance')
   PerDiemAllowanceType? get perDiemAllowance;
   // enum perDiemAllowanceEnum {  PARTIAL,  FULL,  };
 
@@ -124,14 +124,14 @@ class _$EmployeeWorkShiftSerializer
       yield r'startedAt';
       yield serializers.serialize(
         object.startedAt,
-        specifiedType: const FullType(Date),
+        specifiedType: const FullType(DateTime),
       );
     }
     if (object.endedAt != null) {
       yield r'endedAt';
       yield serializers.serialize(
         object.endedAt,
-        specifiedType: const FullType(Date),
+        specifiedType: const FullType(DateTime),
       );
     }
     if (object.truckIds != null) {
@@ -156,7 +156,7 @@ class _$EmployeeWorkShiftSerializer
       );
     }
     if (object.perDiemAllowance != null) {
-      yield r'PerDiemAllowance';
+      yield r'perDiemAllowance';
       yield serializers.serialize(
         object.perDiemAllowance,
         specifiedType: const FullType(PerDiemAllowanceType),
@@ -225,15 +225,15 @@ class _$EmployeeWorkShiftSerializer
         case r'startedAt':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(Date),
-          ) as Date;
+            specifiedType: const FullType(DateTime),
+          ) as DateTime;
           result.startedAt = valueDes;
           break;
         case r'endedAt':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(Date),
-          ) as Date;
+            specifiedType: const FullType(DateTime),
+          ) as DateTime;
           result.endedAt = valueDes;
           break;
         case r'truckIds':
@@ -257,7 +257,7 @@ class _$EmployeeWorkShiftSerializer
           ) as AbsenceType;
           result.absence = valueDes;
           break;
-        case r'PerDiemAllowance':
+        case r'perDiemAllowance':
           final valueDes = serializers.deserialize(
             value,
             specifiedType: const FullType(PerDiemAllowanceType),

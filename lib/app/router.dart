@@ -59,18 +59,19 @@ GoRouter router(final RouterRef ref) {
           final state,
           final child,
         ) =>
-          NoTransitionPage(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: LoaderOverlay(
-                child: LoginScreenShell(
-                  navigateBackVisible: state.uri.toString() != "/login" && !state.uri.toString().startsWith("/client-app"),
-                  child: child,
-                ),
+            NoTransitionPage(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: LoaderOverlay(
+              child: LoginScreenShell(
+                navigateBackVisible: state.uri.toString() != "/login" &&
+                    !state.uri.toString().startsWith("/client-app"),
+                child: child,
               ),
             ),
           ),
+        ),
         routes: [
           GoRoute(
             path: "/client-app",
@@ -84,10 +85,14 @@ GoRouter router(final RouterRef ref) {
                 name: "confirmClientApp",
                 pageBuilder: (final context, final state) {
                   final deviceId = state.pathParameters["deviceId"]!;
-                  final clientAppName = state.uri.queryParameters["clientAppName"];
+                  final clientAppName =
+                      state.uri.queryParameters["clientAppName"];
 
                   return NoTransitionPage(
-                    child: ConfirmClientAppScreen(deviceId: deviceId, clientAppName: clientAppName),
+                    child: ConfirmClientAppScreen(
+                      deviceId: deviceId,
+                      clientAppName: clientAppName,
+                    ),
                   );
                 },
               ),
@@ -97,20 +102,22 @@ GoRouter router(final RouterRef ref) {
             path: "/login",
             name: "login",
             pageBuilder: (final context, final state) => const NoTransitionPage(
-                child: LoginSelectionScreen(),
-              ),
+              child: LoginSelectionScreen(),
+            ),
             routes: [
               GoRoute(
                 path: "driver",
                 name: "driverLogin",
-                pageBuilder: (final context, final state) => const NoTransitionPage(
+                pageBuilder: (final context, final state) =>
+                    const NoTransitionPage(
                   child: DriverLoginScreen(),
                 ),
               ),
               GoRoute(
                 path: "employee",
                 name: "employeeLogin",
-                pageBuilder: (final context, final state) => const NoTransitionPage(
+                pageBuilder: (final context, final state) =>
+                    const NoTransitionPage(
                   child: EmployeeLoginScreen(),
                 ),
               ),
@@ -124,7 +131,8 @@ GoRouter router(final RouterRef ref) {
           GoRoute(
             path: "/employee",
             name: "employee",
-            pageBuilder: (final context, final state) => const NoTransitionPage(child: EmployeeScreen()),
+            pageBuilder: (final context, final state) =>
+                const NoTransitionPage(child: EmployeeScreen()),
           ),
         ],
       ),
@@ -136,7 +144,8 @@ GoRouter router(final RouterRef ref) {
         ) {
           final statusBarHeight = MediaQuery.of(context).viewPadding.top;
           final defaultPanelHeight = statusBarHeight + 54;
-          final contentHeight = MediaQuery.of(context).size.height - defaultPanelHeight;
+          final contentHeight =
+              MediaQuery.of(context).size.height - defaultPanelHeight;
 
           return NoTransitionPage(
             child: Scaffold(
@@ -144,7 +153,11 @@ GoRouter router(final RouterRef ref) {
               body: Column(
                 children: [
                   const DriverLogAppBar(),
-                  Container(constraints: BoxConstraints.loose(Size.fromHeight(contentHeight)), child: child),
+                  Container(
+                    constraints:
+                        BoxConstraints.loose(Size.fromHeight(contentHeight)),
+                    child: child,
+                  ),
                 ],
               ),
             ),
@@ -212,19 +225,17 @@ String? handleRedirect(
 ) {
   // Force redirect to client app creation if it's not created
   if (!getClientAppCreated()) return "/client-app";
-  if (state.uri.toString().startsWith("/client-app")) return state.uri.toString();
+  if (state.uri.toString().startsWith("/client-app"))
+    return state.uri.toString();
 
   // Redirect to login if not authenticated or authentication is loading or has error
-  if (
-    authenticatedNotifier.value.unwrapPrevious().hasError ||
-    authenticatedNotifier.value.isLoading ||
-    !authenticatedNotifier.value.hasValue
-  ) return "/login";
+  if (authenticatedNotifier.value.unwrapPrevious().hasError ||
+      authenticatedNotifier.value.isLoading ||
+      !authenticatedNotifier.value.hasValue) return "/login";
 
   final auth = authenticatedNotifier.value.requireValue;
 
   final loginPaths = ["/login", "/login/driver", "/login/employee"];
-
 
   // Redirect to login if we're going to splash
   if (state.uri.toString() == "/") return "/login";

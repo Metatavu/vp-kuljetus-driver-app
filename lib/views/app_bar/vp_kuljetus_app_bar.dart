@@ -6,7 +6,6 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:vp_kuljetus_driver_app/views/app_bar/vp_kuljetus_app_bar_main_row.dart";
 
 class VpKuljetusAppBar extends HookConsumerWidget {
-
   const VpKuljetusAppBar({
     super.key,
     required this.childBuilder,
@@ -32,8 +31,11 @@ class VpKuljetusAppBar extends HookConsumerWidget {
     final statusBarHeight = mediaQuery.viewPadding.top;
     final defaultPanelHeight = statusBarHeight + height;
 
-    final animationController = useAnimationController(duration: const Duration(milliseconds: 300),);
-    final animation = CurvedAnimation(parent: animationController, curve: Curves.easeOutCubic);
+    final animationController = useAnimationController(
+      duration: const Duration(milliseconds: 300),
+    );
+    final animation = CurvedAnimation(
+        parent: animationController, curve: Curves.easeOutCubic);
 
     void onToggleExpand() {
       if (animationController.isCompleted) {
@@ -46,12 +48,15 @@ class VpKuljetusAppBar extends HookConsumerWidget {
     return AnimatedBuilder(
       animation: animation,
       builder: (final BuildContext context, final _) => GestureDetector(
-        onVerticalDragStart: (final _) => animationController.isCompleted ? null : onToggleExpand(),
+        onVerticalDragStart: (final _) =>
+            animationController.isCompleted ? null : onToggleExpand(),
         onTap: onToggleExpand,
         child: Container(
-          decoration: BoxDecoration(color: backgroundColor ?? theme.primaryColor),
+          decoration:
+              BoxDecoration(color: backgroundColor ?? theme.primaryColor),
           width: screenSize.width,
-          height: lerpDouble(defaultPanelHeight, screenSize.height * 0.9, animation.value)!,
+          height: lerpDouble(
+              defaultPanelHeight, screenSize.height * 0.9, animation.value)!,
           child: Column(
             children: [
               Expanded(
@@ -60,7 +65,9 @@ class VpKuljetusAppBar extends HookConsumerWidget {
                   separatorBuilder: (final _, final __) => const Divider(),
                   itemCount: childCount,
                   itemBuilder: childBuilder,
-                  physics: animation.value == 0.0 ? const NeverScrollableScrollPhysics() : const AlwaysScrollableScrollPhysics(),
+                  physics: animation.value == 0.0
+                      ? const NeverScrollableScrollPhysics()
+                      : const AlwaysScrollableScrollPhysics(),
                 ),
               ),
               const Divider(),

@@ -8,9 +8,11 @@ String getDriveStateTitle(
   final bool isLatest,
 ) {
   final driveStateLocaleKey = getDriveStateLocaleKey(driveState.state);
-  final driveStateWorkTypeKey = getDriveStateWorkTypeKey(driveState.taskType, isLatest);
+  final driveStateWorkTypeKey =
+      getDriveStateWorkTypeKey(driveState.taskType, isLatest);
 
-  return l10n.t(driveStateLocaleKey,
+  return l10n.t(
+    driveStateLocaleKey,
     variables: {
       "stopType": l10n.t(driveStateWorkTypeKey),
     },

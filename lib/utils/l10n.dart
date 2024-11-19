@@ -15,39 +15,39 @@ getTowableTypeLocaleKey(final TowableTypeEnum towableType) =>
     };
 
 getDriveStateLocaleKey(final TruckDriveStateEnum driveState) =>
-  switch (driveState) {
-    TruckDriveStateEnum.REST => "rest",
-    TruckDriveStateEnum.DRIVER_AVAILABLE => "available",
-    TruckDriveStateEnum.WORK => "work",
-    TruckDriveStateEnum.DRIVE => "driving",
-    TruckDriveStateEnum.ERROR => "driveStateError",
-    TruckDriveStateEnum.NOT_AVAILABLE => "notAvailable",
-    _ => throw Exception("Unknown drive state: $driveState"),
-  };
+    switch (driveState) {
+      TruckDriveStateEnum.REST => "rest",
+      TruckDriveStateEnum.DRIVER_AVAILABLE => "available",
+      TruckDriveStateEnum.WORK => "work",
+      TruckDriveStateEnum.DRIVE => "driving",
+      TruckDriveStateEnum.ERROR => "driveStateError",
+      TruckDriveStateEnum.NOT_AVAILABLE => "notAvailable",
+      _ => throw Exception("Unknown drive state: $driveState"),
+    };
 
 getDriveStateWorkTypeKey(final TaskType? taskType, final bool isLatest) =>
-  switch (taskType) {
-    TaskType.LOAD => "stopType.loading",
-    TaskType.UNLOAD => "stopType.unloading",
-    _ => "stopType.other",
-  };
+    switch (taskType) {
+      TaskType.LOAD => "stopType.loading",
+      TaskType.UNLOAD => "stopType.unloading",
+      _ => "stopType.other",
+    };
 
 getWorkEventTypeKey(final WorkEventType workEventType) =>
-  switch (workEventType) {
-    WorkEventType.BREAK => "workEventType.break",
-    WorkEventType.VEGETABLE => "workEventType.vegetable",
-    WorkEventType.PALTE => "workEventType.palte",
-    WorkEventType.MEIRA => "workEventType.meira",
-    WorkEventType.BREWERY => "workEventType.brewery",
-    WorkEventType.DRY => "workEventType.dry",
-    WorkEventType.MEAT_CELLAR => "workEventType.meatCellar",
-    WorkEventType.FROZEN => "workEventType.frozen",
-    WorkEventType.GREASE => "workEventType.grease",
-    WorkEventType.OTHER_WORK => "workEventType.otherWork",
-    WorkEventType.LOGIN => "workEventType.login",
-    WorkEventType.LOGOUT => "workEventType.logout",
-    WorkEventType.SHIFT_START => "workEventType.shiftStart",
-    WorkEventType.SHIFT_END => "workEventType.shiftEnd",
-    WorkEventType.OFFICE => "workEventType.office",
-    _ => throw Exception("Unknown work event type: $workEventType")
-  };
+    switch (workEventType) {
+      WorkEventType.BREAK => "workEventType.break",
+      WorkEventType.VEGETABLE => "workEventType.vegetable",
+      WorkEventType.PALTE => "workEventType.palte",
+      WorkEventType.MEIRA => "workEventType.meira",
+      WorkEventType.BREWERY => "workEventType.brewery",
+      WorkEventType.DRY => "workEventType.dry",
+      WorkEventType.MEAT_CELLAR => "workEventType.meatCellar",
+      WorkEventType.FROZEN => "workEventType.frozen",
+      WorkEventType.GREASE => "workEventType.grease",
+      WorkEventType.OTHER_WORK => "workEventType.otherWork",
+      WorkEventType.LOGIN => "workEventType.login",
+      WorkEventType.LOGOUT => "workEventType.logout",
+      WorkEventType.SHIFT_START => "workEventType.shiftStart",
+      WorkEventType.SHIFT_END => "workEventType.shiftEnd",
+      WorkEventType.OFFICE => "workEventType.office",
+      _ => throw Exception("Unknown work event type: $workEventType")
+    };

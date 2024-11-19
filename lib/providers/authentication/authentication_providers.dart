@@ -73,7 +73,8 @@ class AuthNotifier extends _$AuthNotifier {
       final oidcUser = await authManager.loginAuthorizationCodeFlow(
         extraParameters: {"kc_idp_hint": "driver-card-authentication"},
         loginHint: "truck-id:${truck.id}",
-        redirectUriOverride: Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/vehicle"),
+        redirectUriOverride:
+            Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/vehicle"),
       );
 
       final logoutViaCardRemovalInterval = Timer.periodic(
@@ -85,7 +86,10 @@ class AuthNotifier extends _$AuthNotifier {
 
       return oidcUser;
     } catch (error) {
-      log("Failed to login to truck ${truck.name} (ID ${truck.id}, VIN ${truck.vin})", error: error);
+      log(
+        "Failed to login to truck ${truck.name} (ID ${truck.id}, VIN ${truck.vin})",
+        error: error,
+      );
     }
     return null;
   }
@@ -96,7 +100,8 @@ class AuthNotifier extends _$AuthNotifier {
       final oidcUser = await authManager.loginAuthorizationCodeFlow(
         extraParameters: {"kc_idp_hint": "pin-code-authentication"},
         loginHint: "device-id:$deviceId",
-        redirectUriOverride: Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/employee"),
+        redirectUriOverride:
+            Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/employee"),
       );
 
       await setLastStartedSessionType(SessionType.terminal);

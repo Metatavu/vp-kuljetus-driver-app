@@ -53,8 +53,7 @@ class PublicTruckSelect extends StatelessWidget {
           textStyle: truckTextStyle,
           menuStyle: MenuStyle(
             backgroundColor: const WidgetStatePropertyAll(Colors.white),
-            surfaceTintColor:
-                const WidgetStatePropertyAll(Colors.transparent),
+            surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

@@ -10,7 +10,8 @@ class TaskGroupTimestamps with _$TaskGroupTimestamps {
     required final String taskGroupKey,
     required final DateTime startedAt,
     // ignore: invalid_annotation_target
-    @JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) required  final TaskType taskType,
+    @JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson)
+    required final TaskType taskType,
     final DateTime? finishedAt,
   }) = _TaskGroupTimestamps;
 

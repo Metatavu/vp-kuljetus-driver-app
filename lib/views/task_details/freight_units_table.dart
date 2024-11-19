@@ -35,36 +35,40 @@ class FreightUnitsTable extends HookConsumerWidget {
 
     DataRow freightUnitToDataRow(
       final FreightUnit freightUnit,
-    ) => DataRow(
-      cells: [
-        DataCell(
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(freightUnit.contents ?? "-"),
-          ),
-        ),
-        DataCell(
-          Container(
-            constraints: const BoxConstraints.expand(),
-            color: readOnly ? null : Colors.white,
-            child: FreightUnitsTableQuantityCell(
-              readOnly: readOnly,
-              editMode: rowInEditMode.value == freightUnit.id,
-              freightUnit: freightUnit,
-              setEditMode: (final editMode) => rowInEditMode.value = editMode ? freightUnit.id : null,
-              toggleEditMode: () => rowInEditMode.value == freightUnit.id ? rowInEditMode.value = null : rowInEditMode.value = freightUnit.id,
+    ) =>
+        DataRow(
+          cells: [
+            DataCell(
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(freightUnit.contents ?? "-"),
+              ),
             ),
-          ),
-        ),
-        DataCell(
-          Container(
-            padding: const EdgeInsets.only(left: 8),
-            alignment: Alignment.centerLeft,
-            child: Text(freightUnit.type),
-          ),
-        ),
-      ],
-    );
+            DataCell(
+              Container(
+                constraints: const BoxConstraints.expand(),
+                color: readOnly ? null : Colors.white,
+                child: FreightUnitsTableQuantityCell(
+                  readOnly: readOnly,
+                  editMode: rowInEditMode.value == freightUnit.id,
+                  freightUnit: freightUnit,
+                  setEditMode: (final editMode) =>
+                      rowInEditMode.value = editMode ? freightUnit.id : null,
+                  toggleEditMode: () => rowInEditMode.value == freightUnit.id
+                      ? rowInEditMode.value = null
+                      : rowInEditMode.value = freightUnit.id,
+                ),
+              ),
+            ),
+            DataCell(
+              Container(
+                padding: const EdgeInsets.only(left: 8),
+                alignment: Alignment.centerLeft,
+                child: Text(freightUnit.type),
+              ),
+            ),
+          ],
+        );
 
     return DataTable(
       border: const TableBorder.symmetric(

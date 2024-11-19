@@ -14,11 +14,8 @@ class EmployeeAppBar extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final l10n = L10n.of(context);
     final employeeId = ref.watch(userInfoProvider)?.sub;
-    final workEvents = ref
-      .watch(workEventsProvider(employeeId))
-      .asData
-      ?.value
-      .toList();
+    final workEvents =
+        ref.watch(workEventsProvider(employeeId)).asData?.value.toList();
 
     if (workEvents == null) {
       return const SizedBox.shrink();
@@ -31,7 +28,10 @@ class EmployeeAppBar extends HookConsumerWidget {
         height: 77,
         title: l10n.t("workingTime"),
         initialDuration: sumWorkEvents(workEvents),
-        childBuilder: (final _, final int index) => WorkEventRow(workEvent: workEvents[index], workEvents: workEvents, isLatest: index == 0),
+        childBuilder: (final _, final int index) => WorkEventRow(
+            workEvent: workEvents[index],
+            workEvents: workEvents,
+            isLatest: index == 0),
         childCount: workEvents.length,
       ),
     );

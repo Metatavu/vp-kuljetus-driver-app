@@ -27,7 +27,6 @@ final workEventTypes = [
 class EmployeeScreen extends HookConsumerWidget {
   const EmployeeScreen({super.key});
 
-
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final theme = Theme.of(context);
@@ -39,13 +38,17 @@ class EmployeeScreen extends HookConsumerWidget {
     final loading = useState(false);
 
     if (employeeId == null) {
-        return const Center(child: Text("Employee not found"));
+      return const Center(child: Text("Employee not found"));
     }
 
     Future<void> onFinishWorkDayPressed(final BuildContext context) async {
       log("Finishing work day...");
-      await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(employeeId, WorkEventType.LOGOUT);
-      await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(employeeId, WorkEventType.SHIFT_END);
+      await ref
+          .read(workEventsProvider(employeeId).notifier)
+          .createWorkEvent(employeeId, WorkEventType.LOGOUT);
+      await ref
+          .read(workEventsProvider(employeeId).notifier)
+          .createWorkEvent(employeeId, WorkEventType.SHIFT_END);
       log("Created logout work event. Logging out...");
       await authNotifier.logout();
       log("Logged out");
@@ -56,37 +59,44 @@ class EmployeeScreen extends HookConsumerWidget {
     }
 
     return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(l10n.t("greeting", variables: { "name": employeeName ?? ""}), style: theme.textTheme.titleLarge),
-              const SizedBox(height: 16),
-              for (final workEventType in workEventTypes)
-                Column(
-                  children: [
-                    EmployeeWorkEventTypeButton(workEventType: workEventType, loading: loading,),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ElevatedButton(
-                onPressed: loading.value ? null : () => onFinishWorkDayPressed(context),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(0),
-                  fixedSize: const Size.fromHeight(35),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(3)),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              l10n.t("greeting", variables: {"name": employeeName ?? ""}),
+              style: theme.textTheme.titleLarge,
+            ),
+            const SizedBox(height: 16),
+            for (final workEventType in workEventTypes)
+              Column(
+                children: [
+                  EmployeeWorkEventTypeButton(
+                    workEventType: workEventType,
+                    loading: loading,
                   ),
-                ),
-                child: Text(
-                  l10n.t("finishWorkDay"),
-                  style: theme.textTheme.bodySmall,
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ElevatedButton(
+              onPressed:
+                  loading.value ? null : () => onFinishWorkDayPressed(context),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(0),
+                fixedSize: const Size.fromHeight(35),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(3)),
                 ),
               ),
-            ],
-          ),
+              child: Text(
+                l10n.t("finishWorkDay"),
+                style: theme.textTheme.bodySmall,
+              ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }

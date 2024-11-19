@@ -24,34 +24,39 @@ class ClientAppScreen extends HookConsumerWidget {
 
     final textEditingController = useTextEditingController();
 
-  Future<ClientApp> constructClientApp() async {
-    if (!Platform.isAndroid) {
-      throw UnimplementedError("This feature is only available on Android devices.");
+    Future<ClientApp> constructClientApp() async {
+      if (!Platform.isAndroid) {
+        throw UnimplementedError(
+          "This feature is only available on Android devices.",
+        );
+      }
+
+      final packageInfo = await PackageInfo.fromPlatform();
+      final appVersion = packageInfo.version;
+      final deviceId = await const AndroidId().getId();
+      final osVersion = (await DeviceInfoPlugin().androidInfo).version.release;
+      final clientAppMetatadataBuilder = ClientAppMetadataBuilder()
+        ..deviceOSVersion = osVersion
+        ..appVersion = appVersion
+        ..deviceOS = ClientAppMetadataDeviceOSEnum.ANDROID;
+
+      return ClientApp(
+        (final builder) => builder
+          ..deviceId = deviceId
+          ..status = ClientAppStatus.WAITING_FOR_APPROVAL
+          ..name = textEditingController.text
+          ..metadata = clientAppMetatadataBuilder,
+      );
     }
-
-    final packageInfo = await PackageInfo.fromPlatform();
-    final appVersion = packageInfo.version;
-    final deviceId = await const AndroidId().getId();
-    final osVersion = (await DeviceInfoPlugin().androidInfo).version.release;
-    final clientAppMetatadataBuilder = ClientAppMetadataBuilder()
-      ..deviceOSVersion = osVersion
-      ..appVersion = appVersion
-      ..deviceOS = ClientAppMetadataDeviceOSEnum.ANDROID;
-
-    return ClientApp((final builder) =>
-      builder
-        ..deviceId = deviceId
-        ..status = ClientAppStatus.WAITING_FOR_APPROVAL
-        ..name = textEditingController.text
-        ..metadata = clientAppMetatadataBuilder,
-    );
-  }
 
     Future<void> onCreateClientAppPressed(final BuildContext context) async {
       try {
         final clientApp = await constructClientApp();
         tmsApi.dio.options.headers["X-API-Key"] = Env.apiKey;
-        final createdClientApp = (await tmsApi.getClientAppsApi().createClientApp(clientApp: clientApp)).data;
+        final createdClientApp = (await tmsApi
+                .getClientAppsApi()
+                .createClientApp(clientApp: clientApp))
+            .data;
 
         if (createdClientApp == null) {
           log("Failed to create client app");
@@ -64,7 +69,7 @@ class ClientAppScreen extends HookConsumerWidget {
           queryParameters: {"clientAppName": createdClientApp.name},
         );
       } catch (error) {
-        print("Error while getting device info: $error");
+        log("Error while getting device info: $error");
       }
     }
 
@@ -80,14 +85,15 @@ class ClientAppScreen extends HookConsumerWidget {
         Text(
           l10n.t("registerClientAppHelper"),
           style: theme.textTheme.bodySmall,
-          ),
+        ),
         const SizedBox(height: 16),
         TextField(
           controller: textEditingController,
           decoration: InputDecoration(
             labelText: l10n.t("clientAppName"),
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(3)),
               borderSide: BorderSide.none,

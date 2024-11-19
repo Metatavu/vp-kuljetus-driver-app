@@ -13,7 +13,8 @@ import "package:vp_kuljetus_driver_app/utils/l10n.dart";
 import "package:vp_kuljetus_driver_app/utils/work_events.dart";
 
 class EmployeeWorkEventTypeButton extends HookConsumerWidget {
-  const EmployeeWorkEventTypeButton({super.key, required this.workEventType, required this.loading});
+  const EmployeeWorkEventTypeButton(
+      {super.key, required this.workEventType, required this.loading});
 
   final WorkEventType workEventType;
   final ValueNotifier<bool> loading;
@@ -30,29 +31,32 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final workEvents = ref
-      .watch(workEventsProvider(employeeId))
-      .asData
-      ?.value
-      .toList();
+    final workEvents =
+        ref.watch(workEventsProvider(employeeId)).asData?.value.toList();
 
     if (workEvents == null) {
       return const SizedBox.shrink();
     }
 
-    final latestWorkEvent = ref.watch(workEventsProviderNotifier).getLatestWorkEvent(employeeId);
+    final latestWorkEvent =
+        ref.watch(workEventsProviderNotifier).getLatestWorkEvent(employeeId);
     final isRunning = latestWorkEvent?.workEventType == workEventType;
     final isPaused = latestWorkEvent?.workEventType == WorkEventType.BREAK;
 
-    final totalWorkTypeDuration = useState(sumWorkEventsByType(workEventType, workEvents));
+    final totalWorkTypeDuration =
+        useState(sumWorkEventsByType(workEventType, workEvents));
 
-    useEffect(() {
-      final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-        totalWorkTypeDuration.value = sumWorkEventsByType(workEventType, workEvents);
-      });
+    useEffect(
+      () {
+        final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
+          totalWorkTypeDuration.value =
+              sumWorkEventsByType(workEventType, workEvents);
+        });
 
-      return timer.cancel;
-    }, [workEvents, isRunning],);
+        return timer.cancel;
+      },
+      [workEvents, isRunning],
+    );
 
     void onButtonPressed() {
       if (isRunning) {
@@ -62,9 +66,9 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
 
       loading.value = true;
       ref
-        .read(workEventsProviderNotifier)
-        .createWorkEvent(employeeId, workEventType)
-        .then((final _) => loading.value = false);
+          .read(workEventsProviderNotifier)
+          .createWorkEvent(employeeId, workEventType)
+          .then((final _) => loading.value = false);
     }
 
     void onPausePressed() {
@@ -75,9 +79,9 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
 
       loading.value = true;
       ref
-        .read(workEventsProviderNotifier)
-        .createWorkEvent(employeeId, WorkEventType.BREAK)
-        .then((final _) => loading.value = false);
+          .read(workEventsProviderNotifier)
+          .createWorkEvent(employeeId, WorkEventType.BREAK)
+          .then((final _) => loading.value = false);
     }
 
     return OutlinedButton(
@@ -116,7 +120,11 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
                 ),
                 IconButton(
                   padding: const EdgeInsets.all(0),
-                  onPressed: loading.value ? null : workEventType == WorkEventType.BREAK ? onPausePressed : onButtonPressed,
+                  onPressed: loading.value
+                      ? null
+                      : workEventType == WorkEventType.BREAK
+                          ? onPausePressed
+                          : onButtonPressed,
                   icon: Icon(
                     isRunning ? Icons.pause : Icons.play_arrow,
                     color: isRunning ? Colors.white : null,

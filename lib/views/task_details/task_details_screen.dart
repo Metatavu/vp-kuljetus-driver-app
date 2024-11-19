@@ -54,24 +54,24 @@ class TaskDetailsScreen extends HookConsumerWidget {
 
     onStartTasks() {
       ref
-        .read(
-          taskDetailsScreenDataProvider(TaskIdList(list: taskIds)).notifier,
-        )
-        .updateTasksStatus(TaskStatus.IN_PROGRESS);
-        if (task != null) {
-          setTaskGroupStartedAt(DateTime.now(), getTaskGroupKey(task), task.type);
-        }
+          .read(
+            taskDetailsScreenDataProvider(TaskIdList(list: taskIds)).notifier,
+          )
+          .updateTasksStatus(TaskStatus.IN_PROGRESS);
+      if (task != null) {
+        setTaskGroupStartedAt(DateTime.now(), getTaskGroupKey(task), task.type);
       }
+    }
 
     onEndTasks() {
       ref
-        .read(
-          taskDetailsScreenDataProvider(TaskIdList(list: taskIds)).notifier,
-        )
-        .updateTasksStatus(TaskStatus.DONE);
-        if (task != null) {
-          setTaskGroupEndedAt(DateTime.now(), getTaskGroupKey(task), task.type);
-        }
+          .read(
+            taskDetailsScreenDataProvider(TaskIdList(list: taskIds)).notifier,
+          )
+          .updateTasksStatus(TaskStatus.DONE);
+      if (task != null) {
+        setTaskGroupEndedAt(DateTime.now(), getTaskGroupKey(task), task.type);
+      }
     }
 
     onBackPressed() async {

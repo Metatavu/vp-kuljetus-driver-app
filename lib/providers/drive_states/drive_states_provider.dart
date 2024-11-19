@@ -11,20 +11,19 @@ part "drive_states_provider.g.dart";
 @riverpod
 Future<List<TruckDriveState>> listDriveStates(
   final ListDriveStatesRef ref, {
-    required final String truckId,
-    final String? driverId,
-    final DateTime? after,
-  }
-) async {
+  required final String truckId,
+  final String? driverId,
+  final DateTime? after,
+}) async {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
 
   try {
     final response = await tmsApi.getTrucksApi().listDriveStates(
-      truckId: truckId,
-      after: after,
-      driverId: driverId,
-    );
+          truckId: truckId,
+          after: after,
+          driverId: driverId,
+        );
 
     ref.cacheFor(const Duration(minutes: 1));
 

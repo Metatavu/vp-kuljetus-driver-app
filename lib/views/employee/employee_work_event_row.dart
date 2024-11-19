@@ -9,10 +9,19 @@ import "package:vp_kuljetus_driver_app/utils/date.dart";
 import "package:vp_kuljetus_driver_app/utils/l10n.dart";
 import "package:vp_kuljetus_driver_app/utils/work_events.dart";
 
-final metaWorkEvents = [WorkEventType.SHIFT_START, WorkEventType.SHIFT_END, WorkEventType.LOGIN, WorkEventType.LOGOUT];
+final metaWorkEvents = [
+  WorkEventType.SHIFT_START,
+  WorkEventType.SHIFT_END,
+  WorkEventType.LOGIN,
+  WorkEventType.LOGOUT
+];
 
 class WorkEventRow extends HookConsumerWidget {
-  const WorkEventRow({super.key, required this.workEvent, required this.workEvents, required this.isLatest});
+  const WorkEventRow(
+      {super.key,
+      required this.workEvent,
+      required this.workEvents,
+      required this.isLatest});
 
   final WorkEvent workEvent;
   final List<WorkEvent> workEvents;
@@ -23,17 +32,24 @@ class WorkEventRow extends HookConsumerWidget {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
 
-    final duration = useState(calculateWorkEventDuration(workEvent, workEvents));
+    final duration =
+        useState(calculateWorkEventDuration(workEvent, workEvents));
 
-    useEffect(() {
-      Timer? timer;
-      if (isLatest) {
-        timer = Timer.periodic(const Duration(seconds: 1), (final _) => duration.value = duration.value + const Duration(seconds: 1));
-      }
-      return () {
-        timer?.cancel();
-      };
-    }, [],);
+    useEffect(
+      () {
+        Timer? timer;
+        if (isLatest) {
+          timer = Timer.periodic(
+              const Duration(seconds: 1),
+              (final _) =>
+                  duration.value = duration.value + const Duration(seconds: 1));
+        }
+        return () {
+          timer?.cancel();
+        };
+      },
+      [],
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -44,15 +60,21 @@ class WorkEventRow extends HookConsumerWidget {
             flex: 2,
             child: Row(
               children: [
-                Text(formatDateToPaddedHhMm(workEvent.time), style: theme.textTheme.titleMedium),
+                Text(formatDateToPaddedHhMm(workEvent.time),
+                    style: theme.textTheme.titleMedium),
                 const SizedBox(width: 16),
-                Text(l10n.t(getWorkEventTypeKey(workEvent.workEventType)), style: theme.textTheme.titleMedium),
+                Text(l10n.t(getWorkEventTypeKey(workEvent.workEventType)),
+                    style: theme.textTheme.titleMedium),
               ],
             ),
           ),
           Expanded(
             flex: 0,
-            child: Text(!metaWorkEvents.contains(workEvent.workEventType) ? formatDurationToPaddedHhMmSs(duration.value) : "", style: theme.textTheme.titleMedium),
+            child: Text(
+                !metaWorkEvents.contains(workEvent.workEventType)
+                    ? formatDurationToPaddedHhMmSs(duration.value)
+                    : "",
+                style: theme.textTheme.titleMedium),
           ),
         ],
       ),

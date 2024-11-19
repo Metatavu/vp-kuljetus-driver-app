@@ -39,9 +39,19 @@ List<TaskGroupTimestamps> getTaskGroupTimestamps() {
   }
 }
 
-void setTaskGroupStartedAt(final DateTime startedAt, final String groupedTaskKey, final TaskType taskType) {
+void setTaskGroupStartedAt(
+  final DateTime startedAt,
+  final String groupedTaskKey,
+  final TaskType taskType,
+) {
   final List<TaskGroupTimestamps> taskTimestamps = getTaskGroupTimestamps();
-  taskTimestamps.add(TaskGroupTimestamps(taskGroupKey: groupedTaskKey, startedAt: startedAt, taskType: taskType));
+  taskTimestamps.add(
+    TaskGroupTimestamps(
+      taskGroupKey: groupedTaskKey,
+      startedAt: startedAt,
+      taskType: taskType,
+    ),
+  );
 
   store.setString(
     taskGroupTimestampsKey,
@@ -49,7 +59,11 @@ void setTaskGroupStartedAt(final DateTime startedAt, final String groupedTaskKey
   );
 }
 
-void setTaskGroupEndedAt(final DateTime endedAt, final String groupedTaskKey, final TaskType taskType) {
+void setTaskGroupEndedAt(
+  final DateTime endedAt,
+  final String groupedTaskKey,
+  final TaskType taskType,
+) {
   final List<TaskGroupTimestamps> taskTimestamps = getTaskGroupTimestamps();
   final updatedTaskTimestamps = taskTimestamps.map((final task) {
     if (task.taskGroupKey == groupedTaskKey) {
@@ -68,7 +82,8 @@ void setTaskGroupEndedAt(final DateTime endedAt, final String groupedTaskKey, fi
 SessionType? getLastStartedSessionType() {
   final sessionType = store.getString(lastStartedSessionTypeKey);
 
-  return SessionType.values.firstWhereOrNull((final type) => type.name == sessionType);
+  return SessionType.values
+      .firstWhereOrNull((final type) => type.name == sessionType);
 }
 
 Future<void> setLastStartedSessionType(final SessionType sessionType) async {

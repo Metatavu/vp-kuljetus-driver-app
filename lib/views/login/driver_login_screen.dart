@@ -43,7 +43,8 @@ class DriverLoginScreen extends HookConsumerWidget {
       [publicTrucks.hasValue],
     );
 
-    Future<void> initLogin(final PublicTruck selectedTruck) async => authNotifier.login(selectedTruck);
+    Future<void> initLogin(final PublicTruck selectedTruck) async =>
+        authNotifier.login(selectedTruck);
 
     void onSelectTruck(final PublicTruck? publicTruck) {
       selectedPublicTruck.value = publicTruck;
@@ -64,16 +65,16 @@ class DriverLoginScreen extends HookConsumerWidget {
         const SizedBox(height: 16),
         switch (publicTrucks) {
           AsyncData(:final value) => PublicTruckSelect(
-            publicTrucks: value,
-            initialValue: selectedPublicTruck.value,
-            onSelectTruck: onSelectTruck,
-          ),
+              publicTrucks: value,
+              initialValue: selectedPublicTruck.value,
+              onSelectTruck: onSelectTruck,
+            ),
           AsyncError() => Text(l10n.t("errors.listPublicTrucks")),
           _ => const SizedBox(
-            width: double.infinity,
-            height: 80,
-            child: Center(child: CircularProgressIndicator()),
-          ),
+              width: double.infinity,
+              height: 80,
+              child: Center(child: CircularProgressIndicator()),
+            ),
         },
         const SizedBox(height: 16),
         Text(

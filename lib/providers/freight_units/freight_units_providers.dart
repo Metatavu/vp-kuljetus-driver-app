@@ -36,18 +36,18 @@ class UpdateFreightUnit extends _$UpdateFreightUnit {
   @override
   build(final String freightUnitId) async => freightUnitId;
 
-Future<FreightUnit> mutate(
-  final String freightUnitId,
-  final FreightUnit freightUnit,
-) async {
+  Future<FreightUnit> mutate(
+    final String freightUnitId,
+    final FreightUnit freightUnit,
+  ) async {
     final cancelToken = CancelToken();
     ref.onDispose(cancelToken.cancel);
 
     try {
       final response = await tmsApi.getFreightUnitsApi().updateFreightUnit(
-        freightUnitId: freightUnitId,
-        freightUnit: freightUnit,
-      );
+            freightUnitId: freightUnitId,
+            freightUnit: freightUnit,
+          );
 
       ref.invalidate(listFreightUnitsProvider);
       log("Updated freight unit: ${response.data}");

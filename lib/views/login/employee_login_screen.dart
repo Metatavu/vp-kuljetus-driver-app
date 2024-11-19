@@ -26,19 +26,24 @@ class EmployeeLoginScreen extends HookConsumerWidget {
         log("oidcUser is null");
         return;
       }
-      final workEventsProviderNotifier = ref.read(workEventsProvider(userId).notifier);
-      final latestWorkEventType = workEventsProviderNotifier.getLatestWorkEvent(userId)?.workEventType;
+      final workEventsProviderNotifier =
+          ref.read(workEventsProvider(userId).notifier);
+      final latestWorkEventType =
+          workEventsProviderNotifier.getLatestWorkEvent(userId)?.workEventType;
       if (latestWorkEventType == WorkEventType.SHIFT_END) {
-        await workEventsProviderNotifier.createWorkEvent(userId, WorkEventType.SHIFT_START);
+        await workEventsProviderNotifier.createWorkEvent(
+            userId, WorkEventType.SHIFT_START);
       }
-      await workEventsProviderNotifier.createWorkEvent(userId, WorkEventType.LOGIN);
-      await workEventsProviderNotifier.createWorkEvent(userId, WorkEventType.OTHER_WORK);
+      await workEventsProviderNotifier.createWorkEvent(
+          userId, WorkEventType.LOGIN);
+      await workEventsProviderNotifier.createWorkEvent(
+          userId, WorkEventType.OTHER_WORK);
     }
 
-    useEffect(() {
-      context.loaderOverlay.show();
-      login()
-        .then((final _) {
+    useEffect(
+      () {
+        context.loaderOverlay.show();
+        login().then((final _) {
           if (context.mounted) {
             log("Logged in with pin code");
             context.goNamed("employee");
@@ -48,8 +53,10 @@ class EmployeeLoginScreen extends HookConsumerWidget {
             context.loaderOverlay.hide();
           }
         });
-      return null;
-    }, [],);
+        return null;
+      },
+      [],
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

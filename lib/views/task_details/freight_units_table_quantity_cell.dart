@@ -7,7 +7,8 @@ import "package:vp_kuljetus_driver_app/providers/freight_units/freight_units_pro
 String formatFreightUnitQuantity(final FreightUnit freightUnit) {
   final quantity = freightUnit.quantity;
   if (quantity == null) return "-";
-  if (quantity.toInt() == quantity.roundToDouble()) return quantity.toInt().toString();
+  if (quantity.toInt() == quantity.roundToDouble())
+    return quantity.toInt().toString();
 
   return freightUnit.quantity.toString();
 }
@@ -32,21 +33,27 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
   Widget build(final context, final ref) {
     final focusNode = useFocusNode();
 
-    final updateFreightUnitNotifier = ref.watch(updateFreightUnitProvider(freightUnit.id!).notifier);
+    final updateFreightUnitNotifier =
+        ref.watch(updateFreightUnitProvider(freightUnit.id!).notifier);
 
-    final textEditController = useTextEditingController(text: formatFreightUnitQuantity(freightUnit));
+    final textEditController =
+        useTextEditingController(text: formatFreightUnitQuantity(freightUnit));
 
-    useEffect(() {
-      editMode ? focusNode.requestFocus() : null;
-      return null;
-  }, [ editMode ],);
+    useEffect(
+      () {
+        editMode ? focusNode.requestFocus() : null;
+        return null;
+      },
+      [editMode],
+    );
 
     void onEditingComplete() {
       final newQuantity = double.tryParse(textEditController.text);
       if (newQuantity != null && newQuantity != freightUnit.quantity) {
         updateFreightUnitNotifier.mutate(
           freightUnit.id!,
-          freightUnit.rebuild((final builder) => builder.quantity = newQuantity),
+          freightUnit
+              .rebuild((final builder) => builder.quantity = newQuantity),
         );
       } else {
         textEditController.text = formatFreightUnitQuantity(freightUnit);
@@ -55,16 +62,16 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
       toggleEditMode();
     }
 
-
-  Widget? renderSuffixIcon() => readOnly ? null :
-    IconButton(
-      onPressed: readOnly ? null : onEditingComplete,
-      icon: Icon(
-        editMode ? Icons.check : Icons.edit,
-        size: 20,
-        color: Colors.black54,
-      ),
-    );
+    Widget? renderSuffixIcon() => readOnly
+        ? null
+        : IconButton(
+            onPressed: readOnly ? null : onEditingComplete,
+            icon: Icon(
+              editMode ? Icons.check : Icons.edit,
+              size: 20,
+              color: Colors.black54,
+            ),
+          );
 
     return TextField(
       focusNode: focusNode,
@@ -82,8 +89,8 @@ class FreightUnitsTableQuantityCell extends HookConsumerWidget {
         filled: true,
         border: InputBorder.none,
         suffixIcon: renderSuffixIcon(),
-        ),
-        onEditingComplete: onEditingComplete,
+      ),
+      onEditingComplete: onEditingComplete,
     );
   }
 }

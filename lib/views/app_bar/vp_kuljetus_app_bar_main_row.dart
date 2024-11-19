@@ -25,13 +25,17 @@ class VpKuljetusAppBarMainRow extends HookConsumerWidget {
 
     final totalDuration = useState(initialDuration);
 
-    useEffect(() {
-      final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-        totalDuration.value = totalDuration.value + const Duration(seconds: 1);
-      });
+    useEffect(
+      () {
+        final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
+          totalDuration.value =
+              totalDuration.value + const Duration(seconds: 1);
+        });
 
-      return timer.cancel;
-    }, [],);
+        return timer.cancel;
+      },
+      [],
+    );
 
     return Padding(
       padding: const EdgeInsets.all(24),

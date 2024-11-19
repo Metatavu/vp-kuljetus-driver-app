@@ -20,16 +20,14 @@ class WorkEvents extends _$WorkEvents {
         return [];
       }
 
-      final workShifts = (await tmsApi
-        .getEmployeeWorkShiftsApi()
-        .listEmployeeWorkShifts(
-          employeeId: employeeId,
-          first: 0,
-          max: 1,
-
-          cancelToken: cancelToken,
-        )).data;
-
+      final workShifts =
+          (await tmsApi.getEmployeeWorkShiftsApi().listEmployeeWorkShifts(
+                    employeeId: employeeId,
+                    first: 0,
+                    max: 1,
+                    cancelToken: cancelToken,
+                  ))
+              .data;
 
       if (workShifts == null || workShifts.isEmpty) {
         return [];
@@ -37,14 +35,12 @@ class WorkEvents extends _$WorkEvents {
 
       final latestWorkShift = workShifts.first;
 
-      final response = await tmsApi
-        .getWorkEventsApi()
-        .listEmployeeWorkEvents(
-          employeeId: employeeId,
-          employeeWorkShiftId: latestWorkShift.id,
-          max: 1000,
-          cancelToken: cancelToken,
-        );
+      final response = await tmsApi.getWorkEventsApi().listEmployeeWorkEvents(
+            employeeId: employeeId,
+            employeeWorkShiftId: latestWorkShift.id,
+            max: 1000,
+            cancelToken: cancelToken,
+          );
 
       return response.data?.toList() ?? [];
     } on DioException catch (error) {
@@ -54,17 +50,21 @@ class WorkEvents extends _$WorkEvents {
     }
   }
 
-  WorkEvent? getLatestWorkEvent(final String employeeId) => state.asData?.value.firstOrNull;
+  WorkEvent? getLatestWorkEvent(final String employeeId) =>
+      state.asData?.value.firstOrNull;
 
-  Future<void> createWorkEvent(final String employeeId, final WorkEventType workEventType) async {
+  Future<void> createWorkEvent(
+      final String employeeId, final WorkEventType workEventType) async {
     try {
-      await tmsApi.getWorkEventsApi().createEmployeeWorkEvent(employeeId: employeeId, workEvent: WorkEvent((final builder) =>
-        builder
-          ..employeeId = employeeId
-          ..workEventType = workEventType
-          ..time = DateTime.now().toUtc(),
-        ),
-      );
+      await tmsApi.getWorkEventsApi().createEmployeeWorkEvent(
+            employeeId: employeeId,
+            workEvent: WorkEvent(
+              (final builder) => builder
+                ..employeeId = employeeId
+                ..workEventType = workEventType
+                ..time = DateTime.now().toUtc(),
+            ),
+          );
 
       ref.invalidateSelf();
     } on DioException catch (error) {

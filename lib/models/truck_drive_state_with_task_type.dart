@@ -9,17 +9,23 @@ class TruckDriveStateWithTaskType {
     this.endedAt,
   });
 
-  factory TruckDriveStateWithTaskType.fromTruckDriveState(final TruckDriveState driveState) => TruckDriveStateWithTaskType(
-    timestamp: driveState.timestamp,
-    state: driveState.state,
-  );
+  factory TruckDriveStateWithTaskType.fromTruckDriveState(
+          final TruckDriveState driveState) =>
+      TruckDriveStateWithTaskType(
+        timestamp: driveState.timestamp,
+        state: driveState.state,
+      );
 
-  factory TruckDriveStateWithTaskType.fromTaskTimestamps(final TaskGroupTimestamps taskTimestamps) => TruckDriveStateWithTaskType(
-    timestamp: taskTimestamps.startedAt.millisecondsSinceEpoch ~/1000,
-    endedAt: taskTimestamps.finishedAt != null ? taskTimestamps.finishedAt!.millisecondsSinceEpoch ~/ 1000 : null,
-    state: TruckDriveStateEnum.WORK,
-    taskType: taskTimestamps.taskType,
-  );
+  factory TruckDriveStateWithTaskType.fromTaskTimestamps(
+          final TaskGroupTimestamps taskTimestamps) =>
+      TruckDriveStateWithTaskType(
+        timestamp: taskTimestamps.startedAt.millisecondsSinceEpoch ~/ 1000,
+        endedAt: taskTimestamps.finishedAt != null
+            ? taskTimestamps.finishedAt!.millisecondsSinceEpoch ~/ 1000
+            : null,
+        state: TruckDriveStateEnum.WORK,
+        taskType: taskTimestamps.taskType,
+      );
 
   final TaskType? taskType;
   final int timestamp;

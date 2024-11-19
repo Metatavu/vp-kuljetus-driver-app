@@ -10,7 +10,6 @@ import "package:vp_kuljetus_driver_app/utils/date.dart";
 import "package:vp_kuljetus_driver_app/utils/drive_state.dart";
 
 class DriveLogRow extends HookConsumerWidget {
-
   const DriveLogRow({
     super.key,
     required this.driveState,
@@ -32,16 +31,22 @@ class DriveLogRow extends HookConsumerWidget {
     }
 
     if (driveState.endedAt != null) {
-      return Duration(seconds: driveState.endedAt! - driveState.timestamp);}
+      return Duration(seconds: driveState.endedAt! - driveState.timestamp);
+    }
 
-    return Duration(seconds: nextDriveState!.timestamp -  driveState.timestamp);
+    return Duration(seconds: nextDriveState!.timestamp - driveState.timestamp);
   }
 
-  TextStyle getTextStyle(final bool title, final BuildContext context) => TextStyle(
-    color: isLatest ? isExpanded ? Theme.of(context).primaryColor : Colors.white : Colors.black,
-    fontWeight: isLatest ? FontWeight.w700 : FontWeight.w400,
-    fontSize: title ? 16: 14,
-  );
+  TextStyle getTextStyle(final bool title, final BuildContext context) =>
+      TextStyle(
+        color: isLatest
+            ? isExpanded
+                ? Theme.of(context).primaryColor
+                : Colors.white
+            : Colors.black,
+        fontWeight: isLatest ? FontWeight.w700 : FontWeight.w400,
+        fontSize: title ? 16 : 14,
+      );
 
   Duration getCurrentStateDuration() {
     final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
@@ -55,26 +60,43 @@ class DriveLogRow extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final l10n = L10n.of(context);
-    final currentStateDuration = useState(Duration(seconds: DateTime.now().millisecondsSinceEpoch ~/ 1000 - driveState.timestamp));
-    final stateStartedAt = DateTime.fromMillisecondsSinceEpoch(driveState.timestamp * 1000);
+    final currentStateDuration = useState(Duration(
+        seconds: DateTime.now().millisecondsSinceEpoch ~/ 1000 -
+            driveState.timestamp));
+    final stateStartedAt =
+        DateTime.fromMillisecondsSinceEpoch(driveState.timestamp * 1000);
 
-    useEffect(() {
-      final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-        currentStateDuration.value = currentStateDuration.value + const Duration(seconds: 1);
-      });
-      return timer.cancel;
-    }, [],);
+    useEffect(
+      () {
+        final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
+          currentStateDuration.value =
+              currentStateDuration.value + const Duration(seconds: 1);
+        });
+        return timer.cancel;
+      },
+      [],
+    );
 
     return ListTile(
-      tileColor: driveState.state == TruckDriveStateEnum.DRIVE ? const Color(0xFFE8F5E9) : Colors.white,
-      contentPadding: isExpanded ? null :  const EdgeInsets.fromLTRB(24, 20, 24, 0),
-      leading: isLatest ? null : Text(formatDateToPaddedHhMm(stateStartedAt), style: getTextStyle(false, context),),
+      tileColor: driveState.state == TruckDriveStateEnum.DRIVE
+          ? const Color(0xFFE8F5E9)
+          : Colors.white,
+      contentPadding:
+          isExpanded ? null : const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      leading: isLatest
+          ? null
+          : Text(
+              formatDateToPaddedHhMm(stateStartedAt),
+              style: getTextStyle(false, context),
+            ),
       title: Text(
         getDriveStateTitle(l10n, driveState, isLatest),
         style: getTextStyle(true, context),
       ),
       trailing: Text(
-        formatDurationToPaddedHhMmSs(isLatest ? currentStateDuration.value : getNonLatestDriveStateDuration()),
+        formatDurationToPaddedHhMmSs(isLatest
+            ? currentStateDuration.value
+            : getNonLatestDriveStateDuration()),
         style: getTextStyle(false, context),
       ),
     );

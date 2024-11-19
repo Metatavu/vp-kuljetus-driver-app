@@ -13,10 +13,11 @@ class EmployeePage extends NoTransitionPage {
     final BuildContext context,
     final GoRouterState state,
     final Widget child,
-   ) {
+  ) {
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     final defaultPanelHeight = statusBarHeight + 77;
-    final contentHeight = MediaQuery.of(context).size.height - defaultPanelHeight;
+    final contentHeight =
+        MediaQuery.of(context).size.height - defaultPanelHeight;
 
     return EmployeePage(
       key: state.pageKey,
@@ -34,9 +35,11 @@ class EmployeePage extends NoTransitionPage {
                   index: 0,
                   child: Column(
                     children: [
-                      SizedBox.fromSize(size: Size.fromHeight(defaultPanelHeight)),
+                      SizedBox.fromSize(
+                          size: Size.fromHeight(defaultPanelHeight)),
                       Container(
-                        constraints: BoxConstraints.loose(Size.fromHeight(contentHeight)),
+                        constraints: BoxConstraints.loose(
+                            Size.fromHeight(contentHeight)),
                         child: child,
                       ),
                     ],

@@ -1,10 +1,10 @@
-import "dart:async";
 import "dart:math";
 import "dart:ui";
 
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:vp_kuljetus_driver_app/app/global_timer.dart";
 import "package:vp_kuljetus_driver_app/utils/date.dart";
 
 class VpKuljetusAppBarMainRow extends HookConsumerWidget {
@@ -25,16 +25,9 @@ class VpKuljetusAppBarMainRow extends HookConsumerWidget {
 
     final totalDuration = useState(initialDuration);
 
-    useEffect(
-      () {
-        final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-          totalDuration.value =
-              totalDuration.value + const Duration(seconds: 1);
-        });
-
-        return timer.cancel;
-      },
-      [],
+    useTimerTick(
+      (final _) => totalDuration.value =
+          totalDuration.value + const Duration(seconds: 1),
     );
 
     return Padding(

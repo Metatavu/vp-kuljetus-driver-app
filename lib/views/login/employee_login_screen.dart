@@ -20,24 +20,25 @@ class EmployeeLoginScreen extends HookConsumerWidget {
     final authNotifier = ref.watch(authNotifierProvider.notifier);
 
     Future<void> login() async {
-      final oidcUser = await authNotifier.login(null);
-      final userId = oidcUser?.uid;
-      if (userId == null) {
-        log("oidcUser is null");
-        return;
-      }
-      final workEventsProviderNotifier =
-          ref.read(workEventsProvider(userId).notifier);
-      final latestWorkEventType =
-          workEventsProviderNotifier.getLatestWorkEvent(userId)?.workEventType;
-      if (latestWorkEventType == WorkEventType.SHIFT_END) {
+      try {
+        final oidcUser = await authNotifier.login(null);
+        final userId = oidcUser?.uid;
+        if (userId == null) {
+          throw Exception("oidcUser.uid is null");
+        }
+        final workEventsProviderNotifier =
+            ref.read(workEventsProvider(userId).notifier);
         await workEventsProviderNotifier.createWorkEvent(
-            userId, WorkEventType.SHIFT_START);
+          userId,
+          WorkEventType.LOGIN,
+        );
+        await workEventsProviderNotifier.createWorkEvent(
+          userId,
+          WorkEventType.OTHER_WORK,
+        );
+      } catch (exception) {
+        log("Failed to login with pin code: $exception");
       }
-      await workEventsProviderNotifier.createWorkEvent(
-          userId, WorkEventType.LOGIN);
-      await workEventsProviderNotifier.createWorkEvent(
-          userId, WorkEventType.OTHER_WORK);
     }
 
     useEffect(

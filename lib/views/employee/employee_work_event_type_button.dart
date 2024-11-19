@@ -1,10 +1,10 @@
-import "dart:async";
 import "dart:developer";
 
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
+import "package:vp_kuljetus_driver_app/app/global_timer.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/work_events/work_events_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
@@ -13,8 +13,11 @@ import "package:vp_kuljetus_driver_app/utils/l10n.dart";
 import "package:vp_kuljetus_driver_app/utils/work_events.dart";
 
 class EmployeeWorkEventTypeButton extends HookConsumerWidget {
-  const EmployeeWorkEventTypeButton(
-      {super.key, required this.workEventType, required this.loading});
+  const EmployeeWorkEventTypeButton({
+    super.key,
+    required this.workEventType,
+    required this.loading,
+  });
 
   final WorkEventType workEventType;
   final ValueNotifier<bool> loading;
@@ -46,16 +49,15 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
     final totalWorkTypeDuration =
         useState(sumWorkEventsByType(workEventType, workEvents));
 
-    useEffect(
-      () {
-        final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-          totalWorkTypeDuration.value =
-              sumWorkEventsByType(workEventType, workEvents);
-        });
-
-        return timer.cancel;
+    useTimerTick(
+      (final _) {
+        if (isRunning) {
+          totalWorkTypeDuration.value = sumWorkEventsByType(
+            workEventType,
+            workEvents,
+          );
+        }
       },
-      [workEvents, isRunning],
     );
 
     void onButtonPressed() {

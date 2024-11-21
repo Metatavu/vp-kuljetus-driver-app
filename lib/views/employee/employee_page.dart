@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:indexed/indexed.dart";
+import "package:loader_overlay/loader_overlay.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_app_bar.dart";
 
 class EmployeePage extends NoTransitionPage {
@@ -36,11 +37,13 @@ class EmployeePage extends NoTransitionPage {
                   child: Column(
                     children: [
                       SizedBox.fromSize(
-                          size: Size.fromHeight(defaultPanelHeight)),
+                        size: Size.fromHeight(defaultPanelHeight),
+                      ),
                       Container(
                         constraints: BoxConstraints.loose(
-                            Size.fromHeight(contentHeight)),
-                        child: child,
+                          Size.fromHeight(contentHeight),
+                        ),
+                        child: LoaderOverlay(child: child),
                       ),
                     ],
                   ),

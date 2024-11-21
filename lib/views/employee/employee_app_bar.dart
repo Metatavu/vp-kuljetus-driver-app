@@ -7,7 +7,7 @@ import "package:vp_kuljetus_driver_app/utils/work_events.dart";
 import "package:vp_kuljetus_driver_app/views/app_bar/vp_kuljetus_app_bar.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_work_event_row.dart";
 
-class EmployeeAppBar extends HookConsumerWidget {
+class EmployeeAppBar extends ConsumerWidget {
   const EmployeeAppBar({super.key});
 
   @override
@@ -29,9 +29,10 @@ class EmployeeAppBar extends HookConsumerWidget {
         title: l10n.t("workingTime"),
         initialDuration: sumWorkEvents(workEvents),
         childBuilder: (final _, final int index) => WorkEventRow(
-            workEvent: workEvents[index],
-            workEvents: workEvents,
-            isLatest: index == 0),
+          workEvent: workEvents[index],
+          workEvents: workEvents,
+          isLatest: index == 0,
+        ),
         childCount: workEvents.length,
       ),
     );

@@ -35,6 +35,14 @@ class WorkEventRow extends HookConsumerWidget {
     final duration =
         useState(calculateWorkEventDuration(workEvent, workEvents));
 
+    useEffect(
+      () {
+        duration.value = calculateWorkEventDuration(workEvent, workEvents);
+        return null;
+      },
+      [workEvents],
+    );
+
     useTimerTick((final _) {
       if (isLatest) {
         duration.value = duration.value + const Duration(seconds: 1);

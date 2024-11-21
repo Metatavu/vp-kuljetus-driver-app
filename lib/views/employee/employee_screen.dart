@@ -43,19 +43,31 @@ class EmployeeScreen extends HookConsumerWidget {
 
     Future<void> onFinishWorkDayPressed(final BuildContext context) async {
       log("Finishing work day...");
-      await ref
-          .read(workEventsProvider(employeeId).notifier)
-          .createWorkEvent(employeeId, WorkEventType.LOGOUT);
-      await ref
-          .read(workEventsProvider(employeeId).notifier)
-          .createWorkEvent(employeeId, WorkEventType.SHIFT_END);
-      log("Created logout work event. Logging out...");
-      await authNotifier.logout();
-      log("Logged out");
-      if (context.mounted) {
-        context.goNamed("login");
-        log("Navigated to login screen");
+      loading.value = true;
+      try {
+        await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(
+              employeeId,
+              WorkEventType.SHIFT_END,
+              DateTime.now(),
+            );
+        log("Created logout work event. Logging out...");
+        await authNotifier.logout();
+        log("Logged out");
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.t("workShiftEndedSuccessfully")),
+              margin: const EdgeInsets.all(10),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          context.goNamed("login");
+          log("Navigated to login screen");
+        }
+      } catch (error) {
+        log("Failed to finish work day: $error");
       }
+      loading.value = false;
     }
 
     return SingleChildScrollView(

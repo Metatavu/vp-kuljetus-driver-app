@@ -7,7 +7,7 @@ import "package:vp_kuljetus_driver_app/services/api/api.dart";
 
 part "work_events_providers.g.dart";
 
-@Riverpod(keepAlive: true)
+@Riverpod()
 class WorkEvents extends _$WorkEvents {
   @override
   Future<List<WorkEvent>> build(final String? employeeId) async {
@@ -35,6 +35,10 @@ class WorkEvents extends _$WorkEvents {
 
       final latestWorkShift = workShifts.first;
 
+      if (latestWorkShift.endedAt != null) {
+        return [];
+      }
+
       final response = await tmsApi.getWorkEventsApi().listEmployeeWorkEvents(
             employeeId: employeeId,
             employeeWorkShiftId: latestWorkShift.id,
@@ -50,11 +54,17 @@ class WorkEvents extends _$WorkEvents {
     }
   }
 
+  Future<WorkEvent?> getLatestWorkEventFuture(final String employeeId) async =>
+      (await future).firstOrNull;
+
   WorkEvent? getLatestWorkEvent(final String employeeId) =>
       state.asData?.value.firstOrNull;
 
   Future<void> createWorkEvent(
-      final String employeeId, final WorkEventType workEventType) async {
+    final String employeeId,
+    final WorkEventType workEventType,
+    final DateTime time,
+  ) async {
     try {
       await tmsApi.getWorkEventsApi().createEmployeeWorkEvent(
             employeeId: employeeId,
@@ -62,11 +72,11 @@ class WorkEvents extends _$WorkEvents {
               (final builder) => builder
                 ..employeeId = employeeId
                 ..workEventType = workEventType
-                ..time = DateTime.now().toUtc(),
+                ..time = time.toUtc(),
             ),
           );
 
-      ref.invalidateSelf();
+      ref.invalidate(workEventsProvider(employeeId));
     } on DioException catch (error) {
       log("Failed to start new time entry: $error");
       log(error.requestOptions.toString());

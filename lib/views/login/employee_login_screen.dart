@@ -19,25 +19,60 @@ class EmployeeLoginScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
     final authNotifier = ref.watch(authNotifierProvider.notifier);
 
+    Future<bool?> showExistingShiftDialog() async => showDialog<bool>(
+          context: context,
+          builder: (final context) => AlertDialog(
+            title: Text(l10n.t("existingShiftDialog.title")),
+            content: Text(
+              l10n.t("existingShiftDialog.description"),
+              style: theme.textTheme.bodyMedium,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child:
+                    Text(l10n.t("existingShiftDialog.continueExistingShift")),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(l10n.t("existingShiftDialog.startNewShift")),
+              ),
+            ],
+          ),
+        );
+
     Future<void> login() async {
-      final oidcUser = await authNotifier.login(null);
-      final userId = oidcUser?.uid;
-      if (userId == null) {
-        log("oidcUser is null");
-        return;
+      try {
+        final oidcUser = await authNotifier.login(null);
+        final userId = oidcUser?.uid;
+        if (userId == null) {
+          throw Exception("oidcUser.uid is null");
+        }
+        final workEventsProviderNotifier =
+            ref.read(workEventsProvider(userId).notifier);
+
+        final latestWorkEventType =
+            (await workEventsProviderNotifier.getLatestWorkEventFuture(userId))
+                ?.workEventType;
+
+        bool startShift = true;
+        final shiftStartTime = DateTime.now();
+
+        if (latestWorkEventType != null &&
+            latestWorkEventType != WorkEventType.SHIFT_END) {
+          startShift = await showExistingShiftDialog() ?? true;
+        }
+
+        if (startShift) {
+          await workEventsProviderNotifier.createWorkEvent(
+            userId,
+            WorkEventType.OTHER_WORK,
+            shiftStartTime,
+          );
+        }
+      } catch (exception) {
+        log("Failed to login with pin code: $exception");
       }
-      final workEventsProviderNotifier =
-          ref.read(workEventsProvider(userId).notifier);
-      final latestWorkEventType =
-          workEventsProviderNotifier.getLatestWorkEvent(userId)?.workEventType;
-      if (latestWorkEventType == WorkEventType.SHIFT_END) {
-        await workEventsProviderNotifier.createWorkEvent(
-            userId, WorkEventType.SHIFT_START);
-      }
-      await workEventsProviderNotifier.createWorkEvent(
-          userId, WorkEventType.LOGIN);
-      await workEventsProviderNotifier.createWorkEvent(
-          userId, WorkEventType.OTHER_WORK);
     }
 
     useEffect(

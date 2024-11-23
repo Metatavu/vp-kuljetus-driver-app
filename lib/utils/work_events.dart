@@ -36,6 +36,7 @@ Duration calculateWorkEventDuration(
   final previousElement =
       index == 0 ? null : workEvents.elementAtOrNull(index - 1);
 
-  return previousElement?.time.difference(workEvent.time) ??
-      DateTime.now().difference(workEvent.time);
+  return previousElement != null
+      ? previousElement.time.difference(workEvent.time)
+      : DateTime.now().difference(workEvent.time);
 }

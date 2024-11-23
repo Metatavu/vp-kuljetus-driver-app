@@ -15,6 +15,13 @@
     "updateRoute": "Virhe päivitettäessä reittiä",
     "listDriveStates": "Virhe listatessa ajotiloja"
   },
+  "existingShiftDialog": {
+    "title": "Aloita työvuoro",
+    "description": "Sinulla on kesken oleva työvuoro, haluatko päättää sen ja aloittaa uuden?",
+    "continueExistingShift": "Jatka olemassa olevaa työvuoroa",
+    "startNewShift": "Aloita uusi työvuoro"
+  },
+  "workShiftEndedSuccessfully": "Työvuoro päätetty onnistuneesti!",
   "equipment": "Kalusto",
   "routes": "Reitit",
   "namelessDriver": "Nimetön kuljettaja",

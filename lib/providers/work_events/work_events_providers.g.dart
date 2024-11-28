@@ -6,7 +6,7 @@ part of 'work_events_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$workEventsHash() => r'46877c3c2165c3b72462bf3035de49e79ebd6625';
+String _$workEventsHash() => r'ba2b3dcf7344a2e0492c22c4531e85d3cdf76517';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +29,8 @@ class _SystemHash {
   }
 }
 
-abstract class _$WorkEvents extends BuildlessAsyncNotifier<List<WorkEvent>> {
+abstract class _$WorkEvents
+    extends BuildlessAutoDisposeAsyncNotifier<List<WorkEvent>> {
   late final String? employeeId;
 
   FutureOr<List<WorkEvent>> build(
@@ -81,7 +82,7 @@ class WorkEventsFamily extends Family<AsyncValue<List<WorkEvent>>> {
 
 /// See also [WorkEvents].
 class WorkEventsProvider
-    extends AsyncNotifierProviderImpl<WorkEvents, List<WorkEvent>> {
+    extends AutoDisposeAsyncNotifierProviderImpl<WorkEvents, List<WorkEvent>> {
   /// See also [WorkEvents].
   WorkEventsProvider(
     String? employeeId,
@@ -137,7 +138,8 @@ class WorkEventsProvider
   }
 
   @override
-  AsyncNotifierProviderElement<WorkEvents, List<WorkEvent>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<WorkEvents, List<WorkEvent>>
+      createElement() {
     return _WorkEventsProviderElement(this);
   }
 
@@ -155,13 +157,13 @@ class WorkEventsProvider
   }
 }
 
-mixin WorkEventsRef on AsyncNotifierProviderRef<List<WorkEvent>> {
+mixin WorkEventsRef on AutoDisposeAsyncNotifierProviderRef<List<WorkEvent>> {
   /// The parameter `employeeId` of this provider.
   String? get employeeId;
 }
 
 class _WorkEventsProviderElement
-    extends AsyncNotifierProviderElement<WorkEvents, List<WorkEvent>>
+    extends AutoDisposeAsyncNotifierProviderElement<WorkEvents, List<WorkEvent>>
     with WorkEventsRef {
   _WorkEventsProviderElement(super.provider);
 

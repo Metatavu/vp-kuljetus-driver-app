@@ -52,7 +52,7 @@ class ClientAppScreen extends HookConsumerWidget {
     Future<void> onCreateClientAppPressed(final BuildContext context) async {
       try {
         final clientApp = await constructClientApp();
-        tmsApi.dio.options.headers["X-API-Key"] = Env.apiKey;
+        tmsApi.dio.options.headers["X-DriverApp-API-Key"] = Env.apiKey;
         final createdClientApp = (await tmsApi
                 .getClientAppsApi()
                 .createClientApp(clientApp: clientApp))

@@ -26,6 +26,8 @@ class EmployeeWorkShiftsApi {
   /// * [employeeId] - employee's ID
   /// * [startedAfter] - Filter work shifts started after specified date.
   /// * [startedBefore] - Filter work shifts started before specified date.
+  /// * [dateAfter] - Filter work shifts which date is after specified date.
+  /// * [dateBefore] - Filter work shifts date date is before specified date.
   /// * [first] - First result.
   /// * [max] - Max results.
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -41,6 +43,8 @@ class EmployeeWorkShiftsApi {
     required String employeeId,
     DateTime? startedAfter,
     DateTime? startedBefore,
+    DateTime? dateAfter,
+    DateTime? dateBefore,
     int? first = 0,
     int? max = 10,
     CancelToken? cancelToken,
@@ -81,6 +85,12 @@ class EmployeeWorkShiftsApi {
       if (startedBefore != null)
         r'startedBefore': encodeQueryParameter(
             _serializers, startedBefore, const FullType(DateTime)),
+      if (dateAfter != null)
+        r'dateAfter': encodeQueryParameter(
+            _serializers, dateAfter, const FullType(DateTime)),
+      if (dateBefore != null)
+        r'dateBefore': encodeQueryParameter(
+            _serializers, dateBefore, const FullType(DateTime)),
       if (first != null)
         r'first':
             encodeQueryParameter(_serializers, first, const FullType(int)),

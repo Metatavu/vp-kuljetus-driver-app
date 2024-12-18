@@ -1,54 +1,32 @@
 import "dart:developer";
 
-import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
+import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
-import "package:vp_kuljetus_driver_app/providers/trucks/trucks_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
-import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/updates/updater.dart";
-import "package:vp_kuljetus_driver_app/views/login/public_truck_select.dart";
 
-class LoginScreen extends HookConsumerWidget {
-  const LoginScreen({super.key});
+class LoginScreenShell extends HookConsumerWidget {
+  const LoginScreenShell({
+    super.key,
+    required this.child,
+    required this.navigateBackVisible,
+  });
+
+  final Widget child;
+  final bool navigateBackVisible;
 
   @override
   Widget build(final context, final ref) {
     final l10n = L10n.of(context);
-    final authNotifier = ref.watch(authNotifierProvider.notifier);
-    final publicTrucks = ref.watch(listPublicTrucksProvider);
+    final theme = Theme.of(context);
     final updater = Updater();
 
-    final selectedPublicTruck = useState<PublicTruck?>(null);
     final checkingUpdates = useState(false);
     final updateAvailable = useState(false);
     final installingUpdate = useState(false);
-
-    useEffect(
-      () {
-        final lastSelectedTruckId =
-            store.getString(lastSelectedTruckIdStoreKey);
-
-        selectedPublicTruck.value = publicTrucks.value?.firstWhereOrNull(
-          (final truck) => truck.id == lastSelectedTruckId,
-        );
-
-        if (lastSelectedTruckId == null &&
-            publicTrucks.valueOrNull?.firstOrNull?.id != null) {
-          store.setString(
-            lastSelectedTruckIdStoreKey,
-            publicTrucks.requireValue.first.id!,
-          );
-        }
-
-        return null;
-      },
-      [publicTrucks.hasValue],
-    );
 
     /// Checks for updates
     Future<void> checkUpdates() async {
@@ -79,26 +57,6 @@ class LoginScreen extends HookConsumerWidget {
       updateAvailable.value = false;
     }
 
-    Future<void> initLogin(final PublicTruck selectedTruck) async {
-      try {
-        await authNotifier.login(selectedTruck.id!);
-        final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-        await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt.toInt());
-      } catch (error) {
-        log(
-          "Failed to login to truck ${selectedTruck.name} (ID ${selectedTruck.id}, VIN ${selectedTruck.vin})",
-          error: error,
-        );
-      }
-    }
-
-    void onSelectTruck(final PublicTruck? publicTruck) {
-      selectedPublicTruck.value = publicTruck;
-      if (publicTruck?.id != null) {
-        store.setString(lastSelectedTruckIdStoreKey, publicTruck!.id!);
-      }
-    }
-
     useEffect(
       () {
         checkUpdates();
@@ -111,7 +69,7 @@ class LoginScreen extends HookConsumerWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 64, horizontal: 32),
+        padding: const EdgeInsets.fromLTRB(32, 64, 32, 32),
         child: checkingUpdates.value || updateAvailable.value
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,37 +150,30 @@ class LoginScreen extends HookConsumerWidget {
                     width: double.infinity,
                   ),
                   const SizedBox(height: 32),
-                  Text(
-                    textAlign: TextAlign.left,
-                    l10n.t("selectVehicle"),
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 16),
-                  switch (publicTrucks) {
-                    AsyncData(:final value) => PublicTruckSelect(
-                        publicTrucks: value,
-                        initialValue: selectedPublicTruck.value,
-                        onSelectTruck: onSelectTruck,
-                      ),
-                    AsyncError() => Text(l10n.t("errors.listPublicTrucks")),
-                    _ => const SizedBox(
-                        width: double.infinity,
-                        height: 80,
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                  },
-                  const SizedBox(height: 16),
-                  Text(
-                    textAlign: TextAlign.left,
-                    l10n.t("loginInstructions"),
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: selectedPublicTruck.value != null
-                        ? () => initLogin(selectedPublicTruck.value!)
-                        : null,
-                    child: Text(l10n.t("login")),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        child,
+                        if (navigateBackVisible)
+                          ElevatedButton(
+                            onPressed: () => context.goNamed("login"),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(0),
+                              fixedSize: const Size.fromHeight(35),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(3)),
+                              ),
+                            ),
+                            child: Text(
+                              l10n.t("navigateBackToLoginSelection"),
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),

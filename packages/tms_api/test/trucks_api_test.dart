@@ -24,11 +24,20 @@ void main() {
       // TODO
     });
 
+    // Lists truck driver cards
+    //
+    // Lists truck driver cards. Used to check if a truck has a driver card inserted.
+    //
+    //Future<BuiltList<TruckDriverCard>> listTruckDriverCards(String truckId) async
+    test('test listTruckDriverCards', () async {
+      // TODO
+    });
+
     // List Trucks.
     //
     // Lists Trucks.
     //
-    //Future<BuiltList<Truck>> listTrucks({ String plateNumber, bool archived, int first, int max }) async
+    //Future<BuiltList<Truck>> listTrucks({ String plateNumber, bool archived, TruckSortByField sortBy, SortOrder sortDirection, int first, int max }) async
     test('test listTrucks', () async {
       // TODO
     });

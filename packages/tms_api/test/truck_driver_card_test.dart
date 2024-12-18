@@ -12,5 +12,11 @@ void main() {
     test('to test the property `id`', () async {
       // TODO
     });
+
+    // Timestamp for driver card insertion. Unix timestamp in milliseconds.
+    // int timestamp
+    test('to test the property `timestamp`', () async {
+      // TODO
+    });
   });
 }

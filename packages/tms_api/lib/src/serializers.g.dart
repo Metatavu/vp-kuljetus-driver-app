@@ -7,10 +7,17 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(AbsenceType.serializer)
+      ..add(ClientApp.serializer)
+      ..add(ClientAppMetadata.serializer)
+      ..add(ClientAppMetadataDeviceOSEnum.serializer)
+      ..add(ClientAppStatus.serializer)
       ..add(Driver.serializer)
+      ..add(EmployeeWorkShift.serializer)
       ..add(Error.serializer)
       ..add(Freight.serializer)
       ..add(FreightUnit.serializer)
+      ..add(PerDiemAllowanceType.serializer)
       ..add(PublicTruck.serializer)
       ..add(Route.serializer)
       ..add(Site.serializer)
@@ -27,6 +34,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(TruckSortByField.serializer)
       ..add(TruckTypeEnum.serializer)
       ..add(Vehicle.serializer)
+      ..add(WorkEvent.serializer)
+      ..add(WorkEventType.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>()))

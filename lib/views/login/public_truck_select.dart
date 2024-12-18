@@ -29,10 +29,10 @@ class PublicTruckSelect extends StatelessWidget {
           value: publicTruck.vin,
           style: ButtonStyle(
             alignment: Alignment.center,
-            padding: const MaterialStatePropertyAll(
+            padding: const WidgetStatePropertyAll(
               EdgeInsets.only(top: 16, bottom: 16, left: 100),
             ),
-            textStyle: MaterialStatePropertyAll(truckTextStyle),
+            textStyle: WidgetStatePropertyAll(truckTextStyle),
           ),
         );
 
@@ -52,15 +52,14 @@ class PublicTruckSelect extends StatelessWidget {
           expandedInsets: const EdgeInsets.all(0),
           textStyle: truckTextStyle,
           menuStyle: MenuStyle(
-            backgroundColor: const MaterialStatePropertyAll(Colors.white),
-            surfaceTintColor:
-                const MaterialStatePropertyAll(Colors.transparent),
-            shape: MaterialStatePropertyAll(
+            backgroundColor: const WidgetStatePropertyAll(Colors.white),
+            surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+            shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            maximumSize: const MaterialStatePropertyAll(
+            maximumSize: const WidgetStatePropertyAll(
               Size(double.infinity, 400),
             ),
           ),

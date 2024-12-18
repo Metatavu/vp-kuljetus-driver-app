@@ -10,7 +10,7 @@ void main() {
     //
     // Lists public info about each truck.
     //
-    //Future<BuiltList<PublicTruck>> listPublicTrucks({ int first, int max }) async
+    //Future<BuiltList<PublicTruck>> listPublicTrucks({ String vin, int first, int max }) async
     test('test listPublicTrucks', () async {
       // TODO
     });

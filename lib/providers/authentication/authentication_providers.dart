@@ -1,9 +1,11 @@
 import "dart:async";
 import "dart:developer";
 
+import "package:android_id/android_id.dart";
 import "package:oidc/oidc.dart";
 import "package:oidc_default_store/oidc_default_store.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
+import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -29,7 +31,7 @@ final authManager = OidcUserManager.lazy(
     ],
     redirectUri: Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/vehicle"),
     postLogoutRedirectUri:
-        Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/vehicle"),
+        Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/login"),
   ),
 );
 
@@ -47,21 +49,77 @@ class AuthNotifier extends _$AuthNotifier {
       tmsApi.setBearerAuth("BearerAuth", user?.token.accessToken ?? "");
     });
 
-    final logoutViaCardRemovalInterval = Timer.periodic(
-      const Duration(seconds: 10),
-      _handleLogoutIfCardIsRemoved,
-    );
-
     ref.onDispose(apiAuthSubscription.cancel);
-    ref.onDispose(logoutViaCardRemovalInterval.cancel);
 
     return userChangesStream;
   }
 
-  Future<void> login(final String truckId) =>
-      authManager.loginAuthorizationCodeFlow(loginHint: "truck-id:$truckId");
+  Future<OidcUser?> login(final PublicTruck? truck) async {
+    OidcUser? oidcUser;
+    if (truck != null) {
+      oidcUser = await _loginTruck(truck);
+    } else {
+      oidcUser = await _loginEmployee();
+    }
 
-  Future<void> logout() async => authManager.logout();
+    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
+
+    return oidcUser;
+  }
+
+  Future<OidcUser?> _loginTruck(final PublicTruck truck) async {
+    try {
+      final oidcUser = await authManager.loginAuthorizationCodeFlow(
+        extraParameters: {"kc_idp_hint": "driver-card-authentication"},
+        loginHint: "truck-id:${truck.id}",
+        redirectUriOverride:
+            Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/vehicle"),
+      );
+
+      final logoutViaCardRemovalInterval = Timer.periodic(
+        const Duration(seconds: 10),
+        _handleLogoutIfCardIsRemoved,
+      );
+      ref.onDispose(logoutViaCardRemovalInterval.cancel);
+      await setLastStartedSessionType(SessionType.driver);
+
+      return oidcUser;
+    } catch (error) {
+      log(
+        "Failed to login to truck ${truck.name} (ID ${truck.id}, VIN ${truck.vin})",
+        error: error,
+      );
+    }
+    return null;
+  }
+
+  Future<OidcUser?> _loginEmployee() async {
+    try {
+      final deviceId = await const AndroidId().getId();
+      final oidcUser = await authManager.loginAuthorizationCodeFlow(
+        extraParameters: {"kc_idp_hint": "pin-code-authentication"},
+        loginHint: "device-id:$deviceId",
+        redirectUriOverride:
+            Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/employee"),
+      );
+
+      await setLastStartedSessionType(SessionType.terminal);
+
+      return oidcUser;
+    } catch (error) {
+      log("Failed to login as employee with deviceId: ", error: error);
+    }
+    return null;
+  }
+
+  Future<void> logout() async {
+    try {
+      await authManager.logout();
+    } catch (error) {
+      log("Failed to logout", error: error);
+    }
+  }
 
   Future<void> _handleLogoutIfCardIsRemoved(final Timer timer) async {
     final truckId = store.getString(lastSelectedTruckIdStoreKey);

@@ -19,10 +19,10 @@ class DriversApi {
   const DriversApi(this._dio, this._serializers);
 
   /// Find a driver.
-  /// Finds a driver by id.
+  /// Finds a driver by ID.
   ///
   /// Parameters:
-  /// * [driverId] - driver's id
+  /// * [driverId] - driver's ID
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request

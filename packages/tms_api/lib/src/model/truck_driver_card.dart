@@ -12,12 +12,22 @@ part 'truck_driver_card.g.dart';
 ///
 /// Properties:
 /// * [id] - Driver card ID
+/// * [timestamp] - Timestamp for driver card insertion. Unix timestamp in milliseconds.
+/// * [removedAt] - Removed at. Used to check for grace period for driver card removal.
 @BuiltValue()
 abstract class TruckDriverCard
     implements Built<TruckDriverCard, TruckDriverCardBuilder> {
   /// Driver card ID
   @BuiltValueField(wireName: r'id')
   String get id;
+
+  /// Timestamp for driver card insertion. Unix timestamp in milliseconds.
+  @BuiltValueField(wireName: r'timestamp')
+  int get timestamp;
+
+  /// Removed at. Used to check for grace period for driver card removal.
+  @BuiltValueField(wireName: r'removedAt')
+  DateTime? get removedAt;
 
   TruckDriverCard._();
 
@@ -50,6 +60,18 @@ class _$TruckDriverCardSerializer
       object.id,
       specifiedType: const FullType(String),
     );
+    yield r'timestamp';
+    yield serializers.serialize(
+      object.timestamp,
+      specifiedType: const FullType(int),
+    );
+    if (object.removedAt != null) {
+      yield r'removedAt';
+      yield serializers.serialize(
+        object.removedAt,
+        specifiedType: const FullType(DateTime),
+      );
+    }
   }
 
   @override
@@ -81,6 +103,20 @@ class _$TruckDriverCardSerializer
             specifiedType: const FullType(String),
           ) as String;
           result.id = valueDes;
+          break;
+        case r'timestamp':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(int),
+          ) as int;
+          result.timestamp = valueDes;
+          break;
+        case r'removedAt':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(DateTime),
+          ) as DateTime;
+          result.removedAt = valueDes;
           break;
         default:
           unhandled.add(key);

@@ -23,5 +23,14 @@ void main() {
     test('test listRoutes', () async {
       // TODO
     });
+
+    // Updates routes
+    //
+    // Updates single route
+    //
+    //Future<Route> updateRoute(String routeId, Route route) async
+    test('test updateRoute', () async {
+      // TODO
+    });
   });
 }

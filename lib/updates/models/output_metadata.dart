@@ -7,8 +7,14 @@ part "output_metadata.g.dart";
 /// Used for deserializing Android build versioning file.
 @JsonSerializable()
 class OutputMetadata {
-  OutputMetadata(this.version, this.artifactType, this.applicationId,
-      this.variantName, this.elementType, this.elements,);
+  OutputMetadata(
+    this.version,
+    this.artifactType,
+    this.applicationId,
+    this.variantName,
+    this.elementType,
+    this.elements,
+  );
 
   factory OutputMetadata.fromJson(final Map<String, dynamic> json) =>
       _$OutputMetadataFromJson(json);
@@ -29,7 +35,8 @@ class OutputMetadata {
 class Filter {
   Filter(this.filterType, this.value);
 
-  factory Filter.fromJson(final Map<String, dynamic> json) => _$FilterFromJson(json);
+  factory Filter.fromJson(final Map<String, dynamic> json) =>
+      _$FilterFromJson(json);
 
   String filterType;
   String value;

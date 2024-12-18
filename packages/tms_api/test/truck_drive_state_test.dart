@@ -8,8 +8,8 @@ void main() {
 
   group(TruckDriveState, () {
     // Timestamp for truck drive state
-    // int id
-    test('to test the property `id`', () async {
+    // int timestamp
+    test('to test the property `timestamp`', () async {
       // TODO
     });
 
@@ -18,15 +18,21 @@ void main() {
       // TODO
     });
 
-    // Driver card ID. This is used to identify the driver when creating a new drive state.
-    // String driverCardId
-    test('to test the property `driverCardId`', () async {
+    // Truck drive state ID
+    // String id
+    test('to test the property `id`', () async {
       // TODO
     });
 
     // Driver ID.
     // String driverId
     test('to test the property `driverId`', () async {
+      // TODO
+    });
+
+    // Driver card ID. This is used to identify the driver when creating a new drive state.
+    // String driverCardId
+    test('to test the property `driverCardId`', () async {
       // TODO
     });
   });

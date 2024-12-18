@@ -9,12 +9,20 @@ part of 'truck_driver_card.dart';
 class _$TruckDriverCard extends TruckDriverCard {
   @override
   final String id;
+  @override
+  final int timestamp;
+  @override
+  final DateTime? removedAt;
 
   factory _$TruckDriverCard([void Function(TruckDriverCardBuilder)? updates]) =>
       (new TruckDriverCardBuilder()..update(updates))._build();
 
-  _$TruckDriverCard._({required this.id}) : super._() {
+  _$TruckDriverCard._(
+      {required this.id, required this.timestamp, this.removedAt})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'TruckDriverCard', 'id');
+    BuiltValueNullFieldError.checkNotNull(
+        timestamp, r'TruckDriverCard', 'timestamp');
   }
 
   @override
@@ -28,20 +36,28 @@ class _$TruckDriverCard extends TruckDriverCard {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TruckDriverCard && id == other.id;
+    return other is TruckDriverCard &&
+        id == other.id &&
+        timestamp == other.timestamp &&
+        removedAt == other.removedAt;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, timestamp.hashCode);
+    _$hash = $jc(_$hash, removedAt.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'TruckDriverCard')..add('id', id))
+    return (newBuiltValueToStringHelper(r'TruckDriverCard')
+          ..add('id', id)
+          ..add('timestamp', timestamp)
+          ..add('removedAt', removedAt))
         .toString();
   }
 }
@@ -54,6 +70,14 @@ class TruckDriverCardBuilder
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
+  int? _timestamp;
+  int? get timestamp => _$this._timestamp;
+  set timestamp(int? timestamp) => _$this._timestamp = timestamp;
+
+  DateTime? _removedAt;
+  DateTime? get removedAt => _$this._removedAt;
+  set removedAt(DateTime? removedAt) => _$this._removedAt = removedAt;
+
   TruckDriverCardBuilder() {
     TruckDriverCard._defaults(this);
   }
@@ -62,6 +86,8 @@ class TruckDriverCardBuilder
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
+      _timestamp = $v.timestamp;
+      _removedAt = $v.removedAt;
       _$v = null;
     }
     return this;
@@ -85,7 +111,10 @@ class TruckDriverCardBuilder
     final _$result = _$v ??
         new _$TruckDriverCard._(
             id: BuiltValueNullFieldError.checkNotNull(
-                id, r'TruckDriverCard', 'id'));
+                id, r'TruckDriverCard', 'id'),
+            timestamp: BuiltValueNullFieldError.checkNotNull(
+                timestamp, r'TruckDriverCard', 'timestamp'),
+            removedAt: removedAt);
     replace(_$result);
     return _$result;
   }

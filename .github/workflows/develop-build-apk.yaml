@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - develop
+  workflow_dispatch:
 jobs:
   bumpVersion:
     runs-on: ubuntu-latest
@@ -68,36 +69,50 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Build APK
+      - name: Init Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.19.6"
+          flutter-version: "3.24.4"
           channel: "stable"
-      - run: |
-          export API_BASE_URL=${{ secrets.API_BASE_URL }}
-          export KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}
-          export KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}
-          export KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
-          export KEYCLOAK_CLIENT_SECRET=${{ secrets.KEYCLOAK_CLIENT_SECRET }}
-          export UPDATES_URL=${{ secrets.UPDATES_URL }}
-          export UPDATES_SKIPPABLE=${{ secrets.UPDATES_SKIPPABLE }}
-          echo ${{ secrets.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
-          echo storePassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties
-          echo keyPassword=${{ secrets.SIGN_STORE_PASSWORD }} >> android/key.properties
+      - name: Import Secrets
+        id: import-secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+              ${{ secrets.VAULT_PATH }} SIGN_KEYSTORE | SIGN_KEYSTORE ;
+              ${{ secrets.VAULT_PATH }} SIGN_STORE_PASSWORD | SIGN_STORE_PASSWORD ;
+              ${{ secrets.VAULT_PATH }} AWS_ACCESS_KEY_ID | AWS_ACCESS_KEY_ID ;
+              ${{ secrets.VAULT_PATH }} AWS_SECRET_ACCESS_KEY | AWS_SECRET_ACCESS_KEY ;
+              ${{ secrets.VAULT_PATH }} UPDATES_BUCKET | UPDATES_BUCKET ;
+              ${{ secrets.VAULT_PATH }} API_BASE_URL | API_BASE_URL ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_URL | KEYCLOAK_URL ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_REALM | KEYCLOAK_REALM ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_CLIENT_ID | KEYCLOAK_CLIENT_ID ;
+              ${{ secrets.VAULT_PATH }} KEYCLOAK_CLIENT_SECRET | KEYCLOAK_CLIENT_SECRET ;
+              ${{ secrets.VAULT_PATH }} UPDATES_URL | UPDATES_URL ;
+              ${{ secrets.VAULT_PATH }} UPDATES_SKIPPABLE | UPDATES_SKIPPABLE ;
+              ${{ secrets.VAULT_PATH }} API_KEY | API_KEY ;
+      - name: Build APK
+        id: build-apk
+        run: |
+          echo ${{ env.SIGN_KEYSTORE }} > /tmp/app.keystore.b64 && base64 -d -i /tmp/app.keystore.b64 > /tmp/app.keystore
+          echo storePassword=${{ env.SIGN_STORE_PASSWORD }} >> android/key.properties
+          echo keyPassword=${{ env.SIGN_STORE_PASSWORD }} >> android/key.properties
           echo keyAlias=app >> android/key.properties
           echo storeFile=/tmp/app.keystore >> android/key.properties
-          flutter pub run dart_define generate
           flutter pub get
-          flutter pub run build_runner build --delete-conflicting-outputs
+          flutter pub run dart_define generate
           flutter build apk --dart-define-from-file=env.json
           mkdir -p update/android/${{ needs.bumpVersion.outputs.new_tag }}
           mv build/app/outputs/apk/release/output-metadata.json update/android/output-metadata.json
-          mv build/app/outputs/apk/release/*.apk update/android/${{ needs.bumpVersion.outputs.new_tag }}/
+          mv build/app/outputs/flutter-apk/*.apk update/android/${{ needs.bumpVersion.outputs.new_tag }}/
       - name: Upload APK
         uses: shallwefootball/s3-upload-action@master
         with:
-          aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_bucket: ${{ secrets.UPDATES_BUCKET }}
+          aws_key_id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws_bucket: ${{ env.UPDATES_BUCKET }}
           source_dir: update
           destination_dir: "staging/"

@@ -5,6 +5,7 @@ on:
       - master
   schedule:
   - cron: '0 15 * * 4'
+  workflow_dispatch:
 
 jobs:
   bumpVersion:

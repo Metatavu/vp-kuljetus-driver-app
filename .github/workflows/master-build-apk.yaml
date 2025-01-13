@@ -90,7 +90,7 @@ jobs:
       - name: Init Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.19.6"
+          flutter-version: "3.24.4"
           channel: "stable"
       - name: Import Secrets
         id: import-secrets

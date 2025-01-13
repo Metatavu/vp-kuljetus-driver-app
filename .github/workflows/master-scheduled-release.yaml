@@ -1,0 +1,31 @@
+name: Scheduled master release trigger
+on:
+  schedule:
+  - cron: '30 15 * * 4'
+
+jobs:
+  diffDevelopMaster:
+    name: Merges develop to master if develop is ahead
+    runs-on: ubuntu-latest
+    environment: develop
+    concurrency: develop
+    steps:
+      - name: Checkout repository master branch
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+          ref: 'master'
+      - name: Configure Git user
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+      - name: Check if develop branch is ahead of master
+        run: |
+          echo "Checking diff of master and develop branches."
+          if git log master..origin/develop --oneline | grep -q .; then
+            echo "Develop is ahead of master. Merging develop -> master."
+            git merge origin/develop
+          else
+            echo "Master up to date with develop. No changes to apply."
+          fi

@@ -76,7 +76,7 @@ class WorkEvents extends _$WorkEvents {
             ),
           );
 
-      ref.invalidate(workEventsProvider(employeeId));
+      ref.invalidateSelf();
     } on DioException catch (error) {
       log("Failed to start new time entry: $error");
       log(error.requestOptions.toString());

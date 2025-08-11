@@ -1,6 +1,7 @@
 import "dart:developer";
 
 import "package:dio/dio.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -10,7 +11,7 @@ part "drive_states_provider.g.dart";
 
 @riverpod
 Future<List<TruckDriveState>> listDriveStates(
-  final ListDriveStatesRef ref, {
+  final Ref ref, {
   required final String truckId,
   final String? driverId,
   final DateTime? after,

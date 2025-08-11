@@ -124,7 +124,10 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
         fixedSize: const Size.fromHeight(53),
         backgroundColor: isRunning.value ? const Color(0xFF1B4649) : null,
         padding: const EdgeInsets.all(12),
-        side: BorderSide(color: Colors.black.withOpacity(0.2), width: 1),
+        side: BorderSide(
+          color: Colors.black.withAlpha((255 * 0.2).toInt()),
+          width: 1,
+        ),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(3)),
         ),

@@ -91,7 +91,8 @@ class DriverLoginScreen extends HookConsumerWidget {
             elevation: 0,
             fixedSize: const Size.fromHeight(35),
             padding: const EdgeInsets.all(0),
-            disabledBackgroundColor: const Color(0xFF1B4649).withOpacity(0.5),
+            disabledBackgroundColor:
+                const Color(0xFF1B4649).withAlpha((255 * 0.5).toInt()),
             backgroundColor: const Color(0xFF1B4649),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(3)),

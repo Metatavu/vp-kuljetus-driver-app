@@ -21,12 +21,12 @@ ThemeData getTheme(final BuildContext context) {
       backgroundColor: baseTheme.primaryColor,
       foregroundColor: Colors.white,
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Colors.white,
       surfaceTintColor: Colors.transparent,
       elevation: 4,

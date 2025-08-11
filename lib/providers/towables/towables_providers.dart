@@ -1,6 +1,7 @@
 import "dart:developer";
 
 import "package:dio/dio.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -10,7 +11,7 @@ part "towables_providers.g.dart";
 
 @riverpod
 Future<List<Towable>> listTowables(
-  final ListTowablesRef ref, {
+  final Ref ref, {
   final String? plateNumber,
   final bool? archived,
   final int? first,
@@ -38,7 +39,7 @@ Future<List<Towable>> listTowables(
 
 @riverpod
 Future<Towable> findTowable(
-  final FindTowableRef ref,
+  final Ref ref,
   final String towableId,
 ) async {
   final cancelToken = CancelToken();

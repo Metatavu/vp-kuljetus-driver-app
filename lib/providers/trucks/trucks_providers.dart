@@ -1,6 +1,7 @@
 import "dart:developer";
 
 import "package:dio/dio.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -10,7 +11,7 @@ part "trucks_providers.g.dart";
 
 @riverpod
 Future<List<PublicTruck>> listPublicTrucks(
-  final ListPublicTrucksRef ref,
+  final Ref ref,
 ) async {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
@@ -30,7 +31,7 @@ Future<List<PublicTruck>> listPublicTrucks(
 
 @riverpod
 Future<Truck> findTruck(
-  final FindTruckRef ref,
+  final Ref ref,
   final String truckId,
 ) async {
   final cancelToken = CancelToken();

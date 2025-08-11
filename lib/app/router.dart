@@ -1,6 +1,7 @@
 import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:loader_overlay/loader_overlay.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
@@ -25,7 +26,7 @@ import "package:vp_kuljetus_driver_app/widgets/hardware_back_handler.dart";
 part "router.g.dart";
 
 @riverpod
-GoRouter router(final RouterRef ref) {
+GoRouter router(final Ref ref) {
   final navigatorKey = GlobalKey<NavigatorState>(debugLabel: "navigatorKey");
   final authenticated = ValueNotifier(const AsyncValue<bool>.loading());
 
@@ -225,13 +226,16 @@ String? handleRedirect(
 ) {
   // Force redirect to client app creation if it's not created
   if (!getClientAppCreated()) return "/client-app";
-  if (state.uri.toString().startsWith("/client-app"))
+  if (state.uri.toString().startsWith("/client-app")) {
     return state.uri.toString();
+  }
 
   // Redirect to login if not authenticated or authentication is loading or has error
   if (authenticatedNotifier.value.unwrapPrevious().hasError ||
       authenticatedNotifier.value.isLoading ||
-      !authenticatedNotifier.value.hasValue) return "/login";
+      !authenticatedNotifier.value.hasValue) {
+    return "/login";
+  }
 
   final auth = authenticatedNotifier.value.requireValue;
 

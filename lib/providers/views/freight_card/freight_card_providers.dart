@@ -1,3 +1,4 @@
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/models/views/freight_card.dart";
@@ -9,7 +10,7 @@ part "freight_card_providers.g.dart";
 
 @riverpod
 Future<FreightCardModel> freightCardData(
-  final FreightCardDataRef ref,
+  final Ref ref,
   final String freightId,
 ) async {
   final freight =

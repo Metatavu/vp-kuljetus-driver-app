@@ -1,3 +1,4 @@
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/models/views/route_tasks_screen.dart";
@@ -8,7 +9,7 @@ part "route_task_screen_providers.g.dart";
 
 @riverpod
 Future<RouteTasksScreenModel> routeTaskScreenData(
-  final RouteTaskScreenDataRef ref,
+  final Ref ref,
   final String routeId,
 ) async {
   final data = await Future.wait([

@@ -1,3 +1,4 @@
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/models/views/vehicle_screen.dart";
@@ -9,7 +10,7 @@ part "vehicle_screen_providers.g.dart";
 
 @riverpod
 Future<VehicleScreenModel> vehicleScreenData(
-  final VehicleScreenDataRef ref,
+  final Ref ref,
   final String truckId,
 ) async {
   final data = await Future.wait([

@@ -7,8 +7,9 @@ import "package:vp_kuljetus_driver_app/providers/freight_units/freight_units_pro
 String formatFreightUnitQuantity(final FreightUnit freightUnit) {
   final quantity = freightUnit.quantity;
   if (quantity == null) return "-";
-  if (quantity.toInt() == quantity.roundToDouble())
+  if (quantity.toInt() == quantity.roundToDouble()) {
     return quantity.toInt().toString();
+  }
 
   return freightUnit.quantity.toString();
 }

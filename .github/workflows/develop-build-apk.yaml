@@ -17,6 +17,7 @@ jobs:
         with:
           submodules: true
           fetch-depth: 0
+
       - name: Calculate new version
         id: get_version
         uses: mathieudutour/github-tag-action@v6.1
@@ -24,6 +25,7 @@ jobs:
           dry_run: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: ""
+
       - name: Update version in pubspec.yaml
         run: |
           sed -i 's/version: .*/version: ${{ steps.get_version.outputs.new_tag }}/g' pubspec.yaml
@@ -31,14 +33,17 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add pubspec.yaml
           git diff --quiet && git diff --staged --quiet || git commit -m "Updated version in pubspec.yaml"
+
       - name: Push version changes to develop
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: develop
+
       - name: Resolve commit SHA
         id: get_commit_sha
         run: echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
+
       - name: Tag version
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
@@ -47,6 +52,7 @@ jobs:
           commit_sha: ${{ steps.get_commit_sha.outputs.commit_sha }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: ""
+
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
@@ -65,15 +71,18 @@ jobs:
           submodules: true
           fetch-depth: 0
           ref: ${{ needs.bumpVersion.outputs.commit_sha }}
+
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+
       - name: Init Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.24.4"
+          flutter-version: "3.32.8"
           channel: "stable"
+
       - name: Import Secrets
         id: import-secrets
         uses: hashicorp/vault-action@v2
@@ -94,6 +103,7 @@ jobs:
               ${{ secrets.VAULT_PATH }} UPDATES_URL | UPDATES_URL ;
               ${{ secrets.VAULT_PATH }} UPDATES_SKIPPABLE | UPDATES_SKIPPABLE ;
               ${{ secrets.VAULT_PATH }} API_KEY | API_KEY ;
+
       - name: Build APK
         id: build-apk
         run: |
@@ -108,6 +118,7 @@ jobs:
           mkdir -p update/android/${{ needs.bumpVersion.outputs.new_tag }}
           mv build/app/outputs/apk/release/output-metadata.json update/android/output-metadata.json
           mv build/app/outputs/flutter-apk/*.apk update/android/${{ needs.bumpVersion.outputs.new_tag }}/
+
       - name: Upload APK
         uses: shallwefootball/s3-upload-action@master
         with:

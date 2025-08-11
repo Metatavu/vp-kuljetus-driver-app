@@ -1,6 +1,7 @@
 import "dart:developer";
 
 import "package:dio/dio.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart" hide Date;
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -10,7 +11,7 @@ part "tasks_providers.g.dart";
 
 @riverpod
 Future<List<Task>> listTasks(
-  final ListTasksRef ref, {
+  final Ref ref, {
   required final String routeId,
   final String? customerSiteId,
   final String? freightId,
@@ -44,7 +45,7 @@ Future<List<Task>> listTasks(
 
 @riverpod
 Future<Task> findTask(
-  final FindTaskRef ref,
+  final Ref ref,
   final String taskId,
 ) async {
   final cancelToken = CancelToken();

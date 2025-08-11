@@ -2,6 +2,7 @@ import "dart:async";
 import "dart:developer";
 
 import "package:android_id/android_id.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:oidc/oidc.dart";
 import "package:oidc_default_store/oidc_default_store.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
@@ -139,11 +140,11 @@ class AuthNotifier extends _$AuthNotifier {
 }
 
 @riverpod
-String? accessToken(final AccessTokenRef ref) =>
+String? accessToken(final Ref ref) =>
     ref.watch(authNotifierProvider).valueOrNull?.token.accessToken;
 
 @riverpod
-UserInfo? userInfo(final UserInfoRef ref) {
+UserInfo? userInfo(final Ref ref) {
   final userInfo = ref.watch(authNotifierProvider).valueOrNull?.userInfo;
   return userInfo != null ? UserInfo.fromJson(userInfo) : null;
 }

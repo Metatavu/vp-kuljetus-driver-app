@@ -2,6 +2,7 @@ import "dart:developer";
 
 import "package:collection/collection.dart";
 import "package:dio/dio.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:tms_api/tms_api.dart" hide Date;
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
@@ -11,7 +12,7 @@ part "routes_providers.g.dart";
 
 @riverpod
 Future<List<Route>> listRoutes(
-  final ListRoutesRef ref, {
+  final Ref ref, {
   final String? truckId,
   final String? driverId,
   final DateTime? departureAfter,
@@ -46,7 +47,7 @@ Future<List<Route>> listRoutes(
 
 @riverpod
 Future<Route> findRoute(
-  final FindRouteRef ref, {
+  final Ref ref, {
   required final String routeId,
 }) async {
   final cancelToken = CancelToken();

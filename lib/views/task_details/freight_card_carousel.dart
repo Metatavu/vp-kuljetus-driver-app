@@ -1,7 +1,7 @@
 import "package:carousel_slider/carousel_slider.dart";
 import "package:flutter/material.dart" hide BoxDecoration, BoxShadow;
 import "package:flutter_hooks/flutter_hooks.dart";
-import "package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart";
+import "package:flutter_inset_shadow/flutter_inset_shadow.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/freight_card.dart";
 
 class FreightCardCarousel extends HookWidget {

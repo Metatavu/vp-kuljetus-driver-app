@@ -63,6 +63,9 @@ class ClientAppScreen extends HookConsumerWidget {
           return;
         }
         await setClientAppCreated(true);
+
+        if (!context.mounted) return;
+
         context.goNamed(
           "confirmClientApp",
           pathParameters: {"deviceId": createdClientApp.deviceId},

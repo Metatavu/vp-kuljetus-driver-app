@@ -6,7 +6,7 @@ part of 'tasks_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listTasksHash() => r'50e63148ee7a7b7e36eb05d0e7eaac3798c30bad';
+String _$listTasksHash() => r'0fbdd09b60f2665c080b347f0249e3db5b5c64a3';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -208,6 +208,8 @@ class ListTasksProvider extends AutoDisposeFutureProvider<List<Task>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ListTasksRef on AutoDisposeFutureProviderRef<List<Task>> {
   /// The parameter `routeId` of this provider.
   String get routeId;
@@ -251,7 +253,7 @@ class _ListTasksProviderElement
   int? get max => (origin as ListTasksProvider).max;
 }
 
-String _$findTaskHash() => r'2363e0b6ffb4c1ff9f5d1780b50cee9dd03011c7';
+String _$findTaskHash() => r'cc206619d79c25448a1b4a563d58fbe54b2ffaad';
 
 /// See also [findTask].
 @ProviderFor(findTask)
@@ -365,6 +367,8 @@ class FindTaskProvider extends AutoDisposeFutureProvider<Task> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FindTaskRef on AutoDisposeFutureProviderRef<Task> {
   /// The parameter `taskId` of this provider.
   String get taskId;
@@ -506,6 +510,8 @@ class UpdateTaskProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateTaskRef on AutoDisposeNotifierProviderRef<Object?> {
   /// The parameter `taskId` of this provider.
   String get taskId;
@@ -520,4 +526,4 @@ class _UpdateTaskProviderElement
   String get taskId => (origin as UpdateTaskProvider).taskId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -31,8 +31,10 @@ final authManager = OidcUserManager.lazy(
       OidcConstants_Scopes.email,
     ],
     redirectUri: Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/vehicle"),
-    postLogoutRedirectUri:
-        Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/login"),
+    postLogoutRedirectUri: Uri.parse(
+      "fi.metatavu.vp.kuljetus.driver.app:/login",
+    ),
+    prompt: [OidcConstants_AuthorizeRequest_Prompt.login],
   ),
 );
 
@@ -74,8 +76,9 @@ class AuthNotifier extends _$AuthNotifier {
       final oidcUser = await authManager.loginAuthorizationCodeFlow(
         extraParameters: {"kc_idp_hint": "driver-card-authentication"},
         loginHint: "truck-id:${truck.id}",
-        redirectUriOverride:
-            Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/vehicle"),
+        redirectUriOverride: Uri.parse(
+          "fi.metatavu.vp.kuljetus.driver.app:/vehicle",
+        ),
       );
 
       final logoutViaCardRemovalInterval = Timer.periodic(
@@ -87,6 +90,7 @@ class AuthNotifier extends _$AuthNotifier {
 
       return oidcUser;
     } catch (error) {
+      inspect(error);
       log(
         "Failed to login to truck ${truck.name} (ID ${truck.id}, VIN ${truck.vin})",
         error: error,
@@ -101,8 +105,9 @@ class AuthNotifier extends _$AuthNotifier {
       final oidcUser = await authManager.loginAuthorizationCodeFlow(
         extraParameters: {"kc_idp_hint": "pin-code-authentication"},
         loginHint: "device-id:$deviceId",
-        redirectUriOverride:
-            Uri.parse("fi.metatavu.vp.kuljetus.driver.app:/employee"),
+        redirectUriOverride: Uri.parse(
+          "fi.metatavu.vp.kuljetus.driver.app:/employee",
+        ),
       );
 
       await setLastStartedSessionType(SessionType.terminal);
@@ -127,8 +132,9 @@ class AuthNotifier extends _$AuthNotifier {
 
     if (truckId == null || state.value?.userInfo == null) return;
 
-    final driverCardsResponse =
-        await tmsApi.getTrucksApi().listTruckDriverCards(truckId: truckId);
+    final driverCardsResponse = await tmsApi
+        .getTrucksApi()
+        .listTruckDriverCards(truckId: truckId);
 
     if (driverCardsResponse.statusCode != 200) {
       log("Failed to list driver cards: ${driverCardsResponse.statusCode}");

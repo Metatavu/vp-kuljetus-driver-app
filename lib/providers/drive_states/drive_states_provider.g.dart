@@ -6,7 +6,7 @@ part of 'drive_states_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listDriveStatesHash() => r'dd5923812792814227180fa2067de5efdc5bb77e';
+String _$listDriveStatesHash() => r'fd587ffd64d1a4f38f51ca4d631d1c20118c69f5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -167,6 +167,8 @@ class ListDriveStatesProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ListDriveStatesRef
     on AutoDisposeFutureProviderRef<List<TruckDriveState>> {
   /// The parameter `truckId` of this provider.
@@ -192,4 +194,4 @@ class _ListDriveStatesProviderElement
   DateTime? get after => (origin as ListDriveStatesProvider).after;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

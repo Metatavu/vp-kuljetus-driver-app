@@ -6,7 +6,7 @@ part of 'routes_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listRoutesHash() => r'77874c4a399a9bcb81ddc02e2e8881cda86403c7';
+String _$listRoutesHash() => r'e0d9f3a977417bb67d58b74fbb68e223005483a4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -198,6 +198,8 @@ class ListRoutesProvider extends AutoDisposeFutureProvider<List<Route>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ListRoutesRef on AutoDisposeFutureProviderRef<List<Route>> {
   /// The parameter `truckId` of this provider.
   String? get truckId;
@@ -237,7 +239,7 @@ class _ListRoutesProviderElement
   int? get max => (origin as ListRoutesProvider).max;
 }
 
-String _$findRouteHash() => r'3a36712b3d24b3951442fc5e48ad5d51f14e65cd';
+String _$findRouteHash() => r'1b330c9ea207e6931a29829b179495d5c884e4af';
 
 /// See also [findRoute].
 @ProviderFor(findRoute)
@@ -351,6 +353,8 @@ class FindRouteProvider extends AutoDisposeFutureProvider<Route> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FindRouteRef on AutoDisposeFutureProviderRef<Route> {
   /// The parameter `routeId` of this provider.
   String get routeId;
@@ -492,6 +496,8 @@ class UpdateRouteProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateRouteRef on AutoDisposeNotifierProviderRef<Object?> {
   /// The parameter `routeId` of this provider.
   String get routeId;
@@ -506,4 +512,4 @@ class _UpdateRouteProviderElement
   String get routeId => (origin as UpdateRouteProvider).routeId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

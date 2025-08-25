@@ -6,7 +6,7 @@ part of 'drivers_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$findDriverHash() => r'565d8b88dfb1ad0545c8477ec2ae92df13c50a2d';
+String _$findDriverHash() => r'5a7bf46b7af4d761caa789060873041f62612c42';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,6 +142,8 @@ class FindDriverProvider extends AutoDisposeFutureProvider<Driver?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FindDriverRef on AutoDisposeFutureProviderRef<Driver?> {
   /// The parameter `driverId` of this provider.
   String get driverId;
@@ -155,4 +157,4 @@ class _FindDriverProviderElement
   String get driverId => (origin as FindDriverProvider).driverId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -6,7 +6,7 @@ part of 'towables_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listTowablesHash() => r'c8e647a0090bd317eb98803d8df1522351759df2';
+String _$listTowablesHash() => r'5b14fdf743f2b78604fcc5e619b84c33eaecc4d0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -176,6 +176,8 @@ class ListTowablesProvider extends AutoDisposeFutureProvider<List<Towable>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ListTowablesRef on AutoDisposeFutureProviderRef<List<Towable>> {
   /// The parameter `plateNumber` of this provider.
   String? get plateNumber;
@@ -205,7 +207,7 @@ class _ListTowablesProviderElement
   int? get max => (origin as ListTowablesProvider).max;
 }
 
-String _$findTowableHash() => r'3f3370d0fde206917d037e3a4cabf9750f47dc58';
+String _$findTowableHash() => r'b20afa1d44de71e1640d6e61fd9dd25eee802d5a';
 
 /// See also [findTowable].
 @ProviderFor(findTowable)
@@ -320,6 +322,8 @@ class FindTowableProvider extends AutoDisposeFutureProvider<Towable> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FindTowableRef on AutoDisposeFutureProviderRef<Towable> {
   /// The parameter `towableId` of this provider.
   String get towableId;
@@ -333,4 +337,4 @@ class _FindTowableProviderElement
   String get towableId => (origin as FindTowableProvider).towableId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

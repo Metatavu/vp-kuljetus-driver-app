@@ -6,7 +6,7 @@ part of 'vehicle_screen_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$vehicleScreenDataHash() => r'26cfd2e133bbbb226e31898df11bb53238886c22';
+String _$vehicleScreenDataHash() => r'4ea390c81eadfdc94565a956979002788ffe7038';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -143,6 +143,8 @@ class VehicleScreenDataProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin VehicleScreenDataRef on AutoDisposeFutureProviderRef<VehicleScreenModel> {
   /// The parameter `truckId` of this provider.
   String get truckId;
@@ -157,4 +159,4 @@ class _VehicleScreenDataProviderElement
   String get truckId => (origin as VehicleScreenDataProvider).truckId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -6,7 +6,7 @@ part of 'freights_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$findFreightHash() => r'6d26dafd7ff2d0348ea764e5d09f131c7ecf0bf4';
+String _$findFreightHash() => r'3dc718bdc7508d9f79afd179dbce71704caa97f3';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -142,6 +142,8 @@ class FindFreightProvider extends AutoDisposeFutureProvider<Freight> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FindFreightRef on AutoDisposeFutureProviderRef<Freight> {
   /// The parameter `freightId` of this provider.
   String get freightId;
@@ -155,4 +157,4 @@ class _FindFreightProviderElement
   String get freightId => (origin as FindFreightProvider).freightId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

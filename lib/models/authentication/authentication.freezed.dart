@@ -28,8 +28,11 @@ mixin _$UserInfo {
 
 
 
+/// Serializes this UserInfo to a JSON map.
 Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-@JsonKey(ignore: true)
+/// Create a copy of UserInfo
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
 $UserInfoCopyWith<UserInfo> get copyWith => throw _privateConstructorUsedError;
 
 }
@@ -55,6 +58,8 @@ class _$UserInfoCopyWithImpl<$Res,$Val extends UserInfo> implements $UserInfoCop
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+/// Create a copy of UserInfo
+/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? sub = null,Object? email = null,Object? emailVerified = freezed,Object? name = freezed,Object? preferredUsername = freezed,Object? givenName = freezed,Object? locale = freezed,Object? familyName = freezed,}) {
   return _then(_value.copyWith(
 sub: null == sub ? _value.sub : sub // ignore: cast_nullable_to_non_nullable
@@ -90,6 +95,8 @@ class __$$UserInfoImplCopyWithImpl<$Res> extends _$UserInfoCopyWithImpl<$Res, _$
       : super(_value, _then);
 
 
+/// Create a copy of UserInfo
+/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? sub = null,Object? email = null,Object? emailVerified = freezed,Object? name = freezed,Object? preferredUsername = freezed,Object? givenName = freezed,Object? locale = freezed,Object? familyName = freezed,}) {
   return _then(_$UserInfoImpl(
 sub: null == sub ? _value.sub : sub // ignore: cast_nullable_to_non_nullable
@@ -135,11 +142,13 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _$UserInfoImpl&&(identical(other.sub, sub) || other.sub == sub)&&(identical(other.email, email) || other.email == email)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.name, name) || other.name == name)&&(identical(other.preferredUsername, preferredUsername) || other.preferredUsername == preferredUsername)&&(identical(other.givenName, givenName) || other.givenName == givenName)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.familyName, familyName) || other.familyName == familyName));
 }
 
-@JsonKey(ignore: true)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,sub,email,emailVerified,name,preferredUsername,givenName,locale,familyName);
 
-@JsonKey(ignore: true)
+/// Create a copy of UserInfo
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 @pragma('vm:prefer-inline')
 _$$UserInfoImplCopyWith<_$UserInfoImpl> get copyWith => __$$UserInfoImplCopyWithImpl<_$UserInfoImpl>(this, _$identity);
@@ -163,8 +172,10 @@ abstract class _UserInfo implements UserInfo {
 
   factory _UserInfo.fromJson(Map<String, dynamic> json) = _$UserInfoImpl.fromJson;
 
-@override  String get sub;@override  String get email;@override  bool? get emailVerified;@override  String? get name;@override  String? get preferredUsername;@override  String? get givenName;@override  String? get locale;@override  String? get familyName;
-@override @JsonKey(ignore: true)
+@override String get sub;@override String get email;@override bool? get emailVerified;@override String? get name;@override String? get preferredUsername;@override String? get givenName;@override String? get locale;@override String? get familyName;
+/// Create a copy of UserInfo
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 _$$UserInfoImplCopyWith<_$UserInfoImpl> get copyWith => throw _privateConstructorUsedError;
 
 }

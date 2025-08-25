@@ -6,7 +6,7 @@ part of 'authentication_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$accessTokenHash() => r'0b3d1f1e29f9d543972ac66d8d46ebfd7f50ddea';
+String _$accessTokenHash() => r'365640cf01a50dc374239bd17612bb5224ad3dce';
 
 /// See also [accessToken].
 @ProviderFor(accessToken)
@@ -19,8 +19,10 @@ final accessTokenProvider = AutoDisposeProvider<String?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef AccessTokenRef = AutoDisposeProviderRef<String?>;
-String _$userInfoHash() => r'e310c383ddedba29ec99794af3d01027bded0375';
+String _$userInfoHash() => r'c97b2f9d2cde8bac27c002a826d3978c2eeeecbf';
 
 /// See also [userInfo].
 @ProviderFor(userInfo)
@@ -33,8 +35,10 @@ final userInfoProvider = AutoDisposeProvider<UserInfo?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef UserInfoRef = AutoDisposeProviderRef<UserInfo?>;
-String _$authNotifierHash() => r'01b1811007a48ce676de2e738bf329e23a68f3c1';
+String _$authNotifierHash() => r'8571e7fce40b1f1c11d03a8011ccc976f1ab79f0';
 
 /// See also [AuthNotifier].
 @ProviderFor(AuthNotifier)
@@ -50,4 +54,4 @@ final authNotifierProvider =
 
 typedef _$AuthNotifier = StreamNotifier<OidcUser?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

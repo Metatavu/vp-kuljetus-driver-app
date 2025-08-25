@@ -12,7 +12,7 @@ targets:
         generate_for:
           - lib/providers/**/*.dart
           - lib/app/router.dart
-      openapi_generator|openapi_generator_annotations:
+      openapi_generator:
         enabled: true
         generate_for:
           - packages/tms_api/**/*.dart

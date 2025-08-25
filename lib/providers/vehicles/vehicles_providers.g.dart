@@ -6,7 +6,7 @@ part of 'vehicles_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listVehiclesHash() => r'141cae931b9e50e34a44efece1416157f93ba4ce';
+String _$listVehiclesHash() => r'1323d336d5013161172e201fb9f26d9ba1320211';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -176,6 +176,8 @@ class ListVehiclesProvider extends AutoDisposeFutureProvider<List<Vehicle>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ListVehiclesRef on AutoDisposeFutureProviderRef<List<Vehicle>> {
   /// The parameter `truckId` of this provider.
   String? get truckId;
@@ -222,4 +224,4 @@ final createVehicleProvider =
 
 typedef _$CreateVehicle = AutoDisposeNotifier<Object?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -6,7 +6,7 @@ part of 'trucks_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listPublicTrucksHash() => r'053c1df08754d2aa41511ea0a676a08f339fe5c7';
+String _$listPublicTrucksHash() => r'183295635d10b18341630ca950c797c36cd1671f';
 
 /// See also [listPublicTrucks].
 @ProviderFor(listPublicTrucks)
@@ -21,8 +21,10 @@ final listPublicTrucksProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ListPublicTrucksRef = AutoDisposeFutureProviderRef<List<PublicTruck>>;
-String _$findTruckHash() => r'110eaa1fe4efa5d3c1d1524d56c13f6668fd130b';
+String _$findTruckHash() => r'd3bccbc422102c1ab7800e2d823410c504bc33d0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -157,6 +159,8 @@ class FindTruckProvider extends AutoDisposeFutureProvider<Truck> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FindTruckRef on AutoDisposeFutureProviderRef<Truck> {
   /// The parameter `truckId` of this provider.
   String get truckId;
@@ -170,4 +174,4 @@ class _FindTruckProviderElement extends AutoDisposeFutureProviderElement<Truck>
   String get truckId => (origin as FindTruckProvider).truckId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

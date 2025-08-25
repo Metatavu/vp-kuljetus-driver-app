@@ -6,7 +6,7 @@ part of 'sites_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$findSiteHash() => r'f632822969d7a2794a9b4e4b391044e433c19b43';
+String _$findSiteHash() => r'8d60be087d1aa2991d1777ac836a3d865e7648ed';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -141,6 +141,8 @@ class FindSiteProvider extends AutoDisposeFutureProvider<Site> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FindSiteRef on AutoDisposeFutureProviderRef<Site> {
   /// The parameter `siteId` of this provider.
   String get siteId;
@@ -154,4 +156,4 @@ class _FindSiteProviderElement extends AutoDisposeFutureProviderElement<Site>
   String get siteId => (origin as FindSiteProvider).siteId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

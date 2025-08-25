@@ -6,7 +6,7 @@ part of 'freight_units_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listFreightUnitsHash() => r'e4034932fac3b714b8be3a82fa8462688f75badf';
+String _$listFreightUnitsHash() => r'f4ad18e6eb21cafbab8df2adc1fce1403bc53948';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -143,6 +143,8 @@ class ListFreightUnitsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin ListFreightUnitsRef on AutoDisposeFutureProviderRef<List<FreightUnit>> {
   /// The parameter `freightId` of this provider.
   String get freightId;
@@ -288,6 +290,8 @@ class UpdateFreightUnitProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateFreightUnitRef on AutoDisposeNotifierProviderRef<Object?> {
   /// The parameter `freightUnitId` of this provider.
   String get freightUnitId;
@@ -303,4 +307,4 @@ class _UpdateFreightUnitProviderElement
       (origin as UpdateFreightUnitProvider).freightUnitId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

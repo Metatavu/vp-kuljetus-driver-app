@@ -50,36 +50,31 @@ GoRouter router(final Ref ref) {
       GoRoute(
         path: "/",
         name: "splash",
-        pageBuilder: (final context, final state) => const NoTransitionPage(
-          child: SplashScreen(),
-        ),
+        pageBuilder: (final context, final state) =>
+            const NoTransitionPage(child: SplashScreen()),
       ),
       ShellRoute(
-        pageBuilder: (
-          final context,
-          final state,
-          final child,
-        ) =>
+        pageBuilder: (final context, final state, final child) =>
             NoTransitionPage(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: LoaderOverlay(
-              child: LoginScreenShell(
-                navigateBackVisible: state.uri.toString() != "/login" &&
-                    !state.uri.toString().startsWith("/client-app"),
-                child: child,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: LoaderOverlay(
+                  child: LoginScreenShell(
+                    navigateBackVisible:
+                        state.uri.toString() != "/login" &&
+                        !state.uri.toString().startsWith("/client-app"),
+                    child: child,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
         routes: [
           GoRoute(
             path: "/client-app",
             name: "clientApp",
-            pageBuilder: (final context, final state) => const NoTransitionPage(
-              child: ClientAppScreen(),
-            ),
+            pageBuilder: (final context, final state) =>
+                const NoTransitionPage(child: ClientAppScreen()),
             routes: [
               GoRoute(
                 path: ":deviceId/confirm",
@@ -102,25 +97,20 @@ GoRouter router(final Ref ref) {
           GoRoute(
             path: "/login",
             name: "login",
-            pageBuilder: (final context, final state) => const NoTransitionPage(
-              child: LoginSelectionScreen(),
-            ),
+            pageBuilder: (final context, final state) =>
+                const NoTransitionPage(child: LoginSelectionScreen()),
             routes: [
               GoRoute(
                 path: "driver",
                 name: "driverLogin",
                 pageBuilder: (final context, final state) =>
-                    const NoTransitionPage(
-                  child: DriverLoginScreen(),
-                ),
+                    const NoTransitionPage(child: DriverLoginScreen()),
               ),
               GoRoute(
                 path: "employee",
                 name: "employeeLogin",
                 pageBuilder: (final context, final state) =>
-                    const NoTransitionPage(
-                  child: EmployeeLoginScreen(),
-                ),
+                    const NoTransitionPage(child: EmployeeLoginScreen()),
               ),
             ],
           ),
@@ -138,11 +128,7 @@ GoRouter router(final Ref ref) {
         ],
       ),
       ShellRoute(
-        pageBuilder: (
-          final context,
-          final state,
-          final child,
-        ) {
+        pageBuilder: (final context, final state, final child) {
           final statusBarHeight = MediaQuery.of(context).viewPadding.top;
           final defaultPanelHeight = statusBarHeight + 54;
           final contentHeight =
@@ -155,8 +141,9 @@ GoRouter router(final Ref ref) {
                 children: [
                   const DriverLogAppBar(),
                   Container(
-                    constraints:
-                        BoxConstraints.loose(Size.fromHeight(contentHeight)),
+                    constraints: BoxConstraints.loose(
+                      Size.fromHeight(contentHeight),
+                    ),
                     child: child,
                   ),
                 ],
@@ -166,11 +153,7 @@ GoRouter router(final Ref ref) {
         },
         routes: [
           ShellRoute(
-            pageBuilder: (
-              final context,
-              final state,
-              final child,
-            ) =>
+            pageBuilder: (final context, final state, final child) =>
                 NoTransitionPage(child: MainTabsView(child: child)),
             routes: [
               GoRoute(
@@ -191,11 +174,11 @@ GoRouter router(final Ref ref) {
                     path: ":routeId/tasks",
                     pageBuilder: (final context, final state) =>
                         const NoTransitionPage(
-                      child: HardwareBackHandler(
-                        gotoPath: "/routes",
-                        child: RouteTasksScreen(),
-                      ),
-                    ),
+                          child: HardwareBackHandler(
+                            gotoPath: "/routes",
+                            child: RouteTasksScreen(),
+                          ),
+                        ),
                     routes: [
                       GoRoute(
                         name: "taskDetails",
@@ -241,9 +224,13 @@ String? handleRedirect(
 
   final loginPaths = ["/login", "/login/driver", "/login/employee"];
 
+  final currentRoute = state.uri.toString();
+
   // Redirect to login if we're going to splash
-  if (state.uri.toString() == "/") return "/login";
-  if (state.uri.toString() == "/login") return null;
+  if (currentRoute == "/") return "/login";
+
+  // Don't redirect if we're already on a login path
+  if (loginPaths.contains(currentRoute)) return null;
 
   return switch (getLastStartedSessionType()) {
     // Redirect to driver login if not authenticated
@@ -251,7 +238,7 @@ String? handleRedirect(
     // Redirect to employee login if not authenticated
     SessionType.terminal => auth ? null : "/login/employee",
     // Don't redirect if in loginPaths, otherwise redirect to login if last session type is unknown
-    _ => loginPaths.contains(state.uri.toString()) ? null : "/login",
+    _ => loginPaths.contains(currentRoute) ? null : "/login",
   };
 }
 

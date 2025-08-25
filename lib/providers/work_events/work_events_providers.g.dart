@@ -6,7 +6,7 @@ part of 'work_events_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$workEventsHash() => r'ba2b3dcf7344a2e0492c22c4531e85d3cdf76517';
+String _$workEventsHash() => r'bfb8f28ba1a494b89c996fd50f4b557b8d4eccdc';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -157,6 +157,8 @@ class WorkEventsProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin WorkEventsRef on AutoDisposeAsyncNotifierProviderRef<List<WorkEvent>> {
   /// The parameter `employeeId` of this provider.
   String? get employeeId;
@@ -171,4 +173,4 @@ class _WorkEventsProviderElement
   String? get employeeId => (origin as WorkEventsProvider).employeeId;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

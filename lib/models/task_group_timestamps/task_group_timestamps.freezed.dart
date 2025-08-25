@@ -29,8 +29,11 @@ mixin _$TaskGroupTimestamps {
 
 
 
+/// Serializes this TaskGroupTimestamps to a JSON map.
 Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-@JsonKey(ignore: true)
+/// Create a copy of TaskGroupTimestamps
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
 $TaskGroupTimestampsCopyWith<TaskGroupTimestamps> get copyWith => throw _privateConstructorUsedError;
 
 }
@@ -56,6 +59,8 @@ class _$TaskGroupTimestampsCopyWithImpl<$Res,$Val extends TaskGroupTimestamps> i
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+/// Create a copy of TaskGroupTimestamps
+/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? taskGroupKey = null,Object? startedAt = null,Object? taskType = null,Object? finishedAt = freezed,}) {
   return _then(_value.copyWith(
 taskGroupKey: null == taskGroupKey ? _value.taskGroupKey : taskGroupKey // ignore: cast_nullable_to_non_nullable
@@ -87,6 +92,8 @@ class __$$TaskGroupTimestampsImplCopyWithImpl<$Res> extends _$TaskGroupTimestamp
       : super(_value, _then);
 
 
+/// Create a copy of TaskGroupTimestamps
+/// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? taskGroupKey = null,Object? startedAt = null,Object? taskType = null,Object? finishedAt = freezed,}) {
   return _then(_$TaskGroupTimestampsImpl(
 taskGroupKey: null == taskGroupKey ? _value.taskGroupKey : taskGroupKey // ignore: cast_nullable_to_non_nullable
@@ -122,7 +129,9 @@ String toString() {
 
 
 
-@JsonKey(ignore: true)
+/// Create a copy of TaskGroupTimestamps
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 @pragma('vm:prefer-inline')
 _$$TaskGroupTimestampsImplCopyWith<_$TaskGroupTimestampsImpl> get copyWith => __$$TaskGroupTimestampsImplCopyWithImpl<_$TaskGroupTimestampsImpl>(this, _$identity);
@@ -146,9 +155,11 @@ abstract class _TaskGroupTimestamps implements TaskGroupTimestamps {
 
   factory _TaskGroupTimestamps.fromJson(Map<String, dynamic> json) = _$TaskGroupTimestampsImpl.fromJson;
 
-@override  String get taskGroupKey;@override  DateTime get startedAt;@override // ignore: invalid_annotation_target
-@JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) TaskType get taskType;@override  DateTime? get finishedAt;
-@override @JsonKey(ignore: true)
+@override String get taskGroupKey;@override DateTime get startedAt;// ignore: invalid_annotation_target
+@override@JsonKey(fromJson: TaskType.valueOf, toJson: taskTypeToJson) TaskType get taskType;@override DateTime? get finishedAt;
+/// Create a copy of TaskGroupTimestamps
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 _$$TaskGroupTimestampsImplCopyWith<_$TaskGroupTimestampsImpl> get copyWith => throw _privateConstructorUsedError;
 
 }

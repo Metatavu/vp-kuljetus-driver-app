@@ -7,7 +7,7 @@ part "authentication.g.dart";
 class UserInfo with _$UserInfo {
   const factory UserInfo({
     required final String sub,
-    required final String email,
+    final String? email,
     final bool? emailVerified,
     final String? name,
     final String? preferredUsername,

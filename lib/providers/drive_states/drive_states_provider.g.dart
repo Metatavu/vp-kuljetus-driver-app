@@ -6,7 +6,7 @@ part of 'drive_states_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listDriveStatesHash() => r'fd587ffd64d1a4f38f51ca4d631d1c20118c69f5';
+String _$listDriveStatesHash() => r'1f90c3a17b73effb0e18ced7c9595ad84866ca4e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,11 +43,13 @@ class ListDriveStatesFamily extends Family<AsyncValue<List<TruckDriveState>>> {
     required String truckId,
     String? driverId,
     DateTime? after,
+    int? max,
   }) {
     return ListDriveStatesProvider(
       truckId: truckId,
       driverId: driverId,
       after: after,
+      max: max,
     );
   }
 
@@ -59,6 +61,7 @@ class ListDriveStatesFamily extends Family<AsyncValue<List<TruckDriveState>>> {
       truckId: provider.truckId,
       driverId: provider.driverId,
       after: provider.after,
+      max: provider.max,
     );
   }
 
@@ -85,12 +88,14 @@ class ListDriveStatesProvider
     required String truckId,
     String? driverId,
     DateTime? after,
+    int? max,
   }) : this._internal(
           (ref) => listDriveStates(
             ref as ListDriveStatesRef,
             truckId: truckId,
             driverId: driverId,
             after: after,
+            max: max,
           ),
           from: listDriveStatesProvider,
           name: r'listDriveStatesProvider',
@@ -104,6 +109,7 @@ class ListDriveStatesProvider
           truckId: truckId,
           driverId: driverId,
           after: after,
+          max: max,
         );
 
   ListDriveStatesProvider._internal(
@@ -116,11 +122,13 @@ class ListDriveStatesProvider
     required this.truckId,
     required this.driverId,
     required this.after,
+    required this.max,
   }) : super.internal();
 
   final String truckId;
   final String? driverId;
   final DateTime? after;
+  final int? max;
 
   @override
   Override overrideWith(
@@ -139,6 +147,7 @@ class ListDriveStatesProvider
         truckId: truckId,
         driverId: driverId,
         after: after,
+        max: max,
       ),
     );
   }
@@ -153,7 +162,8 @@ class ListDriveStatesProvider
     return other is ListDriveStatesProvider &&
         other.truckId == truckId &&
         other.driverId == driverId &&
-        other.after == after;
+        other.after == after &&
+        other.max == max;
   }
 
   @override
@@ -162,6 +172,7 @@ class ListDriveStatesProvider
     hash = _SystemHash.combine(hash, truckId.hashCode);
     hash = _SystemHash.combine(hash, driverId.hashCode);
     hash = _SystemHash.combine(hash, after.hashCode);
+    hash = _SystemHash.combine(hash, max.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -179,6 +190,9 @@ mixin ListDriveStatesRef
 
   /// The parameter `after` of this provider.
   DateTime? get after;
+
+  /// The parameter `max` of this provider.
+  int? get max;
 }
 
 class _ListDriveStatesProviderElement
@@ -192,6 +206,8 @@ class _ListDriveStatesProviderElement
   String? get driverId => (origin as ListDriveStatesProvider).driverId;
   @override
   DateTime? get after => (origin as ListDriveStatesProvider).after;
+  @override
+  int? get max => (origin as ListDriveStatesProvider).max;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

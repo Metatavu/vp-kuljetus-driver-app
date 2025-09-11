@@ -15,16 +15,18 @@ Future<List<TruckDriveState>> listDriveStates(
   required final String truckId,
   final String? driverId,
   final DateTime? after,
+  final int? max,
 }) async {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
 
   try {
     final response = await tmsApi.getTrucksApi().listDriveStates(
-          truckId: truckId,
-          after: after,
-          driverId: driverId,
-        );
+      truckId: truckId,
+      after: after,
+      driverId: driverId,
+      max: max,
+    );
 
     ref.cacheFor(const Duration(minutes: 1));
 

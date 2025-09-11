@@ -9,7 +9,7 @@ part of 'authentication.dart';
 _$UserInfoImpl _$$UserInfoImplFromJson(Map<String, dynamic> json) =>
     _$UserInfoImpl(
       sub: json['sub'] as String,
-      email: json['email'] as String,
+      email: json['email'] as String?,
       emailVerified: json['emailVerified'] as bool?,
       name: json['name'] as String?,
       preferredUsername: json['preferredUsername'] as String?,

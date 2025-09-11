@@ -21,7 +21,7 @@ return _UserInfo.fromJson(json);
 /// @nodoc
 mixin _$UserInfo {
 
- String get sub => throw _privateConstructorUsedError; String get email => throw _privateConstructorUsedError; bool? get emailVerified => throw _privateConstructorUsedError; String? get name => throw _privateConstructorUsedError; String? get preferredUsername => throw _privateConstructorUsedError; String? get givenName => throw _privateConstructorUsedError; String? get locale => throw _privateConstructorUsedError; String? get familyName => throw _privateConstructorUsedError;
+ String get sub => throw _privateConstructorUsedError; String? get email => throw _privateConstructorUsedError; bool? get emailVerified => throw _privateConstructorUsedError; String? get name => throw _privateConstructorUsedError; String? get preferredUsername => throw _privateConstructorUsedError; String? get givenName => throw _privateConstructorUsedError; String? get locale => throw _privateConstructorUsedError; String? get familyName => throw _privateConstructorUsedError;
 
 
 
@@ -42,7 +42,7 @@ abstract class $UserInfoCopyWith<$Res>  {
   factory $UserInfoCopyWith(UserInfo value, $Res Function(UserInfo) then) = _$UserInfoCopyWithImpl<$Res, UserInfo>;
 @useResult
 $Res call({
- String sub, String email, bool? emailVerified, String? name, String? preferredUsername, String? givenName, String? locale, String? familyName
+ String sub, String? email, bool? emailVerified, String? name, String? preferredUsername, String? givenName, String? locale, String? familyName
 });
 
 
@@ -60,11 +60,11 @@ class _$UserInfoCopyWithImpl<$Res,$Val extends UserInfo> implements $UserInfoCop
 
 /// Create a copy of UserInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? sub = null,Object? email = null,Object? emailVerified = freezed,Object? name = freezed,Object? preferredUsername = freezed,Object? givenName = freezed,Object? locale = freezed,Object? familyName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? sub = null,Object? email = freezed,Object? emailVerified = freezed,Object? name = freezed,Object? preferredUsername = freezed,Object? givenName = freezed,Object? locale = freezed,Object? familyName = freezed,}) {
   return _then(_value.copyWith(
 sub: null == sub ? _value.sub : sub // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _value.email : email // ignore: cast_nullable_to_non_nullable
-as String,emailVerified: freezed == emailVerified ? _value.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _value.email : email // ignore: cast_nullable_to_non_nullable
+as String?,emailVerified: freezed == emailVerified ? _value.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
 as bool?,name: freezed == name ? _value.name : name // ignore: cast_nullable_to_non_nullable
 as String?,preferredUsername: freezed == preferredUsername ? _value.preferredUsername : preferredUsername // ignore: cast_nullable_to_non_nullable
 as String?,givenName: freezed == givenName ? _value.givenName : givenName // ignore: cast_nullable_to_non_nullable
@@ -82,7 +82,7 @@ abstract class _$$UserInfoImplCopyWith<$Res> implements $UserInfoCopyWith<$Res> 
   factory _$$UserInfoImplCopyWith(_$UserInfoImpl value, $Res Function(_$UserInfoImpl) then) = __$$UserInfoImplCopyWithImpl<$Res>;
 @override @useResult
 $Res call({
- String sub, String email, bool? emailVerified, String? name, String? preferredUsername, String? givenName, String? locale, String? familyName
+ String sub, String? email, bool? emailVerified, String? name, String? preferredUsername, String? givenName, String? locale, String? familyName
 });
 
 
@@ -97,11 +97,11 @@ class __$$UserInfoImplCopyWithImpl<$Res> extends _$UserInfoCopyWithImpl<$Res, _$
 
 /// Create a copy of UserInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? sub = null,Object? email = null,Object? emailVerified = freezed,Object? name = freezed,Object? preferredUsername = freezed,Object? givenName = freezed,Object? locale = freezed,Object? familyName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? sub = null,Object? email = freezed,Object? emailVerified = freezed,Object? name = freezed,Object? preferredUsername = freezed,Object? givenName = freezed,Object? locale = freezed,Object? familyName = freezed,}) {
   return _then(_$UserInfoImpl(
 sub: null == sub ? _value.sub : sub // ignore: cast_nullable_to_non_nullable
-as String,email: null == email ? _value.email : email // ignore: cast_nullable_to_non_nullable
-as String,emailVerified: freezed == emailVerified ? _value.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as String,email: freezed == email ? _value.email : email // ignore: cast_nullable_to_non_nullable
+as String?,emailVerified: freezed == emailVerified ? _value.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
 as bool?,name: freezed == name ? _value.name : name // ignore: cast_nullable_to_non_nullable
 as String?,preferredUsername: freezed == preferredUsername ? _value.preferredUsername : preferredUsername // ignore: cast_nullable_to_non_nullable
 as String?,givenName: freezed == givenName ? _value.givenName : givenName // ignore: cast_nullable_to_non_nullable
@@ -118,12 +118,12 @@ as String?,
 @JsonSerializable()
 
 class _$UserInfoImpl  implements _UserInfo {
-  const _$UserInfoImpl({required this.sub, required this.email, this.emailVerified, this.name, this.preferredUsername, this.givenName, this.locale, this.familyName});
+  const _$UserInfoImpl({required this.sub, this.email, this.emailVerified, this.name, this.preferredUsername, this.givenName, this.locale, this.familyName});
 
   factory _$UserInfoImpl.fromJson(Map<String, dynamic> json) => _$$UserInfoImplFromJson(json);
 
 @override final  String sub;
-@override final  String email;
+@override final  String? email;
 @override final  bool? emailVerified;
 @override final  String? name;
 @override final  String? preferredUsername;
@@ -167,12 +167,12 @@ Map<String, dynamic> toJson() {
 
 
 abstract class _UserInfo implements UserInfo {
-  const factory _UserInfo({required final  String sub, required final  String email, final  bool? emailVerified, final  String? name, final  String? preferredUsername, final  String? givenName, final  String? locale, final  String? familyName}) = _$UserInfoImpl;
+  const factory _UserInfo({required final  String sub, final  String? email, final  bool? emailVerified, final  String? name, final  String? preferredUsername, final  String? givenName, final  String? locale, final  String? familyName}) = _$UserInfoImpl;
   
 
   factory _UserInfo.fromJson(Map<String, dynamic> json) = _$UserInfoImpl.fromJson;
 
-@override String get sub;@override String get email;@override bool? get emailVerified;@override String? get name;@override String? get preferredUsername;@override String? get givenName;@override String? get locale;@override String? get familyName;
+@override String get sub;@override String? get email;@override bool? get emailVerified;@override String? get name;@override String? get preferredUsername;@override String? get givenName;@override String? get locale;@override String? get familyName;
 /// Create a copy of UserInfo
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)

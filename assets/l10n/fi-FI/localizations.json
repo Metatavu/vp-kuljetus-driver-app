@@ -110,5 +110,6 @@
   "registeredClientApp": "Päätelaite rekisteröity",
   "clientAppIdentifier": "Päätelaitteen tunniste",
   "registeredClientAppHelper": "Pyydä ajojärjestelijää suorittamaan päätelaitteen hyväksyntä loppuun hallintaohjelmassa, jotta sovelluksella voidaan kirjautua sisään PIN-koodilla.\n\nAlla olevia tietoja voidaan käyttää apuna päätelaitteen tunnistamisessa.",
-  "continue": "Jatka"
+  "continue": "Jatka",
+  "no_drive_states": "Ei ajotiloja"
 }

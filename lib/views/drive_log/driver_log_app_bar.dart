@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:developer";
 
 import "package:collection/collection.dart";
 import "package:flutter/material.dart";
@@ -62,7 +61,7 @@ class DriverLogAppBar extends HookConsumerWidget {
         ),
       ),
     );
-    log(driveStates.error.toString());
+
     if (driveStates.isLoading && !driveStates.isReloading) {
       return buildPlaceholderContainer(
         defaultPanelHeight,

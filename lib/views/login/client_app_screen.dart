@@ -3,6 +3,7 @@ import "dart:io";
 
 import "package:android_id/android_id.dart";
 import "package:device_info_plus/device_info_plus.dart";
+import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
@@ -53,15 +54,45 @@ class ClientAppScreen extends HookConsumerWidget {
       try {
         final clientApp = await constructClientApp();
         tmsApi.dio.options.headers["X-DriverApp-API-Key"] = Env.apiKey;
-        final createdClientApp = (await tmsApi
-                .getClientAppsApi()
-                .createClientApp(clientApp: clientApp))
-            .data;
+        ClientApp? createdClientApp;
+
+        String errorMessage = l10n.t("failed_to_register_client_app");
+        try {
+          createdClientApp = (await tmsApi.getClientAppsApi().createClientApp(
+            clientApp: clientApp,
+          )).data;
+        } on DioException catch (error) {
+          if (error.response?.statusCode == 409) {
+            errorMessage = l10n.t(
+              "client_app_already_registered",
+              variables: {"deviceId": clientApp.deviceId},
+            );
+          }
+        } catch (error) {
+          log("Error while creating client app: $error");
+        }
 
         if (createdClientApp == null) {
           log("Failed to create client app");
+
+          if (context.mounted) {
+            await showDialog(
+              context: context,
+              builder: (final ctx) => AlertDialog(
+                title: Text(l10n.t("error")),
+                content: Text(errorMessage),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    child: const Text("OK"),
+                  ),
+                ],
+              ),
+            );
+          }
           return;
         }
+
         await setClientAppCreated(true);
 
         if (!context.mounted) return;
@@ -80,10 +111,7 @@ class ClientAppScreen extends HookConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          l10n.t("registerClientApp"),
-          style: theme.textTheme.titleLarge,
-        ),
+        Text(l10n.t("registerClientApp"), style: theme.textTheme.titleLarge),
         const SizedBox(height: 16),
         Text(
           l10n.t("registerClientAppHelper"),
@@ -95,8 +123,10 @@ class ClientAppScreen extends HookConsumerWidget {
           decoration: InputDecoration(
             labelText: l10n.t("clientAppName"),
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 6,
+              vertical: 8,
+            ),
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(3)),
               borderSide: BorderSide.none,

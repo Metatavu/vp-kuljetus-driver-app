@@ -66,8 +66,23 @@ class AuthNotifier extends _$AuthNotifier {
     }
 
     final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
 
+    if (oidcUser == null) {
+      await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
+      return null;
+    }
+
+    final shiftStartedAt =
+        (await tmsApi.getEmployeeWorkShiftsApi().listEmployeeWorkShifts(
+          employeeId: oidcUser.userInfo["sub"] as String,
+          first: 0,
+          max: 1,
+        )).data?.firstOrNull?.startedAt?.toUtc().millisecondsSinceEpoch;
+
+    await store.setInt(
+      sessionStartedTimestampStoreKey,
+      shiftStartedAt ?? sessionStartedAt,
+    );
     return oidcUser;
   }
 

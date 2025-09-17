@@ -8,6 +8,7 @@ import "package:top_modal_sheet/top_modal_sheet.dart";
 import "package:vp_kuljetus_driver_app/models/truck_drive_state_with_task_type.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/drive_states/drive_states_provider.dart";
+import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/drive_log_row.dart";
 
@@ -28,6 +29,7 @@ class DriverLogAppBar extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     final defaultPanelHeight = statusBarHeight + 54;
+    final l10n = L10n.of(context);
 
     final selectedTruckId = store.getString(lastSelectedTruckIdStoreKey);
     final sessionStartedAt = store.getInt(sessionStartedTimestampStoreKey);
@@ -53,7 +55,10 @@ class DriverLogAppBar extends HookConsumerWidget {
       listDriveStatesProvider(
         truckId: selectedTruckId,
         driverId: driverId,
-        max: 1,
+        after: DateTime.fromMillisecondsSinceEpoch(
+          sessionStartedAt,
+          isUtc: true,
+        ),
       ),
     );
 
@@ -79,7 +84,15 @@ class DriverLogAppBar extends HookConsumerWidget {
       return buildPlaceholderContainer(
         defaultPanelHeight,
         context,
-        const Center(child: Text("")),
+        Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: Center(
+            child: Text(
+              l10n.t("no_drive_states"),
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       );
     }
 

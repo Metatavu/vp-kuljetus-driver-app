@@ -114,5 +114,5 @@
   "no_drive_states": "Ei ajotiloja",
   "error": "Virhe",
   "failed_to_register_client_app": "Päätelaitteen rekisteröinti epäonnistui",
-  "client_app_already_registered": "Päätelaite on jo rekisteröity. Käy poistamassa päätelaite hallintaohjelman kautta ja yritä uudelleen. Laitetunnus on {{deviceId}}"
+  "client_app_already_registered": "Päätelaite on jo rekisteröity. Käy poistamassa päätelaite hallintaohjelman kautta ja yritä uudelleen. Laitetunniste on {{deviceId}}."
 }

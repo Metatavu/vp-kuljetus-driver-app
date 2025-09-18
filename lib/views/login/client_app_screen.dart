@@ -11,6 +11,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:package_info_plus/package_info_plus.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
+import "package:vp_kuljetus_driver_app/providers/device/device_id_provider.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
@@ -24,6 +25,7 @@ class ClientAppScreen extends HookConsumerWidget {
     final theme = Theme.of(context);
 
     final textEditingController = useTextEditingController();
+    final deviceIdProvider = ref.watch(getDeviceIdProvider);
 
     Future<ClientApp> constructClientApp() async {
       if (!Platform.isAndroid) {
@@ -50,6 +52,21 @@ class ClientAppScreen extends HookConsumerWidget {
       );
     }
 
+    String getDeviceIdentifier() {
+      final deviceId = deviceIdProvider.value;
+      if (deviceId == null) {
+        return "";
+      }
+
+      final idLength = deviceId.length;
+
+      if (idLength < 4) {
+        return deviceId;
+      }
+
+      return deviceId.substring(idLength - 4);
+    }
+
     Future<void> onCreateClientAppPressed(final BuildContext context) async {
       try {
         final clientApp = await constructClientApp();
@@ -65,7 +82,7 @@ class ClientAppScreen extends HookConsumerWidget {
           if (error.response?.statusCode == 409) {
             errorMessage = l10n.t(
               "client_app_already_registered",
-              variables: {"deviceId": clientApp.deviceId},
+              variables: {"deviceId": getDeviceIdentifier()},
             );
           }
         } catch (error) {
@@ -115,6 +132,11 @@ class ClientAppScreen extends HookConsumerWidget {
         const SizedBox(height: 16),
         Text(
           l10n.t("registerClientAppHelper"),
+          style: theme.textTheme.bodySmall,
+        ),
+        const SizedBox(height: 5),
+        Text(
+          "${l10n.t("clientAppIdentifier")}: ${getDeviceIdentifier()}",
           style: theme.textTheme.bodySmall,
         ),
         const SizedBox(height: 16),

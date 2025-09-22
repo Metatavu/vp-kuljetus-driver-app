@@ -53,10 +53,7 @@ void setTaskGroupStartedAt(
     ),
   );
 
-  store.setString(
-    taskGroupTimestampsKey,
-    jsonEncode(taskTimestamps),
-  );
+  store.setString(taskGroupTimestampsKey, jsonEncode(taskTimestamps));
 }
 
 void setTaskGroupEndedAt(
@@ -73,17 +70,15 @@ void setTaskGroupEndedAt(
     return task;
   }).toList();
 
-  store.setString(
-    taskGroupTimestampsKey,
-    jsonEncode(updatedTaskTimestamps),
-  );
+  store.setString(taskGroupTimestampsKey, jsonEncode(updatedTaskTimestamps));
 }
 
 SessionType? getLastStartedSessionType() {
   final sessionType = store.getString(lastStartedSessionTypeKey);
 
-  return SessionType.values
-      .firstWhereOrNull((final type) => type.name == sessionType);
+  return SessionType.values.firstWhereOrNull(
+    (final type) => type.name == sessionType,
+  );
 }
 
 Future<void> setLastStartedSessionType(final SessionType sessionType) async {

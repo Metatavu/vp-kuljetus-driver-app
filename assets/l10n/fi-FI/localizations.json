@@ -111,5 +111,8 @@
   "clientAppIdentifier": "Päätelaitteen tunniste",
   "registeredClientAppHelper": "Pyydä ajojärjestelijää suorittamaan päätelaitteen hyväksyntä loppuun hallintaohjelmassa, jotta sovelluksella voidaan kirjautua sisään PIN-koodilla.\n\nAlla olevia tietoja voidaan käyttää apuna päätelaitteen tunnistamisessa.",
   "continue": "Jatka",
-  "no_drive_states": "Ei ajotiloja"
+  "no_drive_states": "Ei ajotiloja",
+  "error": "Virhe",
+  "failed_to_register_client_app": "Päätelaitteen rekisteröinti epäonnistui",
+  "client_app_already_registered": "Päätelaite on jo rekisteröity. Käy poistamassa päätelaite hallintaohjelman kautta ja yritä uudelleen. Laitetunniste on {{deviceId}}."
 }

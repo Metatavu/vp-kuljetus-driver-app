@@ -8,24 +8,28 @@ import "package:top_modal_sheet/top_modal_sheet.dart";
 import "package:vp_kuljetus_driver_app/models/truck_drive_state_with_task_type.dart";
 import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/drive_states/drive_states_provider.dart";
+import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/drive_log_row.dart";
 
 class DriverLogAppBar extends HookConsumerWidget {
   const DriverLogAppBar({super.key});
 
-  Widget buildPlaceholderContainer(final double panelHeight,
-          final BuildContext context, final Widget? child) =>
-      Container(
-        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-        height: panelHeight,
-        child: child,
-      );
+  Widget buildPlaceholderContainer(
+    final double panelHeight,
+    final BuildContext context,
+    final Widget? child,
+  ) => Container(
+    decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+    height: panelHeight,
+    child: child,
+  );
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     final defaultPanelHeight = statusBarHeight + 54;
+    final l10n = L10n.of(context);
 
     final selectedTruckId = store.getString(lastSelectedTruckIdStoreKey);
     final sessionStartedAt = store.getInt(sessionStartedTimestampStoreKey);
@@ -33,16 +37,13 @@ class DriverLogAppBar extends HookConsumerWidget {
 
     final tasksStartedAts = useState(getTaskGroupTimestamps());
 
-    useEffect(
-      () {
-        final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-          tasksStartedAts.value = getTaskGroupTimestamps();
-        });
+    useEffect(() {
+      final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
+        tasksStartedAts.value = getTaskGroupTimestamps();
+      });
 
-        return timer.cancel;
-      },
-      [],
-    );
+      return timer.cancel;
+    }, []);
 
     if (driverId == null ||
         selectedTruckId == null ||
@@ -54,42 +55,66 @@ class DriverLogAppBar extends HookConsumerWidget {
       listDriveStatesProvider(
         truckId: selectedTruckId,
         driverId: driverId,
-        after: DateTime.fromMillisecondsSinceEpoch(sessionStartedAt).toUtc(),
+        after: DateTime.fromMillisecondsSinceEpoch(
+          sessionStartedAt,
+          isUtc: true,
+        ),
       ),
     );
 
     if (driveStates.isLoading && !driveStates.isReloading) {
-      return buildPlaceholderContainer(defaultPanelHeight, context,
-          const Center(child: CircularProgressIndicator()));
+      return buildPlaceholderContainer(
+        defaultPanelHeight,
+        context,
+        const Center(child: CircularProgressIndicator()),
+      );
     }
 
     if (driveStates.hasError) {
-      return buildPlaceholderContainer(defaultPanelHeight, context,
-          const Center(child: Text("Failed to load drive states")));
+      return buildPlaceholderContainer(
+        defaultPanelHeight,
+        context,
+        const Center(child: Text("Failed to load drive states")),
+      );
     }
 
     final data = driveStates.requireValue;
 
     if (data.isEmpty) {
       return buildPlaceholderContainer(
-          defaultPanelHeight, context, const Center(child: Text("")));
+        defaultPanelHeight,
+        context,
+        Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: Center(
+            child: Text(
+              l10n.t("no_drive_states"),
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      );
     }
 
-    final List<TruckDriveStateWithTaskType> driveStatesWithTasks =
-        data.map(TruckDriveStateWithTaskType.fromTruckDriveState).toList();
+    final List<TruckDriveStateWithTaskType> driveStatesWithTasks = data
+        .map(TruckDriveStateWithTaskType.fromTruckDriveState)
+        .toList();
 
-    driveStatesWithTasks.addAll(tasksStartedAts.value
-        .map(TruckDriveStateWithTaskType.fromTaskTimestamps));
+    driveStatesWithTasks.addAll(
+      tasksStartedAts.value.map(TruckDriveStateWithTaskType.fromTaskTimestamps),
+    );
 
-    driveStatesWithTasks
-        .sort((final a, final b) => b.timestamp.compareTo(a.timestamp));
+    driveStatesWithTasks.sort(
+      (final a, final b) => b.timestamp.compareTo(a.timestamp),
+    );
 
     final List<TruckDriveStateWithTaskType> finalDriveStatesWithTasks = [];
 
     for (final (index, state) in driveStatesWithTasks.indexed) {
       if (state.taskType != null && state.endedAt != null) {
-        finalDriveStatesWithTasks
-            .add(driveStatesWithTasks.elementAt(index + 1));
+        finalDriveStatesWithTasks.add(
+          driveStatesWithTasks.elementAt(index + 1),
+        );
       }
       finalDriveStatesWithTasks.add(state);
     }

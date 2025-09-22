@@ -33,24 +33,21 @@ class TaskDetailsScreen extends HookConsumerWidget {
 
     final task = taskDetailsScreenData.valueOrNull?.tasks.firstOrNull;
 
-    useEffect(
-      () {
-        final taskStatus = task?.status;
-        if (taskStatus == null) return null;
+    useEffect(() {
+      final taskStatus = task?.status;
+      if (taskStatus == null) return null;
 
-        if (taskStatus == TaskStatus.IN_PROGRESS) {
-          store.setStringList(
-            ongoingTaskDataStoreKey,
-            [task!.routeId!, ...taskIds],
-          );
-        } else {
-          store.remove(ongoingTaskDataStoreKey);
-        }
+      if (taskStatus == TaskStatus.IN_PROGRESS) {
+        store.setStringList(ongoingTaskDataStoreKey, [
+          task!.routeId!,
+          ...taskIds,
+        ]);
+      } else {
+        store.remove(ongoingTaskDataStoreKey);
+      }
 
-        return null;
-      },
-      [task],
-    );
+      return null;
+    }, [task]);
 
     onStartTasks() {
       ref
@@ -80,7 +77,8 @@ class TaskDetailsScreen extends HookConsumerWidget {
         return;
       }
 
-      final confirmMarkTasksAsDone = await showDialog(
+      final confirmMarkTasksAsDone =
+          await showDialog(
             context: context,
             builder: (final context) => AlertDialog(
               insetPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -158,10 +156,7 @@ class TaskDetailsScreen extends HookConsumerWidget {
                   ],
                 ),
                 loading: () => const Skeletonizer(
-                  child: SizedBox(
-                    height: 100,
-                    width: double.infinity,
-                  ),
+                  child: SizedBox(height: 100, width: double.infinity),
                 ),
                 error: (final error, final stackTrace) => const SizedBox(),
               ),
@@ -170,8 +165,9 @@ class TaskDetailsScreen extends HookConsumerWidget {
           Expanded(
             child: taskDetailsScreenData.maybeWhen(
               data: (final data) => FreightCardCarousel(
-                freightIds:
-                    data.tasks.map((final task) => task.freightId).toList(),
+                freightIds: data.tasks
+                    .map((final task) => task.freightId)
+                    .toList(),
                 readOnly: data.tasks.first.status == TaskStatus.DONE,
               ),
               orElse: () => const Center(child: CircularProgressIndicator()),

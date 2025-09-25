@@ -112,9 +112,10 @@ class DriverLogAppBar extends HookConsumerWidget {
 
     for (final (index, state) in driveStatesWithTasks.indexed) {
       if (state.taskType != null && state.endedAt != null) {
-        finalDriveStatesWithTasks.add(
-          driveStatesWithTasks.elementAt(index + 1),
-        );
+        final nextState = driveStatesWithTasks.elementAtOrNull(index + 1);
+        if (nextState != null) {
+          finalDriveStatesWithTasks.add(nextState);
+        }
       }
       finalDriveStatesWithTasks.add(state);
     }

@@ -15,8 +15,9 @@ class Env {
   static const keycloakClientId = String.fromEnvironment('KEYCLOAK_CLIENT_ID');
 
   /// Keycloak client secret
-  static const keycloakClientSecret =
-      String.fromEnvironment('KEYCLOAK_CLIENT_SECRET');
+  static const keycloakClientSecret = String.fromEnvironment(
+    'KEYCLOAK_CLIENT_SECRET',
+  );
 
   /// URL for app updates
   static const updatesUrl = String.fromEnvironment('UPDATES_URL');
@@ -26,4 +27,8 @@ class Env {
 
   /// API key for the app
   static const apiKey = String.fromEnvironment('API_KEY');
+
+  static const keycloakAppAuthScheme = String.fromEnvironment(
+    'KEYCLOAK_APP_AUTH_SCHEME',
+  );
 }

@@ -1,15 +1,33 @@
 import "package:flutter/material.dart";
+import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
+import "package:hooks_riverpod/hooks_riverpod.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
-class LoginSelectionScreen extends StatelessWidget {
+class LoginSelectionScreen extends HookConsumerWidget {
   const LoginSelectionScreen({super.key});
 
   @override
-  Widget build(final context) {
+  Widget build(final context, final ref) {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
-
+    final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
+    final appAuthProvider = ref.watch(appAuthNotifierProvider);
+    useEffect(() {
+      if (appAuthProvider.value == null) {}
+      appAuthNotifier
+          .readRefreshToken()
+          .then((final refreshToken) async {
+            if (refreshToken != null) {
+              await appAuthNotifier.refreshToken(refreshToken);
+            }
+          })
+          .catchError((final error) {
+            // Ignore errors
+          });
+      return null;
+    }, []);
     return Column(
       children: [
         Text(

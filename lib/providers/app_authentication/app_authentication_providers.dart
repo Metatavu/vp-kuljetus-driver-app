@@ -3,6 +3,7 @@ import "dart:developer";
 
 import "package:android_id/android_id.dart";
 import "package:flutter_appauth/flutter_appauth.dart";
+import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
@@ -24,6 +25,8 @@ const serviceConfiguration = AuthorizationServiceConfiguration(
 class AppAuthNotifier extends _$AppAuthNotifier {
   late final StreamController<AuthenticationState?> _controller;
   final FlutterAppAuth _appAuth = const FlutterAppAuth();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  Timer? _refreshTimer;
 
   @override
   Stream<AuthenticationState?> build() {
@@ -31,8 +34,39 @@ class AppAuthNotifier extends _$AppAuthNotifier {
     state = const AsyncData(null);
     ref.onDispose(() {
       _controller.close();
+      _refreshTimer?.cancel();
     });
     return _controller.stream;
+  }
+
+  void _stopRefreshTimer() {
+    _refreshTimer?.cancel();
+    _refreshTimer = null;
+  }
+
+  Future<AuthenticationState> commonLoginFunctionality(
+    final AuthorizationTokenResponse result,
+  ) async {
+    tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
+
+    final tokenParsed = AuthenticationState.fromTokenResponse(result);
+    final shiftStartedAt =
+        (await tmsApi.getEmployeeWorkShiftsApi().listEmployeeWorkShifts(
+          employeeId: tokenParsed.accessToken.sub,
+          first: 0,
+          max: 1,
+        )).data?.firstOrNull?.startedAt?.toUtc().millisecondsSinceEpoch;
+    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+
+    await store.setInt(
+      sessionStartedTimestampStoreKey,
+      shiftStartedAt ?? sessionStartedAt,
+    );
+    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
+    await _storeRefreshToken(result.refreshToken!);
+    _startRefreshTimer();
+    state = AsyncData(tokenParsed);
+    return tokenParsed;
   }
 
   Future<AuthenticationState?> loginAsEmployee() async {
@@ -48,23 +82,10 @@ class AppAuthNotifier extends _$AppAuthNotifier {
         clientSecret: Env.keycloakClientSecret,
       ),
     );
-    await setLastStartedSessionType(SessionType.terminal);
-    tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
-    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+    await _storeLastSessionType(SessionType.terminal);
 
-    final tokenParsed = AuthenticationState.fromTokenResponse(result);
-    final shiftStartedAt =
-        (await tmsApi.getEmployeeWorkShiftsApi().listEmployeeWorkShifts(
-          employeeId: tokenParsed.accessToken.sub,
-          first: 0,
-          max: 1,
-        )).data?.firstOrNull?.startedAt?.toUtc().millisecondsSinceEpoch;
+    final tokenParsed = await commonLoginFunctionality(result);
 
-    await store.setInt(
-      sessionStartedTimestampStoreKey,
-      shiftStartedAt ?? sessionStartedAt,
-    );
-    state = AsyncData(tokenParsed);
     return tokenParsed;
   }
 
@@ -81,18 +102,15 @@ class AppAuthNotifier extends _$AppAuthNotifier {
         clientSecret: Env.keycloakClientSecret,
       ),
     );
-    await setLastStartedSessionType(SessionType.driver);
-    tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
-    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
-    final tokenParsed = AuthenticationState.fromTokenResponse(result);
-    state = AsyncData(tokenParsed);
+    await _storeLastSessionType(SessionType.driver);
 
+    final tokenParsed = await commonLoginFunctionality(result);
     final logoutViaCardRemovalInterval = Timer.periodic(
       const Duration(seconds: 10),
       _handleLogoutIfCardIsRemoved,
     );
     ref.onDispose(logoutViaCardRemovalInterval.cancel);
+
     return tokenParsed;
   }
 
@@ -130,8 +148,89 @@ class AppAuthNotifier extends _$AppAuthNotifier {
     } catch (e) {
       log("Failed to logout: $e");
     } finally {
+      tmsApi.setBearerAuth("BearerAuth", "");
+      await _clearStoredRefreshToken();
+      _stopRefreshTimer();
+      state = const AsyncData(null);
+    }
+  }
+
+  Future<void> refreshToken(final String refreshToken) async {
+    final result = await _appAuth.token(
+      TokenRequest(
+        Env.keycloakClientId,
+        "fi.metatavu.vp.kuljetus.driver.app:/",
+        refreshToken: refreshToken,
+        serviceConfiguration: serviceConfiguration,
+        clientSecret: Env.keycloakClientSecret,
+        grantType: "refresh_token",
+      ),
+    );
+
+    final tokenParsed = AuthenticationState.fromTokenResponse(result);
+    tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
+    await _storeRefreshToken(result.refreshToken!);
+    state = AsyncData(tokenParsed);
+  }
+
+  Future<void> _checkAndUpdateToken() async {
+    final authValue = state.valueOrNull;
+
+    if (authValue == null) {
+      log("_checkAndUpdateToken: No auth state, stopping refresh timer");
+      _stopRefreshTimer();
+      return;
+    }
+
+    if (!state.requireValue!.expiresIn(const Duration(minutes: 1))) {
+      log("_checkAndUpdateToken: Token not near expiration");
+      return;
+    }
+
+    final storedRefreshToken = await readRefreshToken();
+
+    if (storedRefreshToken == null || state.requireValue!.isExpired) {
+      log(
+        "_checkAndUpdateToken: No refresh token found in storage or token already expired, clearing auth state",
+      );
       state = const AsyncData(null);
       tmsApi.setBearerAuth("BearerAuth", "");
+
+      _stopRefreshTimer();
+      return;
     }
+
+    await refreshToken(storedRefreshToken);
+  }
+
+  void _startRefreshTimer() {
+    _stopRefreshTimer();
+    _refreshTimer = Timer.periodic(
+      const Duration(seconds: 10),
+      (_) => _checkAndUpdateToken(),
+    );
+  }
+
+  Future<void> _clearStoredRefreshToken() async {
+    await _secureStorage.delete(key: "auth_refresh_token");
+  }
+
+  Future<void> _storeRefreshToken(final String refreshToken) async {
+    await _secureStorage.write(key: "auth_refresh_token", value: refreshToken);
+  }
+
+  Future<String?> readRefreshToken() =>
+      _secureStorage.read(key: "auth_refresh_token");
+
+  Future<void> _storeLastSessionType(final SessionType sessionType) async {
+    await store.setString("last_session_type", sessionType.name);
+  }
+
+  Future<SessionType?> readLastSessionType() async {
+    final sessionTypeString = store.getString("last_session_type");
+    if (sessionTypeString == null) return null;
+    return SessionType.values.firstWhere(
+      (final e) => e.name == sessionTypeString,
+    );
   }
 }

@@ -30,6 +30,7 @@ part "router.g.dart";
 GoRouter router(final Ref ref) {
   final navigatorKey = GlobalKey<NavigatorState>(debugLabel: "navigatorKey");
   final appAuthProvider = ref.watch(appAuthNotifierProvider);
+  final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
 
   final router = GoRouter(
     navigatorKey: navigatorKey,
@@ -39,7 +40,7 @@ GoRouter router(final Ref ref) {
         : ValueNotifier<bool>(false),
     debugLogDiagnostics: true,
     redirect: (final context, final state) =>
-        handleRedirect(context, state, appAuthProvider),
+        handleRedirect(context, state, appAuthProvider, appAuthNotifier),
     routes: [
       GoRoute(
         path: "/",
@@ -196,16 +197,21 @@ GoRouter router(final Ref ref) {
   return router;
 }
 
-String? handleRedirect(
+Future<String?> handleRedirect(
   final BuildContext context,
   final GoRouterState state,
   final AsyncValue<AuthenticationState?> authState,
-) {
+  final AppAuthNotifier appAuthNotifier,
+) async {
+  final sessionType = await appAuthNotifier.readLastSessionType();
+  final lastRefreshToken = await appAuthNotifier.readRefreshToken();
+
   // Force redirect to client app creation if it's not created
   if (!getClientAppCreated()) return "/client-app";
   if (state.uri.toString().startsWith("/client-app")) {
     return state.uri.toString();
   }
+
   // Redirect to login if not authenticated or authentication is loading or has error
   if (authState.unwrapPrevious().hasError ||
       authState.isLoading ||
@@ -213,24 +219,24 @@ String? handleRedirect(
     return "/login";
   }
 
-  final sessionType = getLastStartedSessionType();
-  if (authState.value?.isExpired == false) {
+  if (authState.value?.isExpired == false && sessionType != null) {
     if (sessionType == SessionType.driver) {
       return "/vehicle";
     } else if (sessionType == SessionType.terminal) {
       return "/employee";
     }
   }
+
   final auth = authState.value != null;
 
   final loginPaths = ["/login", "/login/driver", "/login/employee"];
   final currentRoute = state.uri.toString();
   // Redirect to login if we're going to splash
   if (currentRoute == "/") return "/login";
-
   // Don't redirect if we're already on a login path
-  if (loginPaths.contains(currentRoute)) return null;
-  return switch (getLastStartedSessionType()) {
+  if (loginPaths.contains(currentRoute) || sessionType == null) return null;
+
+  return switch (sessionType) {
     // Redirect to driver login if not authenticated
     SessionType.driver => auth ? null : "/login/driver",
     // Redirect to employee login if not authenticated

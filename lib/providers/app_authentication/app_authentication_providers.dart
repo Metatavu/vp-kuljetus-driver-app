@@ -3,7 +3,6 @@ import "dart:developer";
 
 import "package:android_id/android_id.dart";
 import "package:flutter_appauth/flutter_appauth.dart";
-import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
@@ -65,8 +64,74 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       sessionStartedTimestampStoreKey,
       shiftStartedAt ?? sessionStartedAt,
     );
-    log(tokenParsed.toString());
     state = AsyncData(tokenParsed);
     return tokenParsed;
+  }
+
+  Future<AuthenticationState?> loginAsDriver(final String truckId) async {
+    final deviceId = await AndroidId().getId();
+    final result = await _appAuth.authorizeAndExchangeCode(
+      AuthorizationTokenRequest(
+        Env.keycloakClientId,
+        "fi.metatavu.vp.kuljetus.driver.app:/vehicle",
+        serviceConfiguration: serviceConfiguration,
+        scopes: ["openid", "profile", "email", "offline_access"],
+        additionalParameters: {"kc_idp_hint": "driver-card-authentication"},
+        loginHint: "truck-id:$truckId",
+        clientSecret: Env.keycloakClientSecret,
+      ),
+    );
+    await setLastStartedSessionType(SessionType.driver);
+    tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
+    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
+    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
+    final tokenParsed = AuthenticationState.fromTokenResponse(result);
+    state = AsyncData(tokenParsed);
+
+    final logoutViaCardRemovalInterval = Timer.periodic(
+      const Duration(seconds: 10),
+      _handleLogoutIfCardIsRemoved,
+    );
+    ref.onDispose(logoutViaCardRemovalInterval.cancel);
+    return tokenParsed;
+  }
+
+  Future<void> _handleLogoutIfCardIsRemoved(final Timer timer) async {
+    final truckId = store.getString(lastSelectedTruckIdStoreKey);
+    if (truckId == null || state.value?.accessToken == null) return;
+    final driverCardsResponse = await tmsApi
+        .getTrucksApi()
+        .listTruckDriverCards(truckId: truckId);
+
+    if (driverCardsResponse.statusCode != 200) {
+      log("Failed to list driver cards: ${driverCardsResponse.statusCode}");
+      return;
+    }
+
+    if (driverCardsResponse.data!.isEmpty) await logout();
+  }
+
+  Future<void> logout() async {
+    final idToken = state.value?.idToken;
+    if (idToken == null) {
+      log("No idToken found, skipping logout");
+      return;
+    }
+
+    try {
+      await _appAuth.endSession(
+        EndSessionRequest(
+          idTokenHint: idToken,
+          serviceConfiguration: serviceConfiguration,
+          postLogoutRedirectUrl: "fi.metatavu.vp.kuljetus.driver.app:/login",
+        ),
+      );
+      log("Logged out successfully");
+    } catch (e) {
+      log("Failed to logout: $e");
+    } finally {
+      state = const AsyncData(null);
+      tmsApi.setBearerAuth("BearerAuth", "");
+    }
   }
 }

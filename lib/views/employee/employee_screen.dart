@@ -34,7 +34,7 @@ class EmployeeScreen extends HookConsumerWidget {
     final appAuth = ref.watch(appAuthNotifierProvider);
     final employeeId = appAuth.value?.accessToken.sub;
     final employeeName = appAuth.value?.accessToken.name;
-    //final authNotifier = ref.watch(authNotifierProvider.notifier);
+    final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
 
     final loading = useState(false);
 
@@ -54,7 +54,7 @@ class EmployeeScreen extends HookConsumerWidget {
               DateTime.now(),
             );
         log("Created logout work event. Logging out...");
-        //await authNotifier.logout();
+        await appAuthNotifier.logout();
         log("Logged out");
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

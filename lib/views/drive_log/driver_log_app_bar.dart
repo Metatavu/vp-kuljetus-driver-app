@@ -6,7 +6,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:top_modal_sheet/top_modal_sheet.dart";
 import "package:vp_kuljetus_driver_app/models/truck_drive_state_with_task_type.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/drive_states/drive_states_provider.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
@@ -33,7 +33,7 @@ class DriverLogAppBar extends HookConsumerWidget {
 
     final selectedTruckId = store.getString(lastSelectedTruckIdStoreKey);
     final sessionStartedAt = store.getInt(sessionStartedTimestampStoreKey);
-    final driverId = ref.watch(userInfoProvider)?.sub;
+    final driverId = ref.watch(appAuthNotifierProvider).value?.accessToken.sub;
 
     final tasksStartedAts = useState(getTaskGroupTimestamps());
 

@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:skeletonizer/skeletonizer.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/vehicles/vehicles_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/views/vehicle_screen/vehicle_screen_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
@@ -18,7 +18,7 @@ class VehicleScreen extends ConsumerWidget {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
 
-    final authNotifier = ref.watch(authNotifierProvider.notifier);
+    final authNotifier = ref.watch(appAuthNotifierProvider.notifier);
 
     final vehicleScreenData = ref.watch(
       vehicleScreenDataProvider(store.getString(lastSelectedTruckIdStoreKey)!),
@@ -59,9 +59,7 @@ class VehicleScreen extends ConsumerWidget {
       if (selectedTowableId == null) return;
 
       await createVehicle.mutate(
-        data.vehicle.rebuild(
-          (final b) => b..towableIds.add(selectedTowableId),
-        ),
+        data.vehicle.rebuild((final b) => b..towableIds.add(selectedTowableId)),
       );
     }
 
@@ -80,14 +78,12 @@ class VehicleScreen extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        l10n.t("truck"),
-                        style: theme.textTheme.titleLarge,
-                      ),
+                      Text(l10n.t("truck"), style: theme.textTheme.titleLarge),
                       Text(
                         "${data.truck.name} / ${data.truck.plateNumber}",
-                        style: theme.textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),

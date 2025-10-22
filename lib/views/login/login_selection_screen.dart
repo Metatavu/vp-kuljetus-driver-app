@@ -15,17 +15,14 @@ class LoginSelectionScreen extends HookConsumerWidget {
     final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
     final appAuthProvider = ref.watch(appAuthNotifierProvider);
     useEffect(() {
-      if (appAuthProvider.value == null) {}
-      appAuthNotifier
-          .readRefreshToken()
-          .then((final refreshToken) async {
-            if (refreshToken != null) {
-              await appAuthNotifier.refreshToken(refreshToken);
-            }
-          })
-          .catchError((final error) {
-            // Ignore errors
-          });
+      if (appAuthProvider.value == null) {
+        appAuthNotifier.readRefreshToken().then((final refreshToken) async {
+          if (refreshToken != null) {
+            await appAuthNotifier.refreshToken(refreshToken);
+          }
+        });
+      }
+
       return null;
     }, []);
     return Column(

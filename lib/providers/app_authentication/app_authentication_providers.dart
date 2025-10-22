@@ -131,20 +131,17 @@ class AppAuthNotifier extends _$AppAuthNotifier {
   }
 
   Future<void> logout() async {
-    final idToken = state.value?.idToken;
-    if (idToken == null) {
-      log("No idToken found, skipping logout");
-      return;
-    }
-
     try {
-      await _appAuth.endSession(
-        EndSessionRequest(
-          idTokenHint: idToken,
-          serviceConfiguration: serviceConfiguration,
-          postLogoutRedirectUrl: "fi.metatavu.vp.kuljetus.driver.app:/login",
-        ),
-      );
+      final idToken = state.value?.idToken;
+      if (idToken != null) {
+        await _appAuth.endSession(
+          EndSessionRequest(
+            idTokenHint: idToken,
+            serviceConfiguration: serviceConfiguration,
+            postLogoutRedirectUrl: "fi.metatavu.vp.kuljetus.driver.app:/login",
+          ),
+        );
+      }
       log("Logged out successfully");
     } catch (e) {
       log("Failed to logout: $e");

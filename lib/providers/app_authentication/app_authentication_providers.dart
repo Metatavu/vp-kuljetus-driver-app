@@ -44,7 +44,7 @@ class AppAuthNotifier extends _$AppAuthNotifier {
     _refreshTimer = null;
   }
 
-  Future<AuthenticationState> commonLoginFunctionality(
+  Future<AuthenticationState> _doCommonLoginActions(
     final AuthorizationTokenResponse result,
   ) async {
     tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
@@ -85,7 +85,7 @@ class AppAuthNotifier extends _$AppAuthNotifier {
     );
     await _storeLastSessionType(SessionType.terminal);
 
-    final tokenParsed = await commonLoginFunctionality(result);
+    final tokenParsed = await _doCommonLoginActions(result);
 
     return tokenParsed;
   }
@@ -105,7 +105,7 @@ class AppAuthNotifier extends _$AppAuthNotifier {
     );
     await _storeLastSessionType(SessionType.driver);
 
-    final tokenParsed = await commonLoginFunctionality(result);
+    final tokenParsed = await _doCommonLoginActions(result);
     final logoutViaCardRemovalInterval = Timer.periodic(
       const Duration(seconds: 10),
       _handleLogoutIfCardIsRemoved,

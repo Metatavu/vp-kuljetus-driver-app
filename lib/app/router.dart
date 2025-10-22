@@ -212,6 +212,13 @@ Future<String?> handleRedirect(
     return state.uri.toString();
   }
 
+  final loginPaths = ["/login", "/login/driver", "/login/employee"];
+  final mainViewPaths = ["/vehicle", "/employee", "/"];
+  if (!mainViewPaths.contains(state.uri.toString()) &&
+      !loginPaths.contains(state.uri.toString())) {
+    return null;
+  }
+
   // Redirect to login if not authenticated or authentication is loading or has error
   if (authState.unwrapPrevious().hasError ||
       authState.isLoading ||
@@ -229,7 +236,6 @@ Future<String?> handleRedirect(
 
   final auth = authState.value != null;
 
-  final loginPaths = ["/login", "/login/driver", "/login/employee"];
   final currentRoute = state.uri.toString();
   // Redirect to login if we're going to splash
   if (currentRoute == "/") return "/login";

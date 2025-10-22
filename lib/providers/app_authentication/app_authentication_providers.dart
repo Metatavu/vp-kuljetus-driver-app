@@ -64,6 +64,7 @@ class AppAuthNotifier extends _$AppAuthNotifier {
     );
     await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
     await _storeRefreshToken(result.refreshToken!);
+    await _storeRefreshTokenStoringTime();
     _startRefreshTimer();
     state = AsyncData(tokenParsed);
     return tokenParsed;
@@ -149,6 +150,7 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       log("Failed to logout: $e");
     } finally {
       tmsApi.setBearerAuth("BearerAuth", "");
+      await _clearRefreshTokenStoringTime();
       await _clearStoredRefreshToken();
       _stopRefreshTimer();
       state = const AsyncData(null);
@@ -156,21 +158,26 @@ class AppAuthNotifier extends _$AppAuthNotifier {
   }
 
   Future<void> refreshToken(final String refreshToken) async {
-    final result = await _appAuth.token(
-      TokenRequest(
-        Env.keycloakClientId,
-        "fi.metatavu.vp.kuljetus.driver.app:/",
-        refreshToken: refreshToken,
-        serviceConfiguration: serviceConfiguration,
-        clientSecret: Env.keycloakClientSecret,
-        grantType: "refresh_token",
-      ),
-    );
+    try {
+      final result = await _appAuth.token(
+        TokenRequest(
+          Env.keycloakClientId,
+          "fi.metatavu.vp.kuljetus.driver.app:/",
+          refreshToken: refreshToken,
+          serviceConfiguration: serviceConfiguration,
+          clientSecret: Env.keycloakClientSecret,
+          grantType: "refresh_token",
+        ),
+      );
 
-    final tokenParsed = AuthenticationState.fromTokenResponse(result);
-    tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
-    await _storeRefreshToken(result.refreshToken!);
-    state = AsyncData(tokenParsed);
+      final tokenParsed = AuthenticationState.fromTokenResponse(result);
+      tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
+      await _storeRefreshToken(result.refreshToken!);
+      await _storeRefreshTokenStoringTime();
+      state = AsyncData(tokenParsed);
+    } catch (e) {
+      await logout();
+    }
   }
 
   Future<void> _checkAndUpdateToken() async {
@@ -182,9 +189,19 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       return;
     }
 
-    if (!state.requireValue!.expiresIn(const Duration(minutes: 1))) {
-      log("_checkAndUpdateToken: Token not near expiration");
-      return;
+    final isCurrentTokenAboutToExpire = state.requireValue!.expiresIn(
+      const Duration(minutes: 1),
+    );
+    final refreshTokenStoredAt = await readRefreshTokenStoringTime();
+    if (refreshTokenStoredAt != null) {
+      final refreshTokenAgeMilliseconds =
+          DateTime.now().millisecondsSinceEpoch - refreshTokenStoredAt;
+      final refreshTokenAgeMinutes = Duration(
+        milliseconds: refreshTokenAgeMilliseconds,
+      ).inMinutes;
+      if (!isCurrentTokenAboutToExpire && refreshTokenAgeMinutes < 239) {
+        return;
+      }
     }
 
     final storedRefreshToken = await readRefreshToken();
@@ -233,4 +250,18 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       (final e) => e.name == sessionTypeString,
     );
   }
+
+  Future<void> _storeRefreshTokenStoringTime() async {
+    await store.setInt(
+      "refresh_token_stored_at",
+      DateTime.now().millisecondsSinceEpoch,
+    );
+  }
+
+  Future<void> _clearRefreshTokenStoringTime() async {
+    await store.remove("refresh_token_stored_at");
+  }
+
+  Future<int?> readRefreshTokenStoringTime() async =>
+      store.getInt("refresh_token_stored_at");
 }

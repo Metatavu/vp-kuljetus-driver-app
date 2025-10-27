@@ -3,10 +3,10 @@ import "dart:developer";
 
 import "package:android_id/android_id.dart";
 import "package:flutter_appauth/flutter_appauth.dart";
-import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/authemtication_store_utilities.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 
@@ -25,7 +25,6 @@ const serviceConfiguration = AuthorizationServiceConfiguration(
 class AppAuthNotifier extends _$AppAuthNotifier {
   late final StreamController<AuthenticationState?> _controller;
   final FlutterAppAuth _appAuth = const FlutterAppAuth();
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
   Timer? _refreshTimer;
 
   @override
@@ -45,11 +44,10 @@ class AppAuthNotifier extends _$AppAuthNotifier {
   }
 
   Future<AuthenticationState> _handleSuccessfulLoginResponse(
-    final AuthorizationTokenResponse result,
+    final AuthenticationState tokenParsed,
   ) async {
-    tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
+    tmsApi.setBearerAuth("BearerAuth", tokenParsed.accessTokenRaw ?? "");
 
-    final tokenParsed = AuthenticationState.fromTokenResponse(result);
     final shiftStartedAt =
         (await tmsApi.getEmployeeWorkShiftsApi().listEmployeeWorkShifts(
           employeeId: tokenParsed.accessToken.sub,
@@ -63,8 +61,8 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       shiftStartedAt ?? sessionStartedAt,
     );
     await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
-    await _storeRefreshToken(result.refreshToken!);
-    await _storeRefreshTokenStoringTime();
+    await storeRefreshToken(tokenParsed.refreshToken);
+    await storeRefreshTokenStoringTime();
     _startRefreshTimer();
     state = AsyncData(tokenParsed);
     return tokenParsed;
@@ -83,9 +81,10 @@ class AppAuthNotifier extends _$AppAuthNotifier {
         clientSecret: Env.keycloakClientSecret,
       ),
     );
-    await _storeLastSessionType(SessionType.terminal);
+    await storeLastSessionType(SessionType.terminal);
 
-    final tokenParsed = await _doCommonLoginActions(result);
+    final tokenParsed = AuthenticationState.fromTokenResponse(result);
+    await _handleSuccessfulLoginResponse(tokenParsed);
 
     return tokenParsed;
   }
@@ -103,9 +102,10 @@ class AppAuthNotifier extends _$AppAuthNotifier {
         clientSecret: Env.keycloakClientSecret,
       ),
     );
-    await _storeLastSessionType(SessionType.driver);
+    await storeLastSessionType(SessionType.driver);
 
-    final tokenParsed = await _doCommonLoginActions(result);
+    final tokenParsed = AuthenticationState.fromTokenResponse(result);
+    await _handleSuccessfulLoginResponse(tokenParsed);
     final logoutViaCardRemovalInterval = Timer.periodic(
       const Duration(seconds: 10),
       _handleLogoutIfCardIsRemoved,
@@ -147,8 +147,8 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       log("Failed to logout: $e");
     } finally {
       tmsApi.setBearerAuth("BearerAuth", "");
-      await _clearRefreshTokenStoringTime();
-      await _clearStoredRefreshToken();
+      await clearRefreshTokenStoringTime();
+      await clearStoredRefreshToken();
       _stopRefreshTimer();
       state = const AsyncData(null);
     }
@@ -169,8 +169,8 @@ class AppAuthNotifier extends _$AppAuthNotifier {
 
       final tokenParsed = AuthenticationState.fromTokenResponse(result);
       tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
-      await _storeRefreshToken(result.refreshToken!);
-      await _storeRefreshTokenStoringTime();
+      await storeRefreshToken(result.refreshToken!);
+      await storeRefreshTokenStoringTime();
       state = AsyncData(tokenParsed);
     } catch (e) {
       await logout();
@@ -224,41 +224,4 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       (_) => _checkAndUpdateToken(),
     );
   }
-
-  Future<void> _clearStoredRefreshToken() async {
-    await _secureStorage.delete(key: "auth_refresh_token");
-  }
-
-  Future<void> _storeRefreshToken(final String refreshToken) async {
-    await _secureStorage.write(key: "auth_refresh_token", value: refreshToken);
-  }
-
-  Future<String?> readRefreshToken() =>
-      _secureStorage.read(key: "auth_refresh_token");
-
-  Future<void> _storeLastSessionType(final SessionType sessionType) async {
-    await store.setString("last_session_type", sessionType.name);
-  }
-
-  Future<SessionType?> readLastSessionType() async {
-    final sessionTypeString = store.getString("last_session_type");
-    if (sessionTypeString == null) return null;
-    return SessionType.values.firstWhere(
-      (final e) => e.name == sessionTypeString,
-    );
-  }
-
-  Future<void> _storeRefreshTokenStoringTime() async {
-    await store.setInt(
-      "refresh_token_stored_at",
-      DateTime.now().millisecondsSinceEpoch,
-    );
-  }
-
-  Future<void> _clearRefreshTokenStoringTime() async {
-    await store.remove("refresh_token_stored_at");
-  }
-
-  Future<int?> readRefreshTokenStoringTime() async =>
-      store.getInt("refresh_token_stored_at");
 }

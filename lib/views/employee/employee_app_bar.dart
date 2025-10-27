@@ -13,8 +13,9 @@ class EmployeeAppBar extends ConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final l10n = L10n.of(context);
-    final appAuth = ref.watch(appAuthNotifierProvider);
-    final employeeId = appAuth.value?.accessToken.sub;
+    final employeeId = ref.watch(
+      appAuthNotifierProvider.select((final it) => it.value?.accessToken.sub),
+    );
     final workEvents = ref
         .watch(workEventsProvider(employeeId))
         .asData

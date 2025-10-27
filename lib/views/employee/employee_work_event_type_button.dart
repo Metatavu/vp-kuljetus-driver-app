@@ -26,8 +26,12 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final theme = Theme.of(context);
-    final appAuth = ref.watch(appAuthNotifierProvider);
-    final employeeId = appAuth.value?.accessToken.sub;
+    final employeeId = ref.watch(
+      appAuthNotifierProvider.select((final it) {
+        final token = it.value?.accessToken;
+        return token?.sub;
+      }),
+    );
     final workEventsProviderNotifier = ref.watch(
       workEventsProvider(employeeId).notifier,
     );

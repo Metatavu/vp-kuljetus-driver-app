@@ -18,8 +18,6 @@ class VehicleScreen extends ConsumerWidget {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
 
-    final authNotifier = ref.watch(appAuthNotifierProvider.notifier);
-
     final vehicleScreenData = ref.watch(
       vehicleScreenDataProvider(store.getString(lastSelectedTruckIdStoreKey)!),
     );
@@ -92,7 +90,9 @@ class VehicleScreen extends ConsumerWidget {
                   Directionality(
                     textDirection: TextDirection.rtl,
                     child: TextButton.icon(
-                      onPressed: authNotifier.logout,
+                      onPressed: ref
+                          .read(appAuthNotifierProvider.notifier)
+                          .logout,
                       icon: const Icon(Icons.logout),
                       label: Text(
                         l10n.t("logout"),

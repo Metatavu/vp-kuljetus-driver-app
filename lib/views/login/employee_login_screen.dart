@@ -17,7 +17,6 @@ class EmployeeLoginScreen extends HookConsumerWidget {
   Widget build(final context, final ref) {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
-    final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
     Future<bool?> showExistingShiftDialog() async => showDialog<bool>(
       context: context,
       builder: (final context) => AlertDialog(
@@ -41,7 +40,9 @@ class EmployeeLoginScreen extends HookConsumerWidget {
 
     Future<void> login() async {
       try {
-        final loginResult = await appAuthNotifier.loginAsEmployee();
+        final loginResult = await ref
+            .read(appAuthNotifierProvider.notifier)
+            .loginAsEmployee();
         final userId = loginResult?.accessToken.sub;
         if (userId == null) {
           throw Exception("oidcUser.uid is null");

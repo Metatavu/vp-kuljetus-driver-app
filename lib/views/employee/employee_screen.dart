@@ -31,10 +31,12 @@ class EmployeeScreen extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
-    final appAuth = ref.watch(appAuthNotifierProvider);
-    final employeeId = appAuth.value?.accessToken.sub;
-    final employeeName = appAuth.value?.accessToken.name;
-    final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
+    final (employeeId, employeeName) = ref.watch(
+      appAuthNotifierProvider.select((final it) {
+        final token = it.value?.accessToken;
+        return (token?.sub, token?.name);
+      }),
+    );
 
     final loading = useState(false);
 
@@ -54,7 +56,7 @@ class EmployeeScreen extends HookConsumerWidget {
               DateTime.now(),
             );
         log("Created logout work event. Logging out...");
-        await appAuthNotifier.logout();
+        await ref.read(appAuthNotifierProvider.notifier).logout();
         log("Logged out");
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(

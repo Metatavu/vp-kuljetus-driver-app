@@ -3,6 +3,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/authemtication_store_utilities.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
 class LoginSelectionScreen extends HookConsumerWidget {
@@ -12,11 +13,11 @@ class LoginSelectionScreen extends HookConsumerWidget {
   Widget build(final context, final ref) {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
-    final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
     final appAuthProvider = ref.watch(appAuthNotifierProvider);
     useEffect(() {
       if (appAuthProvider.value == null) {
-        appAuthNotifier.readRefreshToken().then((final refreshToken) async {
+        final appAuthNotifier = ref.read(appAuthNotifierProvider.notifier);
+        readRefreshToken().then((final refreshToken) async {
           if (refreshToken != null) {
             await appAuthNotifier.refreshToken(refreshToken);
           }

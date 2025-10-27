@@ -6,6 +6,7 @@ import "package:loader_overlay/loader_overlay.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
 import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/authemtication_store_utilities.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_page.dart";
@@ -30,7 +31,6 @@ part "router.g.dart";
 GoRouter router(final Ref ref) {
   final navigatorKey = GlobalKey<NavigatorState>(debugLabel: "navigatorKey");
   final appAuthProvider = ref.watch(appAuthNotifierProvider);
-  final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
 
   final router = GoRouter(
     navigatorKey: navigatorKey,
@@ -39,8 +39,12 @@ GoRouter router(final Ref ref) {
         ? ValueNotifier<bool>(true)
         : ValueNotifier<bool>(false),
     debugLogDiagnostics: true,
-    redirect: (final context, final state) =>
-        handleRedirect(context, state, appAuthProvider, appAuthNotifier),
+    redirect: (final context, final state) => handleRedirect(
+      context,
+      state,
+      appAuthProvider,
+      ref.read(appAuthNotifierProvider.notifier),
+    ),
     routes: [
       GoRoute(
         path: "/",
@@ -203,8 +207,8 @@ Future<String?> handleRedirect(
   final AsyncValue<AuthenticationState?> authState,
   final AppAuthNotifier appAuthNotifier,
 ) async {
-  final sessionType = await appAuthNotifier.readLastSessionType();
-  final lastRefreshToken = await appAuthNotifier.readRefreshToken();
+  final sessionType = await readLastSessionType();
+  final lastRefreshToken = await readRefreshToken();
 
   // Force redirect to client app creation if it's not created
   if (!getClientAppCreated()) return "/client-app";

@@ -19,7 +19,6 @@ class DriverLoginScreen extends HookConsumerWidget {
   Widget build(final context, final ref) {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
-    final appAuthNotifier = ref.watch(appAuthNotifierProvider.notifier);
     final publicTrucks = ref.watch(listPublicTrucksProvider);
     final router = GoRouter.of(context);
 
@@ -45,7 +44,9 @@ class DriverLoginScreen extends HookConsumerWidget {
 
     Future<void> initLogin(final PublicTruck selectedTruck) async {
       try {
-        await appAuthNotifier.loginAsDriver(selectedTruck.id!);
+        await ref
+            .read(appAuthNotifierProvider.notifier)
+            .loginAsDriver(selectedTruck.id!);
         router.goNamed("routes");
       } catch (error) {
         log("Error logging driver in: $error");

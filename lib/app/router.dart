@@ -6,7 +6,7 @@ import "package:loader_overlay/loader_overlay.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
 import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
-import "package:vp_kuljetus_driver_app/providers/app_authentication/authemtication_store_utilities.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/authentication_store_utilities.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_page.dart";
@@ -31,13 +31,20 @@ part "router.g.dart";
 GoRouter router(final Ref ref) {
   final navigatorKey = GlobalKey<NavigatorState>(debugLabel: "navigatorKey");
   final appAuthProvider = ref.watch(appAuthNotifierProvider);
+  final authenticated = ValueNotifier(const AsyncValue<bool>.loading());
 
+  ref
+    ..onDispose(authenticated.dispose)
+    ..listen(
+      appAuthNotifierProvider.select(
+        (final value) => value.whenData((final value) => value != null),
+      ),
+      (final _, final next) => authenticated.value = next,
+    );
   final router = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: "/",
-    refreshListenable: appAuthProvider.value?.accessToken != null
-        ? ValueNotifier<bool>(true)
-        : ValueNotifier<bool>(false),
+    refreshListenable: authenticated,
     debugLogDiagnostics: true,
     redirect: (final context, final state) => handleRedirect(
       context,

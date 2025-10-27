@@ -6,7 +6,7 @@ import "package:flutter_appauth/flutter_appauth.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
-import "package:vp_kuljetus_driver_app/providers/app_authentication/authemtication_store_utilities.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/authentication_store_utilities.dart";
 import "package:vp_kuljetus_driver_app/services/api/api.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 

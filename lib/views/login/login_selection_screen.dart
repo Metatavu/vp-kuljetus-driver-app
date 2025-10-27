@@ -3,7 +3,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
-import "package:vp_kuljetus_driver_app/providers/app_authentication/authemtication_store_utilities.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/authentication_store_utilities.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 
 class LoginSelectionScreen extends HookConsumerWidget {

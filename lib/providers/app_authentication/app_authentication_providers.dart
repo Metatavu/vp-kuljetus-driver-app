@@ -44,7 +44,7 @@ class AppAuthNotifier extends _$AppAuthNotifier {
     _refreshTimer = null;
   }
 
-  Future<AuthenticationState> _doCommonLoginActions(
+  Future<AuthenticationState> _handleSuccessfulLoginResponse(
     final AuthorizationTokenResponse result,
   ) async {
     tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");

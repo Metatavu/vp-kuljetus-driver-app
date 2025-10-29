@@ -46,12 +46,8 @@ GoRouter router(final Ref ref) {
     initialLocation: "/",
     refreshListenable: authenticated,
     debugLogDiagnostics: true,
-    redirect: (final context, final state) => handleRedirect(
-      context,
-      state,
-      appAuthProvider,
-      ref.read(appAuthNotifierProvider.notifier),
-    ),
+    redirect: (final context, final state) =>
+        handleRedirect(context, state, appAuthProvider),
     routes: [
       GoRoute(
         path: "/",
@@ -212,10 +208,8 @@ Future<String?> handleRedirect(
   final BuildContext context,
   final GoRouterState state,
   final AsyncValue<AuthenticationState?> authState,
-  final AppAuthNotifier appAuthNotifier,
 ) async {
   final sessionType = await readLastSessionType();
-  final lastRefreshToken = await readRefreshToken();
 
   // Force redirect to client app creation if it's not created
   if (!getClientAppCreated()) return "/client-app";

@@ -4,7 +4,9 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:loader_overlay/loader_overlay.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/authentication_store_utilities.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
 import "package:vp_kuljetus_driver_app/views/drive_log/driver_log_app_bar.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_page.dart";
@@ -28,24 +30,24 @@ part "router.g.dart";
 @riverpod
 GoRouter router(final Ref ref) {
   final navigatorKey = GlobalKey<NavigatorState>(debugLabel: "navigatorKey");
+  final appAuthProvider = ref.watch(appAuthNotifierProvider);
   final authenticated = ValueNotifier(const AsyncValue<bool>.loading());
 
   ref
     ..onDispose(authenticated.dispose)
     ..listen(
-      authNotifierProvider.select(
+      appAuthNotifierProvider.select(
         (final value) => value.whenData((final value) => value != null),
       ),
       (final _, final next) => authenticated.value = next,
     );
-
   final router = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: "/",
     refreshListenable: authenticated,
     debugLogDiagnostics: true,
     redirect: (final context, final state) =>
-        handleRedirect(context, state, authenticated),
+        handleRedirect(context, state, appAuthProvider),
     routes: [
       GoRoute(
         path: "/",
@@ -202,37 +204,50 @@ GoRouter router(final Ref ref) {
   return router;
 }
 
-String? handleRedirect(
+Future<String?> handleRedirect(
   final BuildContext context,
   final GoRouterState state,
-  final ValueNotifier<AsyncValue<bool>> authenticatedNotifier,
-) {
+  final AsyncValue<AuthenticationState?> authState,
+) async {
+  final sessionType = await readLastSessionType();
+
   // Force redirect to client app creation if it's not created
   if (!getClientAppCreated()) return "/client-app";
   if (state.uri.toString().startsWith("/client-app")) {
     return state.uri.toString();
   }
 
+  final loginPaths = ["/login", "/login/driver", "/login/employee"];
+  final mainViewPaths = ["/vehicle", "/employee", "/"];
+  if (!mainViewPaths.contains(state.uri.toString()) &&
+      !loginPaths.contains(state.uri.toString())) {
+    return null;
+  }
+
   // Redirect to login if not authenticated or authentication is loading or has error
-  if (authenticatedNotifier.value.unwrapPrevious().hasError ||
-      authenticatedNotifier.value.isLoading ||
-      !authenticatedNotifier.value.hasValue) {
+  if (authState.unwrapPrevious().hasError ||
+      authState.isLoading ||
+      !authState.hasValue) {
     return "/login";
   }
 
-  final auth = authenticatedNotifier.value.requireValue;
+  if (authState.value?.isExpired == false && sessionType != null) {
+    if (sessionType == SessionType.driver) {
+      return "/vehicle";
+    } else if (sessionType == SessionType.terminal) {
+      return "/employee";
+    }
+  }
 
-  final loginPaths = ["/login", "/login/driver", "/login/employee"];
+  final auth = authState.value != null;
 
   final currentRoute = state.uri.toString();
-
   // Redirect to login if we're going to splash
   if (currentRoute == "/") return "/login";
-
   // Don't redirect if we're already on a login path
-  if (loginPaths.contains(currentRoute)) return null;
+  if (loginPaths.contains(currentRoute) || sessionType == null) return null;
 
-  return switch (getLastStartedSessionType()) {
+  return switch (sessionType) {
     // Redirect to driver login if not authenticated
     SessionType.driver => auth ? null : "/login/driver",
     // Redirect to employee login if not authenticated

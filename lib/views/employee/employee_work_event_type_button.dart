@@ -6,7 +6,7 @@ import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:loader_overlay/loader_overlay.dart";
 import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/global_timer.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/work_events/work_events_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/utils/date.dart";
@@ -26,9 +26,15 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final theme = Theme.of(context);
-    final employeeId = ref.watch(userInfoProvider)?.sub;
-    final workEventsProviderNotifier =
-        ref.watch(workEventsProvider(employeeId).notifier);
+    final employeeId = ref.watch(
+      appAuthNotifierProvider.select((final it) {
+        final token = it.value?.accessToken;
+        return token?.sub;
+      }),
+    );
+    final workEventsProviderNotifier = ref.watch(
+      workEventsProvider(employeeId).notifier,
+    );
     final l10n = L10n.of(context);
 
     if (employeeId == null) {
@@ -36,49 +42,47 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final workEvents =
-        ref.watch(workEventsProvider(employeeId)).asData?.value.toList();
+    final workEvents = ref
+        .watch(workEventsProvider(employeeId))
+        .asData
+        ?.value
+        .toList();
 
     if (workEvents == null) {
       return const SizedBox.shrink();
     }
 
-    final latestWorkEvent =
-        workEventsProviderNotifier.getLatestWorkEvent(employeeId);
+    final latestWorkEvent = workEventsProviderNotifier.getLatestWorkEvent(
+      employeeId,
+    );
     final isRunning = useState(latestWorkEvent?.workEventType == workEventType);
-    final isPaused =
-        useState(latestWorkEvent?.workEventType == WorkEventType.BREAK);
-
-    useEffect(
-      () {
-        isRunning.value = latestWorkEvent?.workEventType == workEventType;
-        isPaused.value = latestWorkEvent?.workEventType == WorkEventType.BREAK;
-        return null;
-      },
-      [latestWorkEvent],
+    final isPaused = useState(
+      latestWorkEvent?.workEventType == WorkEventType.BREAK,
     );
 
-    final totalWorkTypeDuration =
-        useState(sumWorkEventsByType(workEventType, workEvents));
+    useEffect(() {
+      isRunning.value = latestWorkEvent?.workEventType == workEventType;
+      isPaused.value = latestWorkEvent?.workEventType == WorkEventType.BREAK;
+      return null;
+    }, [latestWorkEvent]);
 
-    useTimerTick(
-      (final _) {
-        if (isRunning.value) {
-          totalWorkTypeDuration.value =
-              totalWorkTypeDuration.value + const Duration(seconds: 1);
-        }
-      },
+    final totalWorkTypeDuration = useState(
+      sumWorkEventsByType(workEventType, workEvents),
     );
 
-    useEffect(
-      () {
-        loading.value
-            ? context.loaderOverlay.show()
-            : context.loaderOverlay.hide();
-        return null;
-      },
-      [loading.value],
-    );
+    useTimerTick((final _) {
+      if (isRunning.value) {
+        totalWorkTypeDuration.value =
+            totalWorkTypeDuration.value + const Duration(seconds: 1);
+      }
+    });
+
+    useEffect(() {
+      loading.value
+          ? context.loaderOverlay.show()
+          : context.loaderOverlay.hide();
+      return null;
+    }, [loading.value]);
 
     Future<void> onButtonPressed() async {
       if (isRunning.value) {
@@ -160,8 +164,8 @@ class EmployeeWorkEventTypeButton extends HookConsumerWidget {
                   onPressed: loading.value
                       ? null
                       : workEventType == WorkEventType.BREAK
-                          ? onPausePressed
-                          : onButtonPressed,
+                      ? onPausePressed
+                      : onButtonPressed,
                   icon: Icon(
                     isRunning.value ? Icons.pause : Icons.play_arrow,
                     color: isRunning.value ? Colors.white : null,

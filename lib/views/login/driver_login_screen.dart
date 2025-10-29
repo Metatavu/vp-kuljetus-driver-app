@@ -6,7 +6,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/trucks/trucks_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
@@ -19,7 +19,6 @@ class DriverLoginScreen extends HookConsumerWidget {
   Widget build(final context, final ref) {
     final l10n = L10n.of(context);
     final theme = Theme.of(context);
-    final authNotifier = ref.watch(authNotifierProvider.notifier);
     final publicTrucks = ref.watch(listPublicTrucksProvider);
     final router = GoRouter.of(context);
 
@@ -45,7 +44,9 @@ class DriverLoginScreen extends HookConsumerWidget {
 
     Future<void> initLogin(final PublicTruck selectedTruck) async {
       try {
-        await authNotifier.login(selectedTruck);
+        await ref
+            .read(appAuthNotifierProvider.notifier)
+            .loginAsDriver(selectedTruck.id!);
         router.goNamed("routes");
       } catch (error) {
         log("Error logging driver in: $error");

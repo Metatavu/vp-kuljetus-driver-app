@@ -5,7 +5,7 @@ import "package:flutter_hooks/flutter_hooks.dart";
 import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:tms_api/tms_api.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/work_events/work_events_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/views/employee/employee_work_event_type_button.dart";
@@ -31,9 +31,12 @@ class EmployeeScreen extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
-    final employeeId = ref.watch(userInfoProvider)?.sub;
-    final employeeName = ref.watch(userInfoProvider)?.name;
-    final authNotifier = ref.watch(authNotifierProvider.notifier);
+    final (employeeId, employeeName) = ref.watch(
+      appAuthNotifierProvider.select((final it) {
+        final token = it.value?.accessToken;
+        return (token?.sub, token?.name);
+      }),
+    );
 
     final loading = useState(false);
 
@@ -45,13 +48,15 @@ class EmployeeScreen extends HookConsumerWidget {
       log("Finishing work day...");
       loading.value = true;
       try {
-        await ref.read(workEventsProvider(employeeId).notifier).createWorkEvent(
+        await ref
+            .read(workEventsProvider(employeeId).notifier)
+            .createWorkEvent(
               employeeId,
               WorkEventType.SHIFT_END,
               DateTime.now(),
             );
         log("Created logout work event. Logging out...");
-        await authNotifier.logout();
+        await ref.read(appAuthNotifierProvider.notifier).logout();
         log("Logged out");
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -92,8 +97,9 @@ class EmployeeScreen extends HookConsumerWidget {
                 ],
               ),
             ElevatedButton(
-              onPressed:
-                  loading.value ? null : () => onFinishWorkDayPressed(context),
+              onPressed: loading.value
+                  ? null
+                  : () => onFinishWorkDayPressed(context),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(0),
                 fixedSize: const Size.fromHeight(35),

@@ -4,6 +4,7 @@ import "dart:developer";
 import "package:android_id/android_id.dart";
 import "package:flutter_appauth/flutter_appauth.dart";
 import "package:riverpod_annotation/riverpod_annotation.dart";
+import "package:tms_api/tms_api.dart";
 import "package:vp_kuljetus_driver_app/app/env.gen.dart";
 import "package:vp_kuljetus_driver_app/models/authentication/authentication.dart";
 import "package:vp_kuljetus_driver_app/providers/app_authentication/authentication_store_utilities.dart";
@@ -23,49 +24,27 @@ const serviceConfiguration = AuthorizationServiceConfiguration(
 
 @Riverpod(keepAlive: true)
 class AppAuthNotifier extends _$AppAuthNotifier {
-  late final StreamController<AuthenticationState?> _controller;
   final FlutterAppAuth _appAuth = const FlutterAppAuth();
-  Timer? _refreshTimer;
+  Timer? _keepAliveTimer;
 
   @override
-  Stream<AuthenticationState?> build() {
-    _controller = StreamController<AuthenticationState?>();
-    state = const AsyncData(null);
-    ref.onDispose(() {
-      _controller.close();
-      _refreshTimer?.cancel();
-    });
-    return _controller.stream;
-  }
+  Future<AuthenticationState?> build() async {
+    ref.onDispose(_stopKeepAliveTimer);
 
-  void _stopRefreshTimer() {
-    _refreshTimer?.cancel();
-    _refreshTimer = null;
-  }
+    final storedRefreshToken = await readStoredRefreshToken();
+    if (storedRefreshToken == null) return null;
 
-  Future<AuthenticationState> _handleSuccessfulLoginResponse(
-    final AuthenticationState tokenParsed,
-  ) async {
-    tmsApi.setBearerAuth("BearerAuth", tokenParsed.accessTokenRaw ?? "");
-
-    final shiftStartedAt =
-        (await tmsApi.getEmployeeWorkShiftsApi().listEmployeeWorkShifts(
-          employeeId: tokenParsed.accessToken.sub,
-          first: 0,
-          max: 1,
-        )).data?.firstOrNull?.startedAt?.toUtc().millisecondsSinceEpoch;
-    final sessionStartedAt = DateTime.now().millisecondsSinceEpoch;
-
-    await store.setInt(
-      sessionStartedTimestampStoreKey,
-      shiftStartedAt ?? sessionStartedAt,
-    );
-    await store.setInt(sessionStartedTimestampStoreKey, sessionStartedAt);
-    await storeRefreshToken(tokenParsed.refreshToken);
-    await storeRefreshTokenStoringTime();
-    _startRefreshTimer();
-    state = AsyncData(tokenParsed);
-    return tokenParsed;
+    try {
+      final authState = await _refreshAuthState(storedRefreshToken);
+      tmsApi.setBearerAuth("BearerAuth", authState.accessTokenRaw);
+      await putStoredRefreshToken(authState.refreshToken);
+      _startKeepAliveTimer();
+      return authState;
+    } catch (error) {
+      log("Failed to refresh token from stored refresh token: $error");
+      await clearStoredRefreshToken();
+      return null;
+    }
   }
 
   Future<AuthenticationState?> loginAsEmployee() async {
@@ -81,6 +60,7 @@ class AppAuthNotifier extends _$AppAuthNotifier {
         clientSecret: Env.keycloakClientSecret,
       ),
     );
+
     await storeLastSessionType(SessionType.terminal);
 
     final tokenParsed = AuthenticationState.fromTokenResponse(result);
@@ -90,7 +70,6 @@ class AppAuthNotifier extends _$AppAuthNotifier {
   }
 
   Future<AuthenticationState?> loginAsDriver(final String truckId) async {
-    final deviceId = await AndroidId().getId();
     final result = await _appAuth.authorizeAndExchangeCode(
       AuthorizationTokenRequest(
         Env.keycloakClientId,
@@ -102,14 +81,17 @@ class AppAuthNotifier extends _$AppAuthNotifier {
         clientSecret: Env.keycloakClientSecret,
       ),
     );
+
     await storeLastSessionType(SessionType.driver);
 
     final tokenParsed = AuthenticationState.fromTokenResponse(result);
     await _handleSuccessfulLoginResponse(tokenParsed);
+
     final logoutViaCardRemovalInterval = Timer.periodic(
       const Duration(seconds: 10),
       _handleLogoutIfCardIsRemoved,
     );
+
     ref.onDispose(logoutViaCardRemovalInterval.cancel);
 
     return tokenParsed;
@@ -147,81 +129,162 @@ class AppAuthNotifier extends _$AppAuthNotifier {
       log("Failed to logout: $e");
     } finally {
       tmsApi.setBearerAuth("BearerAuth", "");
-      await clearRefreshTokenStoringTime();
       await clearStoredRefreshToken();
-      _stopRefreshTimer();
+      _stopKeepAliveTimer();
       state = const AsyncData(null);
     }
   }
 
-  Future<void> refreshToken(final String refreshToken) async {
-    try {
-      final result = await _appAuth.token(
-        TokenRequest(
-          Env.keycloakClientId,
-          "fi.metatavu.vp.kuljetus.driver.app:/",
-          refreshToken: refreshToken,
-          serviceConfiguration: serviceConfiguration,
-          clientSecret: Env.keycloakClientSecret,
-          grantType: "refresh_token",
-        ),
-      );
-
-      final tokenParsed = AuthenticationState.fromTokenResponse(result);
-      tmsApi.setBearerAuth("BearerAuth", result.accessToken ?? "");
-      await storeRefreshToken(result.refreshToken!);
-      await storeRefreshTokenStoringTime();
-      state = AsyncData(tokenParsed);
-    } catch (e) {
-      await logout();
-    }
+  Future<AuthenticationState> _handleSuccessfulLoginResponse(
+    final AuthenticationState tokenParsed,
+  ) async {
+    final now = DateTime.now();
+    tmsApi.setBearerAuth("BearerAuth", tokenParsed.accessTokenRaw);
+    await _setSessionStartedAtTimestamp(tokenParsed, fallbackTime: now);
+    await putStoredRefreshToken(tokenParsed.refreshToken);
+    _startKeepAliveTimer();
+    state = AsyncData(tokenParsed);
+    return tokenParsed;
   }
 
-  Future<void> _checkAndUpdateToken() async {
-    final authValue = state.valueOrNull;
+  Future<void> _setSessionStartedAtTimestamp(
+    final AuthenticationState tokenParsed, {
+    required final DateTime fallbackTime,
+  }) async {
+    final fallbackInMillis = fallbackTime.millisecondsSinceEpoch;
 
-    if (authValue == null) {
-      log("_checkAndUpdateToken: No auth state, stopping refresh timer");
-      _stopRefreshTimer();
+    late final EmployeeWorkShift? lastWorkShift;
+    try {
+      final response = await tmsApi
+          .getEmployeeWorkShiftsApi()
+          .listEmployeeWorkShifts(
+            employeeId: tokenParsed.accessToken.sub,
+            first: 0,
+            max: 1,
+          );
+
+      lastWorkShift = response.data!.firstOrNull;
+    } catch (e) {
+      log("Error while fetching last work shift: $e");
+      await store.setInt(sessionStartedTimestampStoreKey, fallbackInMillis);
       return;
     }
 
-    final isCurrentTokenAboutToExpire = state.requireValue!.expiresIn(
-      const Duration(minutes: 1),
+    final lastWorkShiftStartedAt = lastWorkShift?.startedAt;
+    final lastWorkShiftEndedAt = lastWorkShift?.endedAt;
+
+    if (lastWorkShift == null) {
+      log(
+        "No previous work shifts found for user ${tokenParsed.accessToken.sub}",
+      );
+      await store.setInt(sessionStartedTimestampStoreKey, fallbackInMillis);
+      return;
+    }
+
+    if (lastWorkShiftStartedAt == null) {
+      log("Last work shift has no startedAt, should not happen");
+      await store.setInt(sessionStartedTimestampStoreKey, fallbackInMillis);
+      return;
+    }
+
+    if (lastWorkShiftEndedAt != null) {
+      log("Last work shift already ended at $lastWorkShiftEndedAt");
+      await store.setInt(sessionStartedTimestampStoreKey, fallbackInMillis);
+      return;
+    }
+
+    await store.setInt(
+      sessionStartedTimestampStoreKey,
+      lastWorkShiftStartedAt.toUtc().millisecondsSinceEpoch,
     );
-    final refreshTokenStoredAt = await readRefreshTokenStoringTime();
-    if (refreshTokenStoredAt != null) {
-      final refreshTokenAgeMilliseconds =
-          DateTime.now().millisecondsSinceEpoch - refreshTokenStoredAt;
-      final refreshTokenAgeMinutes = Duration(
-        milliseconds: refreshTokenAgeMilliseconds,
-      ).inMinutes;
-      if (!isCurrentTokenAboutToExpire && refreshTokenAgeMinutes < 239) {
+  }
+
+  Future<AuthenticationState> _refreshAuthState(
+    final String refreshToken,
+  ) async {
+    final result = await _appAuth.token(
+      TokenRequest(
+        Env.keycloakClientId,
+        "fi.metatavu.vp.kuljetus.driver.app:/",
+        refreshToken: refreshToken,
+        serviceConfiguration: serviceConfiguration,
+        clientSecret: Env.keycloakClientSecret,
+        grantType: "refresh_token",
+      ),
+    );
+
+    return AuthenticationState.fromTokenResponse(result);
+  }
+
+  Future<void> _keepSessionAlive() async {
+    final currentState = state.valueOrNull;
+
+    final sessionStillAlive =
+        currentState?.expiresIn(const Duration(minutes: 1)) == false;
+    if (sessionStillAlive) return;
+
+    final storedRefreshToken = await readStoredRefreshToken();
+    if (currentState == null && storedRefreshToken == null) {
+      log(
+        "_keepSessionAlive: No previous auth or stored refresh token found, session lost",
+      );
+      _stopKeepAliveTimer();
+      return;
+    }
+
+    if (currentState != null) {
+      try {
+        final newState = await _refreshAuthState(currentState.refreshToken);
+        tmsApi.setBearerAuth("BearerAuth", newState.accessTokenRaw);
+        await putStoredRefreshToken(newState.refreshToken);
         return;
+      } catch (error) {
+        log(
+          "_keepSessionAlive: Failed to refresh token with current auth state: $error",
+        );
       }
     }
 
-    final storedRefreshToken = await readRefreshToken();
+    if (storedRefreshToken != null) {
+      try {
+        final newState = await _refreshAuthState(storedRefreshToken);
+        tmsApi.setBearerAuth("BearerAuth", newState.accessTokenRaw);
+        await putStoredRefreshToken(newState.refreshToken);
+        return;
+      } catch (error) {
+        log(
+          "_keepSessionAlive: Failed to refresh token with stored refresh token: $error",
+        );
+      }
+    }
 
-    if (storedRefreshToken == null || state.requireValue!.isExpired) {
+    if (currentState != null && !currentState.isExpired) {
       log(
-        "_checkAndUpdateToken: No refresh token found in storage or token already expired, clearing auth state",
+        "_keepSessionAlive: Could not refresh session but current auth state is still valid, keeping current state",
       );
-      state = const AsyncData(null);
-      tmsApi.setBearerAuth("BearerAuth", "");
-
-      _stopRefreshTimer();
       return;
     }
 
-    await refreshToken(storedRefreshToken);
+    log(
+      "_keepSessionAlive: Could not refresh session and current auth state is already expired, clearing auth state",
+    );
+
+    state = const AsyncData(null);
+    tmsApi.setBearerAuth("BearerAuth", "");
+    await clearStoredRefreshToken();
+    _stopKeepAliveTimer();
   }
 
-  void _startRefreshTimer() {
-    _stopRefreshTimer();
-    _refreshTimer = Timer.periodic(
-      const Duration(seconds: 10),
-      (_) => _checkAndUpdateToken(),
+  void _startKeepAliveTimer() {
+    _stopKeepAliveTimer();
+    _keepAliveTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (_) => _keepSessionAlive(),
     );
+  }
+
+  void _stopKeepAliveTimer() {
+    _keepAliveTimer?.cancel();
+    _keepAliveTimer = null;
   }
 }

@@ -16,36 +16,37 @@ class PublicTruckSelect extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final truckTextStyle = Theme.of(context)
-        .textTheme
-        .headlineSmall
-        ?.copyWith(fontWeight: FontWeight.w900);
+    final truckTextStyle = Theme.of(
+      context,
+    ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900);
 
     DropdownMenuEntry getPublicTruckDropdownEntry(
       final PublicTruck publicTruck,
-    ) =>
-        DropdownMenuEntry(
-          label: "${publicTruck.name} / ${publicTruck.plateNumber}",
-          value: publicTruck.vin,
-          style: ButtonStyle(
-            alignment: Alignment.center,
-            padding: const WidgetStatePropertyAll(
-              EdgeInsets.only(top: 16, bottom: 16, left: 100),
-            ),
-            textStyle: WidgetStatePropertyAll(truckTextStyle),
-          ),
-        );
+    ) => DropdownMenuEntry(
+      label: "${publicTruck.name} / ${publicTruck.plateNumber}",
+      value: publicTruck.vin,
+      style: ButtonStyle(
+        alignment: Alignment.center,
+        padding: const WidgetStatePropertyAll(
+          EdgeInsets.only(top: 16, bottom: 16, left: 100),
+        ),
+        textStyle: WidgetStatePropertyAll(truckTextStyle),
+      ),
+    );
 
     return Stack(
       children: [
         DropdownMenu(
-          dropdownMenuEntries:
-              publicTrucks.map(getPublicTruckDropdownEntry).toList(),
+          menuHeight: 800,
+          dropdownMenuEntries: publicTrucks
+              .map(getPublicTruckDropdownEntry)
+              .toList(),
           initialSelection: initialValue?.vin,
           // ignore: unnecessary_lambdas because of the type inference
           onSelected: (final truckVin) => onSelectTruck(
-            publicTrucks
-                .firstWhereOrNull((final truck) => truck.vin == truckVin),
+            publicTrucks.firstWhereOrNull(
+              (final truck) => truck.vin == truckVin,
+            ),
           ),
           trailingIcon: const Icon(Icons.swap_vert, size: 32),
           selectedTrailingIcon: const Icon(Icons.swap_vert, size: 32),
@@ -55,12 +56,7 @@ class PublicTruckSelect extends StatelessWidget {
             backgroundColor: const WidgetStatePropertyAll(Colors.white),
             surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
             shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            maximumSize: const WidgetStatePropertyAll(
-              Size(double.infinity, 400),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
           ),
           inputDecorationTheme: const InputDecorationTheme(
@@ -72,9 +68,7 @@ class PublicTruckSelect extends StatelessWidget {
           ),
         ),
         const Image(
-          image: AssetImage(
-            "assets/images/finnish-license-plate-prefix.png",
-          ),
+          image: AssetImage("assets/images/finnish-license-plate-prefix.png"),
           height: 80,
           fit: BoxFit.fitHeight,
         ),

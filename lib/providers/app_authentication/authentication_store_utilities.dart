@@ -7,11 +7,11 @@ Future<void> clearStoredRefreshToken() async {
   await _secureStorage.delete(key: "auth_refresh_token");
 }
 
-Future<void> storeRefreshToken(final String refreshToken) async {
+Future<void> putStoredRefreshToken(final String refreshToken) async {
   await _secureStorage.write(key: "auth_refresh_token", value: refreshToken);
 }
 
-Future<String?> readRefreshToken() =>
+Future<String?> readStoredRefreshToken() =>
     _secureStorage.read(key: "auth_refresh_token");
 
 Future<void> storeLastSessionType(final SessionType sessionType) async {
@@ -25,17 +25,3 @@ Future<SessionType?> readLastSessionType() async {
     (final e) => e.name == sessionTypeString,
   );
 }
-
-Future<void> storeRefreshTokenStoringTime() async {
-  await store.setInt(
-    "refresh_token_stored_at",
-    DateTime.now().millisecondsSinceEpoch,
-  );
-}
-
-Future<void> clearRefreshTokenStoringTime() async {
-  await store.remove("refresh_token_stored_at");
-}
-
-Future<int?> readRefreshTokenStoringTime() async =>
-    store.getInt("refresh_token_stored_at");

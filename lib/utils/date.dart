@@ -29,3 +29,8 @@ String formatDurationToPaddedHhMm(final Duration duration) {
 
   return "$hours:$minutes";
 }
+
+extension SecondsSinceEpoch on DateTime {
+  int get secondsSinceEpoch =>
+      toUtc().millisecondsSinceEpoch ~/ Duration.millisecondsPerSecond;
+}

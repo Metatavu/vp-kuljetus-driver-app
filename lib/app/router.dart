@@ -22,6 +22,7 @@ import "package:vp_kuljetus_driver_app/views/route_tasks/route_tasks_screen.dart
 import "package:vp_kuljetus_driver_app/views/routes/routes_screen.dart";
 import "package:vp_kuljetus_driver_app/views/splash/splash_screen.dart";
 import "package:vp_kuljetus_driver_app/views/task_details/task_details_screen.dart";
+import "package:vp_kuljetus_driver_app/views/updates/updates_shell.dart";
 import "package:vp_kuljetus_driver_app/views/vehicle/vehicle_screen.dart";
 import "package:vp_kuljetus_driver_app/widgets/hardware_back_handler.dart";
 
@@ -41,6 +42,7 @@ GoRouter router(final Ref ref) {
       ),
       (final _, final next) => authenticated.value = next,
     );
+
   final router = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: "/",
@@ -49,144 +51,158 @@ GoRouter router(final Ref ref) {
     redirect: (final context, final state) =>
         handleRedirect(context, state, appAuthProvider),
     routes: [
-      GoRoute(
-        path: "/",
-        name: "splash",
-        pageBuilder: (final context, final state) =>
-            const NoTransitionPage(child: SplashScreen()),
-      ),
       ShellRoute(
         pageBuilder: (final context, final state, final child) =>
             NoTransitionPage(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: LoaderOverlay(
-                  child: LoginScreenShell(
-                    navigateBackVisible:
-                        state.uri.toString() != "/login" &&
-                        !state.uri.toString().startsWith("/client-app"),
-                    child: child,
-                  ),
-                ),
+                child: LoaderOverlay(child: UpdatesShell(child: child)),
               ),
             ),
         routes: [
           GoRoute(
-            path: "/client-app",
-            name: "clientApp",
+            path: "/",
+            name: "splash",
             pageBuilder: (final context, final state) =>
-                const NoTransitionPage(child: ClientAppScreen()),
+                const NoTransitionPage(child: SplashScreen()),
+          ),
+          ShellRoute(
+            pageBuilder: (final context, final state, final child) =>
+                NoTransitionPage(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: LoaderOverlay(
+                      child: LoginScreenShell(
+                        navigateBackVisible:
+                            state.uri.toString() != "/login" &&
+                            !state.uri.toString().startsWith("/client-app"),
+                        child: child,
+                      ),
+                    ),
+                  ),
+                ),
             routes: [
               GoRoute(
-                path: ":deviceId/confirm",
-                name: "confirmClientApp",
-                pageBuilder: (final context, final state) {
-                  final deviceId = state.pathParameters["deviceId"]!;
-                  final clientAppName =
-                      state.uri.queryParameters["clientAppName"];
-
-                  return NoTransitionPage(
-                    child: ConfirmClientAppScreen(
-                      deviceId: deviceId,
-                      clientAppName: clientAppName,
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-          GoRoute(
-            path: "/login",
-            name: "login",
-            pageBuilder: (final context, final state) =>
-                const NoTransitionPage(child: LoginSelectionScreen()),
-            routes: [
-              GoRoute(
-                path: "driver",
-                name: "driverLogin",
+                path: "/client-app",
+                name: "clientApp",
                 pageBuilder: (final context, final state) =>
-                    const NoTransitionPage(child: DriverLoginScreen()),
-              ),
-              GoRoute(
-                path: "employee",
-                name: "employeeLogin",
-                pageBuilder: (final context, final state) =>
-                    const NoTransitionPage(child: EmployeeLoginScreen()),
-              ),
-            ],
-          ),
-        ],
-      ),
-      ShellRoute(
-        pageBuilder: EmployeePage.builder,
-        routes: [
-          GoRoute(
-            path: "/employee",
-            name: "employee",
-            pageBuilder: (final context, final state) =>
-                const NoTransitionPage(child: EmployeeScreen()),
-          ),
-        ],
-      ),
-      ShellRoute(
-        pageBuilder: (final context, final state, final child) {
-          final statusBarHeight = MediaQuery.of(context).viewPadding.top;
-          final defaultPanelHeight = statusBarHeight + 54;
-          final contentHeight =
-              MediaQuery.of(context).size.height - defaultPanelHeight;
+                    const NoTransitionPage(child: ClientAppScreen()),
+                routes: [
+                  GoRoute(
+                    path: ":deviceId/confirm",
+                    name: "confirmClientApp",
+                    pageBuilder: (final context, final state) {
+                      final deviceId = state.pathParameters["deviceId"]!;
+                      final clientAppName =
+                          state.uri.queryParameters["clientAppName"];
 
-          return NoTransitionPage(
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              body: Column(
-                children: [
-                  const DriverLogAppBar(),
-                  Container(
-                    constraints: BoxConstraints.loose(
-                      Size.fromHeight(contentHeight),
-                    ),
-                    child: child,
+                      return NoTransitionPage(
+                        child: ConfirmClientAppScreen(
+                          deviceId: deviceId,
+                          clientAppName: clientAppName,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
-            ),
-          );
-        },
-        routes: [
-          ShellRoute(
-            pageBuilder: (final context, final state, final child) =>
-                NoTransitionPage(child: MainTabsView(child: child)),
-            routes: [
               GoRoute(
-                name: "vehicle",
-                path: "/vehicle",
-                redirect: handleRedirectIfOngoingTasks,
+                path: "/login",
+                name: "login",
                 pageBuilder: (final context, final state) =>
-                    const NoTransitionPage(child: VehicleScreen()),
-              ),
-              GoRoute(
-                name: "routes",
-                path: "/routes",
-                pageBuilder: (final context, final state) =>
-                    const NoTransitionPage(child: RoutesScreen()),
+                    const NoTransitionPage(child: LoginSelectionScreen()),
                 routes: [
                   GoRoute(
-                    name: "routeTasks",
-                    path: ":routeId/tasks",
+                    path: "driver",
+                    name: "driverLogin",
                     pageBuilder: (final context, final state) =>
-                        const NoTransitionPage(
-                          child: HardwareBackHandler(
-                            gotoPath: "/routes",
-                            child: RouteTasksScreen(),
-                          ),
+                        const NoTransitionPage(child: DriverLoginScreen()),
+                  ),
+                  GoRoute(
+                    path: "employee",
+                    name: "employeeLogin",
+                    pageBuilder: (final context, final state) =>
+                        const NoTransitionPage(child: EmployeeLoginScreen()),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          ShellRoute(
+            pageBuilder: EmployeePage.builder,
+            routes: [
+              GoRoute(
+                path: "/employee",
+                name: "employee",
+                pageBuilder: (final context, final state) =>
+                    const NoTransitionPage(child: EmployeeScreen()),
+              ),
+            ],
+          ),
+          ShellRoute(
+            pageBuilder: (final context, final state, final child) {
+              final statusBarHeight = MediaQuery.of(context).viewPadding.top;
+              final defaultPanelHeight = statusBarHeight + 54;
+              final contentHeight =
+                  MediaQuery.of(context).size.height - defaultPanelHeight;
+
+              return NoTransitionPage(
+                child: Scaffold(
+                  backgroundColor: Colors.white,
+                  body: Column(
+                    children: [
+                      const DriverLogAppBar(),
+                      Container(
+                        constraints: BoxConstraints.loose(
+                          Size.fromHeight(contentHeight),
                         ),
+                        child: child,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            routes: [
+              ShellRoute(
+                pageBuilder: (final context, final state, final child) =>
+                    NoTransitionPage(child: MainTabsView(child: child)),
+                routes: [
+                  GoRoute(
+                    name: "vehicle",
+                    path: "/vehicle",
+                    redirect: handleRedirectIfOngoingTasks,
+                    pageBuilder: (final context, final state) =>
+                        const NoTransitionPage(child: VehicleScreen()),
+                  ),
+                  GoRoute(
+                    name: "routes",
+                    path: "/routes",
+                    pageBuilder: (final context, final state) =>
+                        const NoTransitionPage(child: RoutesScreen()),
                     routes: [
                       GoRoute(
-                        name: "taskDetails",
-                        path: "task-details",
+                        name: "routeTasks",
+                        path: ":routeId/tasks",
                         pageBuilder: (final context, final state) =>
-                            const NoTransitionPage(child: TaskDetailsScreen()),
+                            const NoTransitionPage(
+                              child: HardwareBackHandler(
+                                gotoPath: "/routes",
+                                child: RouteTasksScreen(),
+                              ),
+                            ),
+                        routes: [
+                          GoRoute(
+                            name: "taskDetails",
+                            path: "task-details",
+                            pageBuilder: (final context, final state) =>
+                                const NoTransitionPage(
+                                  child: TaskDetailsScreen(),
+                                ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -29,7 +29,7 @@ fi
 # Parse the variables and inject them to the process
 DART_DEFINE_OPTIONS=$(echo "$SECRETS" | jq -r '
   to_entries |
-  map(select(.key != "FCM_ANDROID_GOOGLE_SERVICES" and .key != "FCM_IOS_GOOGLE_SERVICE_INFO" and .key != "ANDROID_UPLOAD_KEY_PROPERTIES" and .key != "ANDROID_UPLOAD_KEYSTORE" and .value != null)) |
+  map(select(.key != "AWS_ACCESS_KEY_ID" and .key != "AWS_SECRET_ACCESS_KEY" and .key != "SIGN_KEYSTORE" and .key != "SIGN_STORE_PASSWORD" and .value != null)) |
   map("--" + .key + "=" + (.value | tostring)) |
   join(" ")
 ')

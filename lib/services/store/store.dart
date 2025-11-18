@@ -21,21 +21,39 @@ Future<void> initStore() async {
   store = await SharedPreferences.getInstance();
 }
 
-List<TaskGroupTimestamps> getTaskGroupTimestamps() {
+List<TaskGroupTimestamps> deserializeTaskGroupTimestamps(
+  final String? rawValue,
+) {
   try {
-    final tasksStartedAtJson = store.getString(taskGroupTimestampsKey);
-    if (tasksStartedAtJson == null) {
-      return [];
-    }
-
-    final jsonArray = jsonDecode(tasksStartedAtJson) as List<dynamic>;
-
-    // ignore: unnecessary_lambdas
-    return jsonArray.map((final e) => TaskGroupTimestamps.fromJson(e)).toList();
-  } catch (e) {
-    log("Error while getting task timestamps: $e");
-
+    final validatedValue = rawValue?.isNotEmpty == true ? rawValue! : "[]";
+    final listJson = jsonDecode(validatedValue) as List<dynamic>;
+    return listJson
+        .map((final taskGroup) => TaskGroupTimestamps.fromJson(taskGroup))
+        .toList();
+  } catch (error) {
+    log("Error while deserializing task timestamps: $error");
     return [];
+  }
+}
+
+List<TaskGroupTimestamps> getTaskGroupTimestamps() {
+  final rawValue = store.getString(taskGroupTimestampsKey);
+  return deserializeTaskGroupTimestamps(rawValue);
+}
+
+Stream<List<TaskGroupTimestamps>> watchTaskGroupTimestamps() async* {
+  String? prevRawValue = store.getString(taskGroupTimestampsKey);
+  yield deserializeTaskGroupTimestamps(prevRawValue);
+
+  while (true) {
+    await Future.delayed(const Duration(seconds: 1));
+
+    final currentRawValue = store.getString(taskGroupTimestampsKey);
+
+    if (currentRawValue != prevRawValue) {
+      prevRawValue = currentRawValue;
+      yield deserializeTaskGroupTimestamps(currentRawValue);
+    }
   }
 }
 

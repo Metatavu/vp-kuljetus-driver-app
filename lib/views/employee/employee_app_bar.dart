@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/work_events/work_events_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/utils/work_events.dart";
@@ -13,9 +13,14 @@ class EmployeeAppBar extends ConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final l10n = L10n.of(context);
-    final employeeId = ref.watch(userInfoProvider)?.sub;
-    final workEvents =
-        ref.watch(workEventsProvider(employeeId)).asData?.value.toList();
+    final employeeId = ref.watch(
+      appAuthNotifierProvider.select((final it) => it.value?.accessToken.sub),
+    );
+    final workEvents = ref
+        .watch(workEventsProvider(employeeId))
+        .asData
+        ?.value
+        .toList();
 
     if (workEvents == null) {
       return const SizedBox.shrink();

@@ -3,7 +3,7 @@ import "package:go_router/go_router.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:tms_api/tms_api.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/drivers/drivers_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/routes/routes_providers.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
@@ -15,19 +15,22 @@ class RouteCard extends ConsumerWidget {
 
   @override
   Widget build(final context, final ref) {
-    final userInfo = ref.watch(userInfoProvider);
+    final appAuth = ref.watch(appAuthNotifierProvider);
+    final employeeId = appAuth.value?.accessToken.sub;
     final theme = Theme.of(context);
     final l10n = L10n.of(context);
-    final updateRouteNotifier =
-        ref.watch(updateRouteProvider(route.id!).notifier);
+    final updateRouteNotifier = ref.watch(
+      updateRouteProvider(route.id!).notifier,
+    );
 
     final driver = route.driverId != null
         ? ref.watch(findDriverProvider(driverId: route.driverId!))
         : null;
 
     onSelectRoute() async {
-      if (userInfo?.sub != route.driverId) {
-        final confirmed = await showDialog<bool>(
+      if (employeeId != route.driverId) {
+        final confirmed =
+            await showDialog<bool>(
               context: context,
               barrierDismissible: false,
               builder: (final context) => AlertDialog(
@@ -51,8 +54,9 @@ class RouteCard extends ConsumerWidget {
         if (!confirmed) return;
 
         try {
-          await updateRouteNotifier
-              .mutate(route.rebuild((final b) => b.driverId = userInfo?.sub));
+          await updateRouteNotifier.mutate(
+            route.rebuild((final b) => b.driverId = employeeId),
+          );
         } catch (error) {
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -84,8 +88,9 @@ class RouteCard extends ConsumerWidget {
             bottom: 8,
           ),
           title: Text(route.name),
-          titleTextStyle: theme.textTheme.titleMedium
-              ?.copyWith(fontWeight: FontWeight.bold),
+          titleTextStyle: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
           subtitle: driver != null
               ? Skeletonizer(
                   enabled: driver.isLoading || driver.isRefreshing,

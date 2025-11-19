@@ -2,11 +2,9 @@ import "dart:async";
 
 import "package:collection/collection.dart";
 import "package:flutter/material.dart";
-import "package:flutter_hooks/flutter_hooks.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
 import "package:top_modal_sheet/top_modal_sheet.dart";
-import "package:vp_kuljetus_driver_app/models/truck_drive_state_with_task_type.dart";
-import "package:vp_kuljetus_driver_app/providers/authentication/authentication_providers.dart";
+import "package:vp_kuljetus_driver_app/providers/app_authentication/app_authentication_providers.dart";
 import "package:vp_kuljetus_driver_app/providers/drive_states/drive_states_provider.dart";
 import "package:vp_kuljetus_driver_app/services/localization/l10n.dart";
 import "package:vp_kuljetus_driver_app/services/store/store.dart";
@@ -30,20 +28,11 @@ class DriverLogAppBar extends HookConsumerWidget {
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     final defaultPanelHeight = statusBarHeight + 54;
     final l10n = L10n.of(context);
+    final theme = Theme.of(context);
 
     final selectedTruckId = store.getString(lastSelectedTruckIdStoreKey);
     final sessionStartedAt = store.getInt(sessionStartedTimestampStoreKey);
-    final driverId = ref.watch(userInfoProvider)?.sub;
-
-    final tasksStartedAts = useState(getTaskGroupTimestamps());
-
-    useEffect(() {
-      final timer = Timer.periodic(const Duration(seconds: 1), (final _) {
-        tasksStartedAts.value = getTaskGroupTimestamps();
-      });
-
-      return timer.cancel;
-    }, []);
+    final driverId = ref.watch(appAuthNotifierProvider).value?.accessToken.sub;
 
     if (driverId == null ||
         selectedTruckId == null ||
@@ -51,18 +40,16 @@ class DriverLogAppBar extends HookConsumerWidget {
       return buildPlaceholderContainer(defaultPanelHeight, context, null);
     }
 
-    final driveStates = ref.watch(
-      listDriveStatesProvider(
+    final sessionDriveStatesWithTasks = ref.watch(
+      listSessionDriveStatesWithTasksProvider(
         truckId: selectedTruckId,
         driverId: driverId,
-        after: DateTime.fromMillisecondsSinceEpoch(
-          sessionStartedAt,
-          isUtc: true,
-        ),
+        sessionStartedAt: sessionStartedAt,
       ),
     );
 
-    if (driveStates.isLoading && !driveStates.isReloading) {
+    if (sessionDriveStatesWithTasks.isLoading &&
+        !sessionDriveStatesWithTasks.isRefreshing) {
       return buildPlaceholderContainer(
         defaultPanelHeight,
         context,
@@ -70,17 +57,20 @@ class DriverLogAppBar extends HookConsumerWidget {
       );
     }
 
-    if (driveStates.hasError) {
+    if (sessionDriveStatesWithTasks.hasError) {
       return buildPlaceholderContainer(
         defaultPanelHeight,
         context,
-        const Center(child: Text("Failed to load drive states")),
+        Center(
+          child: Text(
+            l10n.t("errors.listDriveStates"),
+            style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
+          ),
+        ),
       );
     }
 
-    final data = driveStates.requireValue;
-
-    if (data.isEmpty) {
+    if (sessionDriveStatesWithTasks.requireValue.isEmpty) {
       return buildPlaceholderContainer(
         defaultPanelHeight,
         context,
@@ -96,54 +86,43 @@ class DriverLogAppBar extends HookConsumerWidget {
       );
     }
 
-    final List<TruckDriveStateWithTaskType> driveStatesWithTasks = data
-        .map(TruckDriveStateWithTaskType.fromTruckDriveState)
-        .toList();
-
-    driveStatesWithTasks.addAll(
-      tasksStartedAts.value.map(TruckDriveStateWithTaskType.fromTaskTimestamps),
-    );
-
-    driveStatesWithTasks.sort(
-      (final a, final b) => b.timestamp.compareTo(a.timestamp),
-    );
-
-    final List<TruckDriveStateWithTaskType> finalDriveStatesWithTasks = [];
-
-    for (final (index, state) in driveStatesWithTasks.indexed) {
-      if (state.taskType != null && state.endedAt != null) {
-        finalDriveStatesWithTasks.add(
-          driveStatesWithTasks.elementAt(index + 1),
-        );
-      }
-      finalDriveStatesWithTasks.add(state);
-    }
+    final driveStatesWithTasks = sessionDriveStatesWithTasks.requireValue;
 
     Future<dynamic> showTopModal(final BuildContext context) =>
         showTopModalSheet(
           backgroundColor: Colors.white,
           context,
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 2,
-            child: ListView(
-              reverse: true,
-              children: ListTile.divideTiles(
-                context: context,
-                tiles: finalDriveStatesWithTasks
-                    .mapIndexed(
-                      (final index, final driveState) => DriveLogRow(
-                        driveState: driveState,
-                        nextDriveState: finalDriveStatesWithTasks
-                            .elementAtOrNull(index == 0 ? 0 : index - 1),
-                        isLatest: index == 0,
-                        isExpanded: true,
-                        isTask: driveState.taskType != null,
-                      ),
-                    )
-                    .toList(),
-              ).toList(),
-            ),
+          Consumer(
+            builder: (final context, final ref, _) {
+              final sessionDriveStatesWithTasks = ref.watch(
+                listSessionDriveStatesWithTasksProvider(
+                  truckId: selectedTruckId,
+                  driverId: driverId,
+                  sessionStartedAt: sessionStartedAt,
+                ),
+              );
+
+              final driveStatesWithTasks =
+                  sessionDriveStatesWithTasks.valueOrNull ?? [];
+
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: ListView.separated(
+                  reverse: true,
+                  itemCount: driveStatesWithTasks.length,
+                  separatorBuilder: (final context, final index) =>
+                      const Divider(height: 0),
+                  itemBuilder: (final context, final index) => DriveLogRow(
+                    driveState: driveStatesWithTasks.elementAtOrNull(index)!,
+                    nextDriveState: index == 0
+                        ? null
+                        : driveStatesWithTasks.elementAtOrNull(index - 1),
+                    isExpanded: true,
+                  ),
+                ),
+              );
+            },
           ),
         );
 
@@ -155,11 +134,9 @@ class DriverLogAppBar extends HookConsumerWidget {
         onVerticalDragUpdate: (final details) => showTopModal(context),
         onTap: () => showTopModal(context),
         child: DriveLogRow(
-          driveState: finalDriveStatesWithTasks.first,
-          nextDriveState: finalDriveStatesWithTasks.elementAtOrNull(1),
-          isLatest: true,
+          driveState: driveStatesWithTasks.first,
+          nextDriveState: null,
           isExpanded: false,
-          isTask: finalDriveStatesWithTasks.first.taskType != null,
         ),
       ),
     );
